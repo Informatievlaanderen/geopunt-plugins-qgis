@@ -12,15 +12,15 @@ about=NL: "Geopunt voor QGIS" is een plugin voor de QGIS open source desktop GIS
     - Zoeken naar intressepunten in geopunt 
     - Hoogte Profielen tekenen 
     - Zoeken naar percelen 
-    - Zoeken naar Lagen in datavindtplaats
+    - Zoeken naar Lagen in datavindplaats
     EN: "Geopunt for QGIS"  is a plugin for the QGIS open source desktop GIS, which opens the web services of the Flemish geoportal Geopunt to desktop GIS users. The Flemish Geoportal Geopunt offers a number of geographic services (web services) that may be used by third parties such as other governments and companies. 
     - Geocoding [regular, batch and reverse] based on adresregistry Flanders 
     - Search for POI in geopunt 
     - Draw elevation profiles 
     - Search for Parcels 
-    - Search for layers in the datavindtplaats
+    - Search for layers in the datavindplaats
 
-version=2.4.0.0
+version=2.4.0.1
 author=Kay Warrie
 email=kaywarrie@gmail.com 
 
@@ -28,7 +28,7 @@ email=kaywarrie@gmail.com
 
 # Optional items:
 # Uncomment the following line and add your changelog entries:
-changelog=Update datacatalog now based on datavindtplaats
+changelog=Update datacatalog now based on datavindplaats
 
 # tags are comma separated with spaces allowed
 tags=INSPIRE, GEOPUNT, GDI, VLAANDEREN, BRUSSEL, BELGIE, ADRES, ADRESSEN, AGIV, GEOLOKATIE, GEOCODE, WEBSERVICE, GRB, CRAB, FLANDERS, BELGIUM, BRUSSELS, LOCATION, ADDRESS, POINT OF INTEREST, POI, URBIS, GIPOD

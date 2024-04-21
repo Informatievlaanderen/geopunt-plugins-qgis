@@ -1,20 +1,20 @@
 import json
 from ..tools.web import getUrlData
 
-
 class adresMatch(object):
   def __init__(self):
-      self._gemUrl = "https://api.basisregisters.vlaanderen.be/v1/gemeenten/"
-      self._amUrl = "https://api.basisregisters.vlaanderen.be/v1/adresmatch"
+      self._gemUrl = "https://api.basisregisters.vlaanderen.be/v2/gemeenten/"
+      self._amUrl = "https://api.basisregisters.vlaanderen.be/v2/adresmatch"
 
   def gemeenten(self, langcode="nl", step=500, stop=1500):
       'Return all Flemish gemeenten (Municipalities), langcode= "nl", "fr", "de"' 
       
       gemeenten = []
       data = {'limit' : step , 'offset': 0}
+      header = {"x-api-key": "b1bc7136-e764-4980-ad6a-8df979250787"}
       
       while data['offset'] <= stop:
-            result = json.loads( getUrlData(self._gemUrl, params=data ) )
+            result = json.loads( getUrlData(self._gemUrl, params=data, headers=header ) )
             
             data['offset'] += step
 
@@ -41,13 +41,15 @@ class adresMatch(object):
       data["Huisnummer"]   = housenr if housenr else ""
       data["Index"]        = rrindex if rrindex else ""
       data["Busnummer"]    = boxnr if boxnr else ""
+      header= {"x-api-key": "b1bc7136-e764-4980-ad6a-8df979250787"}
 
       try:
-        result = json.loads( getUrlData(self._amUrl, params=data) )
+        result = json.loads( getUrlData(self._amUrl, params=data, headers=header ) )
       except BaseException as err:
         return []
 
-      return [ n for n in result['adresMatches'] if not "adresStatus" in n.keys() or n["adresStatus"].lower() != "gehistoreerd" ]
+      return [ n for n in result['adresMatches'] if not "adresStatus" in n.keys() or 
+                                                  n["adresStatus"].lower() != "gehistoreerd" ]
     
   def findMatchFromSingleLine(self, adres):
       adr = [n.strip() for n in adres.split(",")]
@@ -69,9 +71,10 @@ class adresMatch(object):
       data["Postcode"]     = post
       data["Straatnaam"]   = street
       data["Huisnummer"]   = housenr
+      header = {"x-api-key": "b1bc7136-e764-4980-ad6a-8df979250787"}
       
       try:
-        result = json.loads( getUrlData( self._amUrl, params=data ) )
+        result = json.loads( getUrlData( self._amUrl, params=data, headers=header ) )
       except BaseException as err:
         return []
 

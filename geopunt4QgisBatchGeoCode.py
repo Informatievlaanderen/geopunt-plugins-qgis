@@ -7,6 +7,7 @@ from .ui_geopunt4QgisBatchGeoCode import Ui_batchGeocodeDlg
 from .tools.batchGeo import batcGeoHelper
 from .mapTools.reverseAdres import reverseAdresMapTool
 from .geopunt import adresMatch
+from .tools import gmlpointToXY
 from .tools.settings import settings
 from .tools.geometry import geometryHelper
 
@@ -118,11 +119,13 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
                 xylb = [float(n) for n in adres.split(",")]
                 xyType = "manuele aanduiding||0"
             else:
-                loc = self.am.findMatchFromSingleLine(adres)
-                if len(loc) == 0: continue
-                xylb =  loc[0]["adresPositie"]["point"]["coordinates"]
-                xyType = "|".join([ loc[0]["positieSpecificatie"], 
-                                        loc[0]["positieGeometrieMethode"], str(loc[0]["score"]) ])
+                matches = self.am.findMatchFromSingleLine(adres)
+                if len(matches) == 0: continue
+                pos = matches[0]["adresPositie"]
+                gml = pos["geometrie"]["gml"]
+                xylb = gmlpointToXY(gml)
+                xyType = "|".join([ pos["positieSpecificatie"], 
+                                    pos["positieGeometrieMethode"], str(matches[0]["score"]) ])
 
             xymap = self.gh.prjPtToMapCrs(xylb, 31370)
             self.batcGeoHelper.save_adres_point(xymap, adres, xyType, 

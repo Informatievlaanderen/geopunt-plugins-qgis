@@ -99,8 +99,8 @@ class geopunt4QgisAdresDialog(QDialog):
             
             self.ui.gemeenteBox.addItems( gemeenteNamen )  
             self.completerModel.setStringList(gemeenteNamen )
-            self.ui.gemeenteBox.setEditText(QCoreApplication.translate("geopunt4QgisAdresDialog", "gemeente"))
-            self.ui.gemeenteBox.setStyleSheet('QComboBox {color: #808080}')
+            self.ui.gemeenteBox.lineEdit().setPlaceholderText(QCoreApplication.translate("geopunt4QgisAdresDialog", "gemeente"))
+            self.ui.gemeenteBox.setCurrentText("")
             self.ui.gemeenteBox.setFocus()
             self.firstShow = False
         
@@ -112,8 +112,8 @@ class geopunt4QgisAdresDialog(QDialog):
         self._clearGraphicsLayer()
         self.bar.clearWidgets()
     
-        gemeente = self.ui.gemeenteBox.currentText() 
-        if gemeente != QCoreApplication.translate("geopunt4QgisAdresDialog","gemeente"):
+        gemeente = self.ui.gemeenteBox.currentText().strip()
+        if gemeente:
           self.ui.gemeenteBox.setStyleSheet('QComboBox {color: #000000}')
     
           txt = self.ui.zoekText.text() +", "+ gemeente
@@ -214,7 +214,7 @@ class geopunt4QgisAdresDialog(QDialog):
         self.bar.clearWidgets()
         self.ui.resultLijst.clear()
         self.ui.zoekText.setText("")
-        self.ui.gemeenteBox.setEditText(QCoreApplication.translate("geopunt4QgisAdresDialog" ,"gemeente"))
-        self.ui.gemeenteBox.setStyleSheet('QComboBox {color: #808080}')
+        self.ui.gemeenteBox.setCurrentText("")
+        self.ui.gemeenteBox.setStyleSheet('')
         self._clearGraphicsLayer()
     

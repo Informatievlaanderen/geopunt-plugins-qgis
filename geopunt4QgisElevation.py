@@ -2,14 +2,14 @@ from qgis.PyQt.QtCore import Qt, QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtWidgets import (QDialog, QPushButton, QDialogButtonBox, QFileDialog, QSizePolicy,
                                  QToolButton, QColorDialog, QInputDialog)
 from qgis.PyQt.QtGui import QIcon, QColor
-from qgis.core import Qgis, QgsProject, QgsPointXY
+from qgis.core import Qgis, QgsProject, QgsPointXY, QgsUnitTypes
 from qgis.gui import  QgsMessageBar, QgsVertexMarker 
 from .ui_geopunt4QgisElevation import Ui_elevationDlg
 
 #matplotlib
 try:
-  from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-  from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+  from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+  from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
   from matplotlib.figure import Figure
   import numpy as np
   mathplotlibWorks = True
@@ -93,6 +93,11 @@ class geopunt4QgisElevationDialog(QDialog):
         self.ui.buttonBox.helpRequested.connect(self.openHelp)
         
         self.rejected.connect(self.clean )
+
+    def mapCanvasISDegree(self):
+        canvas = self.iface.mapCanvas()
+        crs = canvas.mapSettings().destinationCrs()
+        return crs.isGeographic()
 
     def createCanvasToolbar (self):
         '''
@@ -181,14 +186,14 @@ class geopunt4QgisElevationDialog(QDialog):
     
     def drawBtnClicked(self):
         self.clean()
-        self.tool = lineTool(self.iface, self.callBack )  
+        self.tool = lineTool(self.iface, self.maptoolCallBack )  
         self.iface.mapCanvas().setMapTool(self.tool)
         self.showMinimized()
         self.counter += 1
              
     def showGraphMotion(self, event):
         if self.ax == None: return
-        
+
         if event.xdata != None and event.ydata != None:
           if self.ano != None: 
              self.ano.remove()
@@ -206,10 +211,14 @@ class geopunt4QgisElevationDialog(QDialog):
           zmin = np.max( [n[3] for n in self.profile if n[3] > -9999 ] )
            
           if event.xdata <= xmax and event.xdata >= xmin  :
-              self.ano = self.ax.arrow( event.xdata , -9999, 0, zx + 9999, fc="k", ec="k" )
+            #   self.ano = self.ax.arrow( event.xdata , -9999, 0, zx + 9999, fc="k", ec="k" )
+              self.ano = self.ax.annotate("",
+                  xy=(event.xdata, zx), xytext=(event.xdata, 0), 
+                  xycoords='data', textcoords=('data', 'axes fraction'),
+                  arrowprops=dict(arrowstyle='-', lw=4, color='darkgrey'))
               
               box_props = dict(boxstyle="Round,pad=0.3", fc="cyan", ec="b", lw=2)
-              self.anoLbl = self.ax.annotate( str( round(zx, 2)) + " m",  xy= (event.xdata, zx ) , 
+              self.anoLbl = self.ax.annotate( str( round(zx, 2)) + f" {self.xscaleUnit[1]}",  xy= (event.xdata, zx ) , 
                           xytext= (event.xdata , zx + (0.2 * ( zmax - zmin )) ),
                           bbox=box_props )
               self.setMapPt( event.xdata / self.xscaleUnit[0] )
@@ -239,7 +248,7 @@ class geopunt4QgisElevationDialog(QDialog):
            self.eh.saveToCsv(self, self.profile, title )
     
     def setFill( self ):
-        if self.profile == []: return
+        if len(self.profile) == 0: return
         if self.ax == None: return
         
         clr = QColorDialog.getColor( Qt.white, self, QCoreApplication.translate(
@@ -255,8 +264,12 @@ class geopunt4QgisElevationDialog(QDialog):
         nrSamples = self.ui.nrOfSampleSpin.value()
         self.profile = self.dhm.fetchAsArray( self.Rubberline.asGeometry(), c=nrSamples ) 
 
-        if np.max( [n[0] for n in self.profile ] ) > 1000: self.xscaleUnit = (0.001 , "km" )
-        else: self.xscaleUnit = (1 , "m" )
+        if self.mapCanvasISDegree():
+           self.xscaleUnit = (1 , "graden" )
+        elif np.max( [n[0] for n in self.profile ] ) > 1000: 
+           self.xscaleUnit = (0.001 , "km" )
+        else: 
+           self.xscaleUnit = (1 , "m" )
         
         xdata = np.array( [n[0] for n in self.profile ] ) * self.xscaleUnit[0]
         ydata = np.array( [n[3] for n in self.profile ] )
@@ -288,7 +301,7 @@ class geopunt4QgisElevationDialog(QDialog):
         self.figure.tight_layout()
         self.canvas.draw()
         
-    def callBack(self, geom):
+    def maptoolCallBack(self, geom):
         self.iface.mapCanvas().unsetMapTool(self.tool)
         self.Rubberline = geom
         self.showNormal()
@@ -300,10 +313,12 @@ class geopunt4QgisElevationDialog(QDialog):
         if dist==None: return
         if self.Rubberline == None: return 
 
+        crs = self.iface.mapCanvas().mapSettings().destinationCrs().authid()
+
         # dist is measured in lambert 72 in meters
-        lb72Line = self.gh.prjLineFromMapCrs( self.Rubberline.asGeometry() , "EPSG:31370" )
+        lb72Line = self.gh.prjLineFromMapCrs( self.Rubberline.asGeometry() , crs )
         lb72pt = lb72Line.interpolate(dist).asPoint()
-        pt = self.gh.prjPtToMapCrs(lb72pt, "EPSG:31370")
+        pt = self.gh.prjPtToMapCrs(lb72pt, crs)
 
         if self.pt is None:
            self.makePoint()

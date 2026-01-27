@@ -217,7 +217,7 @@
     <message>
         <location filename="../ui_geopunt4QgisBatchGeoCode.ui" line="554"/>
         <source>Prik locatie op kaart</source>
-        <translation>Click loaction on the map</translation>
+        <translation>Click location on the map</translation>
     </message>
     <message>
         <location filename="../ui_geopunt4QgisBatchGeoCode.ui" line="802"/>

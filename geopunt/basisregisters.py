@@ -1,5 +1,8 @@
 import json
 from ..tools.web import getUrlData
+from .KEYS import KEYS
+
+API_KEY = KEYS.get('basisregister')
 
 class adresMatch(object):
   def __init__(self):
@@ -11,7 +14,7 @@ class adresMatch(object):
       
       gemeenten = []
       data = {'limit' : step , 'offset': 0}
-      header = {"x-api-key": "b1bc7136-e764-4980-ad6a-8df979250787"}
+      header = {"x-api-key": API_KEY}
       
       while data['offset'] <= stop:
             result = json.loads( getUrlData(self._gemUrl, params=data, headers=header ) )
@@ -41,7 +44,7 @@ class adresMatch(object):
       data["Huisnummer"]   = housenr if housenr else ""
       data["Index"]        = rrindex if rrindex else ""
       data["Busnummer"]    = boxnr if boxnr else ""
-      header= {"x-api-key": "b1bc7136-e764-4980-ad6a-8df979250787"}
+      header= {"x-api-key": API_KEY}
 
       try:
         result = json.loads( getUrlData(self._amUrl, params=data, headers=header ) )
@@ -71,7 +74,7 @@ class adresMatch(object):
       data["Postcode"]     = post
       data["Straatnaam"]   = street
       data["Huisnummer"]   = housenr
-      header = {"x-api-key": "b1bc7136-e764-4980-ad6a-8df979250787"}
+      header = {"x-api-key": API_KEY}
       
       try:
         result = json.loads( getUrlData( self._amUrl, params=data, headers=header ) )

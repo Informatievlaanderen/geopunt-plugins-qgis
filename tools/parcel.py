@@ -1,5 +1,5 @@
 from qgis.PyQt.QtCore import QVariant
-from qgis.core import QgsField, QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsFeature
+from qgis.core import QgsField, QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsFeature, QgsCoordinateReferenceSystem
 from qgis.PyQt.QtWidgets import QFileDialog
 import os
 
@@ -14,7 +14,7 @@ class parcelHelper(object):
         self.startFolder = startFolder
       
       
-    def save_parcel_polygon(self, polygon, parcelInfo, layername="perceel", saveToFile=False, sender=None, startFolder=None ):
+    def save_parcel_polygon(self, polygon, parcelInfo, layername="perceel", saveToFile=False, sender=None, startFolder=None):
         attributes =[ QgsField("niscode", QVariant.String), QgsField("afdeling", QVariant.String), 
                       QgsField("afdcode", QVariant.String), QgsField("sectie", QVariant.String), 
                       QgsField("bisnummer", QVariant.Int) ,QgsField("exponent", QVariant.String), 
@@ -23,6 +23,8 @@ class parcelHelper(object):
   
         if not QgsProject.instance().mapLayer(self.parcellayerid):
             self.parcellayer = QgsVectorLayer("MultiPolygon", layername, "memory")
+            crs = self.canvas.mapSettings().destinationCrs()
+            self.parcellayer.setCrs(crs)
             self.parcelProvider = self.parcellayer.dataProvider()
             self.parcelProvider.addAttributes(attributes)
             self.parcellayer.updateFields()
@@ -39,7 +41,6 @@ class parcelHelper(object):
         fet['sectie'] = parcelInfo['sectionCode']
         fet['bisnummer'] = parcelInfo['bisnummer']
         fet['exponent'] = parcelInfo['exponent']
-        fet['adres'] = ", ".join( parcelInfo['adres'] )
         fet['capakey'] = parcelInfo['capakey']
         fet['grondnr'] = parcelInfo['grondnummer']
         fet['NISCode'] = parcelInfo['municipalityCode']

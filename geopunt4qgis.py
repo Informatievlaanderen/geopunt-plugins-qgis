@@ -7,7 +7,7 @@ from .geopunt4QgisAdresdialog import geopunt4QgisAdresDialog
 from .geopunt4QgisPoidialog import geopunt4QgisPoidialog
 from .geopunt4QgisSettingsdialog import geopunt4QgisSettingsDialog
 from .geopunt4QgisBatchGeoCode import geopunt4QgisBatcGeoCodeDialog
-# from .geopunt4QgisGipod import geopunt4QgisGipodDialog
+from .geopunt4QgisAbout import geopunt4QgisAboutDialog
 from .geopunt4QgisElevation import mathplotlibWorks, geopunt4QgisElevationDialog
 from .geopunt4QgisDataCatalog import geopunt4QgisDataCatalog
 from .geopunt4QgisParcel import geopunt4QgisParcelDlg
@@ -45,6 +45,7 @@ class geopunt4Qgis(object):
         if mathplotlibWorks : self.elevationDlg = geopunt4QgisElevationDialog(self.iface)
         self.datacatalogusDlg = geopunt4QgisDataCatalog(self.iface)
         self.parcelDlg = geopunt4QgisParcelDlg(self.iface)
+        self.aboutDlg = geopunt4QgisAboutDialog()
         
     def initGui(self):
         'intialize UI'
@@ -68,16 +69,12 @@ class geopunt4Qgis(object):
         self.poiAction = QAction(QIcon(":/svg/images/POI.svg"),
                 QCoreApplication.translate("geopunt4Qgis" , u"Zoek een interessante plaats"), 
 	        self.iface.mainWindow())	
-        # self.gipodAction = QAction(QIcon(":/svg/images/Gipod.svg"),
-        #         QCoreApplication.translate("geopunt4Qgis" , u"Bevraag GIPOD"), self.iface.mainWindow())
-
         self.elevationAction =  QAction(QIcon(":/svg/images/Hoogte.svg"),
                 QCoreApplication.translate("geopunt4Qgis" , u"Hoogteprofiel"), self.iface.mainWindow())
         self.datacatalogusAction =  QAction(QIcon(":/svg/images/Catalogus.svg"),
                 QCoreApplication.translate("geopunt4Qgis" , u"Datavindplaats"), self.iface.mainWindow())
         self.parcelAction =  QAction(QIcon(":/svg/images/Perceel.svg"),
                 QCoreApplication.translate("geopunt4Qgis" , u"Zoeken naar perceel"), self.iface.mainWindow())
-        
         self.settingsAction = QAction(QIcon(":/svg/images/Settings.svg"),
                 QCoreApplication.translate("geopunt4Qgis" , u"Instellingen"), self.iface.mainWindow())  
         self.aboutAction = QAction(QIcon(":/svg/images/Info.svg"),
@@ -88,12 +85,12 @@ class geopunt4Qgis(object):
         self.reverseAction.triggered.connect(self.reverse)
         self.batchAction.triggered.connect(self.runBatch)
         self.poiAction.triggered.connect(self.runPoiDlg)
-        # self.gipodAction.triggered.connect(self.runGipod)
         self.elevationAction.triggered.connect(self.runElevation)
         self.datacatalogusAction.triggered.connect(self.rundatacatalog)
         self.parcelAction.triggered.connect(self.runParcel)
         self.settingsAction.triggered.connect(self.runSettingsDlg)
-        self.aboutAction.triggered.connect(lambda: webbrowser.open_new_tab("https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in") )
+        self.aboutAction.triggered.connect(self.runAbout)
+            ##lambda: webbrowser.open_new_tab("https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in") )
         
         #Create toolbar
         self.toolbar = self.iface.addToolBar("Geopunt toolbar")
@@ -103,17 +100,17 @@ class geopunt4Qgis(object):
         self.toolbar.addAction(self.reverseAction)
         self.toolbar.addAction(self.batchAction)
         self.toolbar.addAction(self.poiAction)        
-        # self.toolbar.addAction(self.gipodAction)
         self.toolbar.addAction(self.elevationAction)
         self.toolbar.addAction(self.parcelAction)
         self.toolbar.addAction(self.datacatalogusAction)
+        self.toolbar.addAction(self.settingsAction)
+        self.toolbar.addAction(self.aboutAction)
         
         # Add to Menu
         self.iface.addPluginToWebMenu(u"&geopunt4Qgis", self.adresAction)
         self.iface.addPluginToWebMenu(u"&geopunt4Qgis", self.reverseAction)
         self.iface.addPluginToWebMenu(u"&geopunt4Qgis", self.batchAction)
         self.iface.addPluginToWebMenu(u"&geopunt4Qgis", self.poiAction)        
-        # self.iface.addPluginToWebMenu(u"&geopunt4Qgis", self.gipodAction)
         self.iface.addPluginToWebMenu(u"&geopunt4Qgis", self.elevationAction)
         self.iface.addPluginToWebMenu(u'&geopunt4Qgis' ,self.parcelAction)
         self.iface.addPluginToWebMenu(u"&geopunt4Qgis", self.datacatalogusAction)
@@ -128,7 +125,6 @@ class geopunt4Qgis(object):
         self.iface.removePluginMenu(u"&geopunt4Qgis", self.batchAction)
         self.iface.removePluginMenu(u"&geopunt4Qgis", self.aboutAction)
         self.iface.removePluginMenu(u"&geopunt4Qgis", self.settingsAction)
-        # self.iface.removePluginMenu(u"&geopunt4Qgis", self.gipodAction)
         self.iface.removePluginMenu(u"&geopunt4Qgis", self.elevationAction)
         self.iface.removePluginMenu(u"&geopunt4Qgis", self.datacatalogusAction)
         self.iface.removePluginMenu(u"&geopunt4Qgis", self.parcelAction)
@@ -138,7 +134,6 @@ class geopunt4Qgis(object):
         self.iface.removeToolBarIcon( self.reverseAction)
         self.iface.removeToolBarIcon( self.batchAction)
         self.iface.removeToolBarIcon( self.aboutAction)
-        # self.iface.removeToolBarIcon( self.gipodAction)
         self.iface.removeToolBarIcon( self.elevationAction)
         self.iface.removeToolBarIcon( self.datacatalogusAction)
         self.iface.removeToolBarIcon( self.parcelAction)
@@ -153,7 +148,16 @@ class geopunt4Qgis(object):
         self.timeout =  int(  self.s.value("geopunt4qgis/timeout" ,15))
         self.proxy = settings().proxy
         self.startDir = self.s.value("geopunt4qgis/startDir", os.path.expanduser("~"))
-        
+
+    def runAbout(self):
+        ' show the dialog'
+        if self.aboutDlg.isVisible():
+           self.aboutDlg.showNormal()
+           self.aboutDlg.activateWindow()
+           return
+        self.aboutDlg.show()
+        self.aboutDlg.exec_()
+
     def runSettingsDlg(self):
         ' show the dialog'
         if self.settingsDlg.isVisible():
@@ -190,18 +194,6 @@ class geopunt4Qgis(object):
         self.poiDlg.show()
         # Run the dialog event loop
         self.poiDlg.exec_()
-  
-    # def runGipod(self):
-    #     'show the dialog'
-    #     if self.gipodDlg.isVisible():
-    #        self.gipodDlg.showNormal()
-    #        self.gipodDlg.activateWindow()
-    #        return 
-        
-    #     self.gipodDlg.loadSettings()
-    #     self.gipodDlg.show()
-    #     # Run the dialog event loop
-    #     self.gipodDlg.exec_()
   
     def runBatch(self):
         'show the dialog'

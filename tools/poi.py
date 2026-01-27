@@ -161,6 +161,7 @@ class poiHelper(object):
         feats = []
 
         for point in points:
+            
             pt = QgsPointXY( point['location']['points'][0]['Point']['coordinates'][0], 
                            point['location']['points'][0]['Point']['coordinates'][1]  )
             poiId = point["id"]
@@ -182,32 +183,30 @@ class poiHelper(object):
                email = point["email"]
             else: email= ""
             #address
+            straat = ""
+            huisnr = ""
+            busnr = ""
+            postcode = ""
+            gemeente = ""
+            link = ""
+            owner= ""
             if "address" in list(point['location'].keys()): 
-              if "street" in list(point['location']["address"].keys()): 
-                 straat = point['location']["address"]["street"]
-              else:  straat = ''
-              if "streetnumber" in list(point['location']["address"].keys()): 
-                 huisnr = point['location']["address"]["streetnumber"]
-              else:  huisnr = ''
-              if "boxnumber" in list(point['location']["address"].keys()): 
-                 busnr = point['location']["address"]["boxnumber"]
-              else:  boxnr = ''
-              postcode = point['location']["address"]["postalcode"]
-              gemeente = point['location']["address"]["municipality"]
-            else: 
-              straat = ""
-              huisnr = ""
-              busnr = ""
-              postcode = ""
-              gemeente = ""
-            
+                if "street" in list(point['location']["address"].keys()): 
+                  straat = point['location']["address"]["street"]
+                if "streetnumber" in list(point['location']["address"].keys()): 
+                  huisnr = point['location']["address"]["streetnumber"]
+                if "boxnumber" in list(point['location']["address"].keys()): 
+                  busnr = point['location']["address"]["boxnumber"]
+                postcode = point['location']["address"]["postalcode"]
+                gemeente = point['location']["address"]["municipality"]
+
             if "links" in point: 
-              link = point["links"][0]['href']
-            else: link = ""
+                link = point["links"][0]['href']
+ 
             tijd =  point["updated"] 
             if "authors" in point: 
-              owner = point["authors"][0]["value"]
-            else: owner= ""
+                owner = point["authors"][0]["value"]
+
             
             # add a feature
             fet = QgsFeature(fields)

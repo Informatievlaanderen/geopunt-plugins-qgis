@@ -54,6 +54,7 @@
     <file>images/Wms.png</file>
     <file>images/wrench.png</file>
     <file>images/zip.png</file>
+    <file>images/ogc_feats.png</file>
   </qresource>
   <qresource prefix="svg">
     <file>images/Adres.svg</file>
@@ -66,5 +67,6 @@
     <file>images/Place.svg</file>
     <file>images/POI.svg</file>
     <file>images/Settings.svg</file>
+    <file>images/vectorTileLayer.svg</file>
   </qresource>
 </RCC>

@@ -8,7 +8,6 @@ from .ui_geopunt4QgisPoi import Ui_geopunt4QgisPoiDlg
 from .tools.geometry import geometryHelper
 from .tools.poi import poiHelper
 from .geopunt import Poi, basisregisters
-from .tools.settings import settings
 
 class geopunt4QgisPoidialog(QDialog):
     def __init__(self, iface):

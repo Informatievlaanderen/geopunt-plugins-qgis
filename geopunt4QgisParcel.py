@@ -25,6 +25,8 @@ class geopunt4QgisParcelDlg(QDialog):
             self.translator.load(localePath)
             QCoreApplication.installTranslator(self.translator)
         
+        self.epsg= 31370
+
         self._initGui()
 
     def _initGui(self):
@@ -90,7 +92,9 @@ class geopunt4QgisParcelDlg(QDialog):
             self.setCompleter( muniNames, self.ui.municipalityCbx )
 
     def saveParcel(self):
-        if not self.layernameValid(): return
+        if not self.layernameValid(): 
+            return
+        
         municipality= self.ui.municipalityCbx.currentText()
         department = self.ui.departmentCbx.currentText().split(" (")[0]
         
@@ -105,13 +109,13 @@ class geopunt4QgisParcelDlg(QDialog):
         if '' in (niscode, departmentcode, section, parcelNr): 
             return
 
-        parcelInfo = self.parcel.getParcel( niscode, departmentcode, section, parcelNr, 31370, 'full') 
+        parcelInfo = self.parcel.getParcel( niscode, departmentcode, section, parcelNr, self.epsg, 'full') 
         shape = json.loads( parcelInfo['geometry']['shape'])
         
         pts = [n.asPolygon() for n in self.PolygonsFromJson( shape )]
         mPolygon = QgsGeometry.fromMultiPolygonXY( pts )  
         self.ph.save_parcel_polygon(mPolygon, parcelInfo, self.layerName, self.saveToFile,
-                                 self, os.path.join(self.startDir, self.layerName))
+                                 self, os.path.join(self.startDir, self.layerName) )
 
     def municipalityChanged(self):
         municipality= self.ui.municipalityCbx.currentText()
@@ -227,45 +231,45 @@ class geopunt4QgisParcelDlg(QDialog):
         parcelNr = self.ui.parcelCbx.currentText()
 
         if sender is self.ui.ZoomKnop_muni and municipality != '':
-            muniInfo = self.parcel.getMunicipalitieInfo( niscode, 31370, 'full') 
+            muniInfo = self.parcel.getMunicipalitieInfo( niscode, self.epsg, 'full') 
             if muniInfo == []: 
                 return
             bbox= json.loads( muniInfo['geometry']['boundingBox'])['coordinates'][0]
             self.clearGraphics()
-            self.gh.zoomtoRec( bbox[0], bbox[2], 31370 )        
+            self.gh.zoomtoRec( bbox[0], bbox[2], self.epsg )        
             shape = json.loads( muniInfo['geometry']['shape'])
             for n in self.PolygonsFromJson( shape ):  
                 self.addGraphic(n)
             return
         if sender is self.ui.ZoomKnop_dep and municipality != '' and department != '':
-            depInfo = self.parcel.getDepartmentInfo( niscode, departmentcode, 31370, 'full') 
+            depInfo = self.parcel.getDepartmentInfo( niscode, departmentcode, self.epsg, 'full') 
             if depInfo == []: 
                 return
             bbox= json.loads( depInfo['geometry']['boundingBox'])['coordinates'][0]
             self.clearGraphics()
-            self.gh.zoomtoRec( bbox[0], bbox[2], 31370 )
+            self.gh.zoomtoRec( bbox[0], bbox[2], self.epsg )
             shape = json.loads( depInfo['geometry']['shape'])
             for n in self.PolygonsFromJson( shape ):  
                 self.addGraphic(n)
             return
         if sender is self.ui.ZoomKnop_sect and municipality != '' and department != '' and section != '':
-            sectInfo = self.parcel.getSectionInfo( niscode, departmentcode, section, 31370, 'full') 
+            sectInfo = self.parcel.getSectionInfo( niscode, departmentcode, section, self.epsg, 'full') 
             if sectInfo == []: 
                 return
             bbox= json.loads( sectInfo['geometry']['boundingBox'])['coordinates'][0]
             self.clearGraphics()
-            self.gh.zoomtoRec( bbox[0], bbox[2], 31370 )
+            self.gh.zoomtoRec( bbox[0], bbox[2], self.epsg )
             shape = json.loads( sectInfo['geometry']['shape'])
             for n in self.PolygonsFromJson( shape ):  
                 self.addGraphic(n)
             return
         if sender is self.ui.ZoomKnop_parcel and niscode != '' and department != '' and section != '' and parcelNr != '':
-            parcelInfo = self.parcel.getParcel( niscode, departmentcode, section, parcelNr, 31370, 'full') 
+            parcelInfo = self.parcel.getParcel( niscode, departmentcode, section, parcelNr, self.epsg, 'full') 
             if parcelInfo == []: 
                 return
             bbox= json.loads( parcelInfo['geometry']['boundingBox'])['coordinates'][0]
             self.clearGraphics()
-            self.gh.zoomtoRec( bbox[0], bbox[2], 31370 )
+            self.gh.zoomtoRec( bbox[0], bbox[2], self.epsg )
             
             shape = json.loads( parcelInfo['geometry']['shape'])
             for n in self.PolygonsFromJson( shape ):  
@@ -294,7 +298,7 @@ class geopunt4QgisParcelDlg(QDialog):
         for rings in mPolygon:
             prjPolygon = []
             for ring in rings:
-               prjRing = self.gh.prjLineToMapCrs( ring, 31370 )
+               prjRing = self.gh.prjLineToMapCrs( ring, self.epsg )
                prjPolygon.append( prjRing.asPolyline() )
             
             gPolygon = QgsGeometry.fromPolygonXY( prjPolygon )
@@ -315,7 +319,7 @@ class geopunt4QgisParcelDlg(QDialog):
         for rings in mPolygon:
             prjPolygon = []
             for ring in rings:
-              prjRing = self.gh.prjLineToMapCrs( ring, 31370 )
+              prjRing = self.gh.prjLineToMapCrs( ring, self.epsg )
               prjPolygon.append( prjRing.asPolyline() )
             
             gPolygon = QgsGeometry.fromPolygonXY( prjPolygon )

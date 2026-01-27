@@ -3,6 +3,7 @@
 ui_*.py
 *_rc.py
 docs/test.*
+docs/*.docx
 
 ###############
 ## Kdevelop  ##
@@ -238,3 +239,5 @@ doc/*.xlsx
 .vscode/*.log
 symbology-style.db
 user-history.db
+
+geopunt/KEYS.py

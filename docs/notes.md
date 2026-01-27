@@ -1,6 +1,66 @@
 Notities
--------
+==========
  
+Lijst TODO's: 
+------------
+
+**TODO**
+
+- Deployment op <https://plugins.qgis.org>
+
+
+###  **Niet reproduceerbaar**
+11	Bug: Geocoding werkt niet als er geen postcode wordt meegegeven	 
+- De combinatie {Straat} {nr}, {postcode} {"Gemeente"} wordt doorgegeven aan de API:
+	- https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Molenstraat 1, antwerpen
+- Ik heb getest met een eigen bestand zonder postcodes, sommige worden gevonden, andere niet, maar dat ligt aan de kwaliteit van de data.
+	- Als ik dezelfde combo doorgeef in de browser heb ik hetzelfde resultaat.
+
+
+### Uitgeoverd
+Geocoding:  
+-	Bug: Geocoding: Python error bij zoom to location	
+
+Catalogus:
+-   Improvement: WMTS, OGC-featues en WCs toegevoegd. 
+    -   Achter de knop zit de eerste laag per type per dataset, 
+    -   Een beperk aantal (grb) heeft meerdere wms'en per dataset, die zal je dan toch op de manuele mnieer moeten toevoegen 
+    -   -> Dat wordt ander te complex: meedere wms'en per dataset, meerdere lagen per wms. 
+-   Improvement: Als de laagnaam matched met de naam van de service in de metadata dan moet je gaen laag meer kiezen, Idem ams er maar 1 laag is
+-   Improvement: Url's in beschrijvingen zijn aanklikbaar 
+-   Improvement: Er wordt gezocht naar service urls via metadata.vlaanderen en datavindplaats, bescrijving komt alrijd uit datavindplaats.  
+-	Update: Geopunt metadatacenter URL naamgeving	
+-	Bug: fout voor WFS	
+	- Opmerking: ik stel nu zelf de query string samen ipv de opgegeven query string uit de url te gebruiken, zou iets mee compatibiliet met qgis moeten geven. 
+	- Opmerking: sommige van de fouten zijn het gevolg van fouten de achterliggnde service dat kan ik niet oplossen
+-	Improvement: Zoeken op 'bos' in Catalogus crasht/time-out
+	- Paginering zou di moeten oplossen
+-	Improvement: WCS toevoegen via Datavindplaats
+	- Als de WCS in formaat is dat qgis niet kent, zal het zoiezo niet werken  	
+-	Improvement: OGC API Features kunnen niet worden toegevoegd	 
+-	Improvement: Geen knop om WMTS toe te voegen	
+-	Improvement: Benaming knoppen Datavindplaats 'toevoegen' in verschillende talen	
+	- Ik heb de "Toevoegen" op de knoplabel gewoon laten vallen, met die all nieuwe knoppen wordt het anders te breed. 
+	- Vertaling naar engels door lopen doe ik op het laatste, als er geen nieuwe ui element meer bijkom 
+-	Typo: QGIS geocoding in tooltip	
+-	Typo: QGIS official plug-in pagina aanpassingen	
+
+Hoogte: 
+-	Bug: Hoogteprofiel trace marker in ETRS89	
+-	Bug: Tekenlijn volgt de cursor niet tijdens het tekenen	
+-	Bug: Geopunt metadatacenter en catalogus URL’s verschijnen niet altijd	
+-	Bug: Hoogteprofiel horizontale afstand in WGS84	
+-	Bug: Hoogteprofiel fill color wijzigen	
+-	Bug: Perceel toevoegen (fout CRS toegewezen aan de kaartlaag)	
+-	Update: Link naar LARA is verouderd	
+-	Improvement: Toevoegen van een ‘Info’-button aan de plugin	
+-	Update: Error message: verwijzing naar AGIV en CRAB	
+
+POI:  
+-	Bug: POI: Error on Add selection to map	
+
+
+
 Fake proxy-firewall
 ------------------
 

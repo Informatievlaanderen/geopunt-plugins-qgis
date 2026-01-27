@@ -1,10 +1,56 @@
-import urllib.parse, json
+import json
+from pathlib import Path
+from urllib.parse import urlparse, unquote, urlencode
 from ..tools.web import getUrlData
 import xml.etree.ElementTree as ET
 
-def getWmsLayerNames( url=''):
-    if (not "request=GetCapabilities" in url.lower()) or (not "service=wms" in url.lower()):
-      capability = url.split("?")[0] + "?request=GetCapabilities&version=1.3.0&service=wms"
+def listServices(meta_id):
+    meta_url = f"https://metadata.vlaanderen.be/srv/dut/csw?service=CSW&version=2.0.2&request=GetRecordById&id={meta_id}&ElementSetName=full"        
+    response = getUrlData(meta_url)
+    mdata = ET.fromstring(response)
+    record = mdata.find("{http://www.opengis.net/cat/csw/2.0.2}Record")
+    if not record:
+        return
+    links= record.findall('{http://purl.org/dc/elements/1.1/}URI')
+
+    for link in links:
+        _url = link.text 
+        if not _url:
+            continue
+    
+        _p = urlparse(_url)
+        baseurl = f"{_p.scheme}://{_p.netloc}{_p.path}"
+        protocol = link.attrib.get("protocol", 'link')
+        layername = link.attrib.get("name", _p.netloc )
+        description = link.attrib.get("description", '')
+        url_type = protocol
+        url = _url
+
+        if 'OGC:WMS' in protocol.upper():
+            url_type = 'wms'
+            url = baseurl
+        elif 'OGC:WFS' in protocol.upper():
+            url_type = 'wfs'
+            url = baseurl
+        elif 'OGC:WMTS' in protocol.upper():
+            url_type = 'wmts'
+            url = baseurl
+        elif 'OGC:WCS' in protocol.upper():
+            url_type = 'wcs'
+            url = baseurl
+        elif 'ogc:ogc-api-features' in protocol.lower():
+            url_type = 'ogc-api'
+            url = baseurl
+        yield {
+            "description": description, 'name': layername, 'url': url,'type': url_type
+        } 
+
+
+def getWmsLayerNames( url='',  name_test=None):
+    p = urlparse(url)
+    baseurl = f"{p.scheme}://{p.netloc}{p.path}"
+    if not "request=getcapabilities" in p.query.lower():
+      capability = baseurl + "?request=GetCapabilities&version=1.3.0&service=wms"
     else:
       capability = url
         
@@ -23,11 +69,15 @@ def getWmsLayerNames( url=''):
          if style == None: layerNames.append(( name.text, title.text, ''))
          else: layerNames.append(( name.text, title.text, style.text))
 
+    if name_test in [l[0] for l in layerNames]:
+        return [l for  l in layerNames if l[0] == name_test] 
     return layerNames
 
-def getWFSLayerNames( url):
-    if (not "request=GetCapabilities" in url.lower()) or (not "service=wfs" in url.lower()):
-        capability = url.split("?")[0] + "?request=GetCapabilities&version=2.0.0&service=wfs"
+def getWFSLayerNames( url, name_test=None):
+    p = urlparse(url)
+    baseurl = f"{p.scheme}://{p.netloc}{p.path}"
+    if not "request=getcapabilities" in p.query.lower() or p.path.lower().endswith("capabilities.xml" ): 
+        capability = baseurl + "?request=GetCapabilities&version=2.0.0&service=wfs"
     else: 
         capability = url
         
@@ -50,11 +100,15 @@ def getWFSLayerNames( url):
             if srs == None: layerNames.append(( name.text, title.text, 'EPSG:31370'))
             else: layerNames.append(( name.text, title.text, srs.text))
 
+    if name_test in [l[0] for l in layerNames]:
+        return ([l for  l in layerNames if l[0] == name_test] , version)
     return (layerNames, version)
 
-def getWMTSlayersNames( url):
-    if (not "request=getcapabilities" in url.lower()) or (not "service=wmts" in url.lower()):
-        capability = url.split("?")[0] + "?service=WMTS&request=Getcapabilities"
+def getWMTSlayersNames( url,  name_test=None):
+    p = urlparse(url)
+    baseurl = f"{p.scheme}://{p.netloc}{p.path}"
+    if not "capabilities" in p.query.lower() or 'capabilities' in p.path:
+        capability = baseurl + "?service=WMTS&request=Getcapabilities"
     else:
         capability = url
             
@@ -82,13 +136,17 @@ def getWMTSlayersNames( url):
         if ( name != None) and ( title != None ) and ( matrix != None ) and ( format != None ):
               layerNames.append(( name.text, title.text, matrix.text, format.text, srs ))
 
+    if name_test in [l[0] for l in layerNames]:
+        return [l for  l in layerNames if l[0] == name_test] 
     return layerNames
 
-def getWCSlayerNames( url):
+def getWCSlayerNames( url,  name_test=None):
     wcsNS = "http://www.opengis.net/wcs/1.1"
+    p = urlparse(url)
+    baseurl = f"{p.scheme}://{p.netloc}{p.path}"
 
-    if (not "request=getcapabilities" in url.lower()) or (not "service=wcs" in url.lower()):
-      capability = url.split("?")[0] + "?request=GetCapabilities&version=1.1.0&service=wcs"
+    if not "getcapabilities" in p.query.lower():
+      capability = baseurl + "?request=GetCapabilities&version=1.1.0&service=wcs"
     else:
       capability = url
 
@@ -105,77 +163,93 @@ def getWCSlayerNames( url):
     for lyr in layers:
        Identifier= lyr.find("{%s}Identifier" % wcsNS)
        title = lyr.find("{http://www.opengis.net/ows/1.1}Title")
-
-       DescribeCoverage = url.split("?")[0] + "?request=DescribeCoverage&version=1.1.0&service=wcs&Identifiers=" + Identifier.text
-       response = getUrlData(DescribeCoverage)
-       resultDC = ET.fromstring(response)
-       CoverageDescription = resultDC.find( "{%s}CoverageDescription" % wcsNS)
-       Identifier = CoverageDescription.find("{%s}Identifier" % wcsNS)
-       formats =  CoverageDescription.findall( "{%s}SupportedFormat" % wcsNS)
-       if [n.text for n in formats if 'tiff' in n.text.lower()] :
-          format = [n.text for n in formats if 'tiff' in n.text.lower()][0]
-       elif formats: format = formats[0].text.split(";")[0]
-       else: format = "image/tiff"
-
        if ( Identifier != None) and (title != None):
-            layerNames.append(( Identifier.text, title.text, format ))
+            layerNames.append(( Identifier.text, title.text ))
 
+    if name_test in [l[0] for l in layerNames]:
+        return [l for  l in layerNames if l[0] == name_test] 
     return layerNames
 
-def get_ogc_api_collections( url):
-    resp = getUrlData( url +'/collections', params={'f': 'application/json'} )
+def get_ogc_api_collections(url,  default_name=''):
+    p = urlparse(url)
+    parts =[ i for i in p.path.split('/') if i != '']
+
+    if 'collections' in parts:
+        idx = parts.index('collections')
+        path_until = '/'.join(parts[:idx])
+        baseurl = f"{p.scheme}://{p.netloc}/{path_until}/collections"
+        if len(parts) >= idx+1:
+            default_name = parts[idx+1] 
+    else:
+        baseurl = f"{p.scheme}://{p.netloc}/{p.path}/collections"
+
+
+    resp = getUrlData( baseurl , params={'f': 'application/json'} )
     collections = json.loads(resp)
-    lyrNames = [(c['id'] , c['title'] , c['description'])
-        for c in collections["collections"]
-    ]
+    lyrNames = [ (c['id'] , c.get('title', default_name) , c.get('description', ''))
+            for c in collections["collections"] if 'id' in c
+        ]
+    if default_name in [c[0] for c in lyrNames]:
+        lyrNames = [ next((r for r in lyrNames if r[0] == default_name) ) ]
+
     return lyrNames
 
 def makeWFSuri( url, name='', srsname="EPSG:31370", version='1.0.0', bbox=None ):
+    p = urlparse(url)
+    baseurl = f"{p.scheme}://{p.netloc}{p.path}"
     params = {  'SERVICE': 'WFS',
                 'VERSION': version ,
                 'REQUEST': 'GetFeature',
                 'TYPENAME': name,
                 'SRSNAME': srsname }
-    if bbox: params['BBOX'] = ",".join([str(s) for s in bbox])
+    if bbox: 
+        params['BBOX'] = ",".join([str(s) for s in bbox])
 
-    uri = url.split('?')[0] + '?' + urllib.parse.unquote( urllib.parse.urlencode(params) )
-
+    uri = baseurl + '?' + unquote( urlencode(params) )
     return uri
 
-def makeWMTSuri( url, layer, tileMatrixSet, srsname="EPSG:3857", styles='', format='image/png' ):
-    params = {  'tileMatrixSet': tileMatrixSet,
-                'styles': styles,
-                'format': format ,
-                'layers': layer,
-                'crs': srsname,
-                'url': url.split('?')[0]  + '?service=WMTS'}
-
-    uri = urllib.parse.unquote( urllib.parse.urlencode(params)  )
+def makeWMTSuri( url, layer, tileMatrixSet, styles='', format='image/png', crs='EPSG:3857' ):
+    p = urlparse(url)
+    baseurl = f"{p.scheme}://{p.netloc}{p.path}"
+    uri = ( f"crs={crs}"
+            f"&dpiMode=7"
+            f"&featureCount=10"
+            f"&format={format}"
+            f"&layers={layer}"
+            f"&tileMatrixSet={tileMatrixSet}"
+            f"&tilePixelRatio=0"
+             '&styles='
+            f"&url={baseurl}" )
+    print(uri)
     return uri
 
-def makeWCSuri( url, layer, srsname="EPSG:31370", format="GeoTIFF" ):
-    params = {  'cache': 'PreferNetwork',
-                'format': format ,
-                'identifier': layer,
-                'crs': srsname,
-                'url': url.split('?')[0]  } #+ '?version%3D1.0.0%26'
-
-    uri = urllib.parse.unquote( urllib.parse.urlencode(params)  )
+def makeWCSuri( url, layer ):
+    p = urlparse(url)
+    baseurl = f"{p.scheme}://{p.netloc}{p.path}"
+    uri = f'url={baseurl}&tilePixelRatio=0&identifier={layer}'
     return uri
 
-def makeOGCAPIuri( url, name='', srsname="EPSG:31370", version='1.0.0', bbox=None ):
-    params = {'TYPENAME': name}
-    uri = url.split('?')[0] + '?' + urllib.parse.unquote( urllib.parse.urlencode(params) )
+def makeOGCAPIuri( url, name='' ):
+    p = urlparse(url)
+    parts =[ i for i in p.path.split('/') if i != '']
+    if 'collections' in parts:
+        idx = parts.index('collections')
+        path_until = '/'.join(parts[:idx])
+        baseurl = f"{p.scheme}://{p.netloc}/{path_until}"
+    else:
+        baseurl = f"{p.scheme}://{p.netloc}/{p.path}"
+
+    uri = (
+        f"url={baseurl}"
+        f"$typename={name}"
+        '&restrictToRequestBBOX=1'
+        '&pageSize=10000'
+        '&pagingEnabled=enabled'
+    )
     return uri
+
 
 def xmlIsEmpty(xml_file, gmlException=True):
-    """test if a xml file contais data
-    
-    :param xml_file: a path to a xml file. 
-    :param gmlException: also return if gmlException
-    
-    return: True if empty else False
-    """
     try:
         tree = ET.parse(xml_file)  
         root = tree.getroot()

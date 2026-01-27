@@ -10,6 +10,7 @@ from .geopunt import adresMatch
 from .tools import gmlpointToXY
 from .tools.settings import settings
 from .tools.geometry import geometryHelper
+import xml.etree.ElementTree as ET
 
 class geopunt4QgisBatcGeoCodeDialog(QDialog):
     def __init__(self, iface):
@@ -251,11 +252,6 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
               "Je bestand heeft meer dan %s rijen.<br/>" ) % self.maxRows 
               warnMsg += QCoreApplication.translate("batcGeoCodedialog",
               "Om de servers van agiv niet te zwaar te belasten is de toepassing beperkt tot %s rijen.<br/>" ) % self.maxRows 
-              warnMsg += QCoreApplication.translate("batcGeoCodedialog",
-              "Deelnemers van GDI-vlaanderen kunnen gebruik maken van Crab Match om grote bestanden te valideren en geocoderen: <br/>" )
-              warnMsg += QCoreApplication.translate("batcGeoCodedialog", 
-              "<a href='https://help.agiv.be/Categories/Details/213-Crab_Match_valideer_en_verrijk_je_adressenbestand'>Meer info</a>")
-              warnMsg += "</div>"
           
               self.ui.statusMsg.setText("<div style='color:red'>"+ warnTitle +"</div>")
               QMessageBox.warning(self, warnTitle, warnMsg )
@@ -381,8 +377,18 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
           if adres:
             loc = self.am.findMatchFromSingleLine(adres)
             if len(loc):
-                xylb = loc[0]["adresPositie"]["point"]["coordinates"]
-                xyMap = self.gh.prjPtToMapCrs(xylb, 31370)
+                # xylb = loc[0]["adresPositie"]["point"]["coordinates"]
+                adresPositie = loc[0].get('adresPositie')
+                gml = adresPositie['geometrie']['gml']
+                root = ET.fromstring(gml)
+                pos_text = root.find('.//gml:pos', {'gml': 'http://www.opengis.net/gml/3.2'}).text
+
+                srs_name = root.attrib.get('srsName', '31370')
+                crs = f"EPSG:{srs_name.split('/')[-1]}"
+
+                xylb = [float(i) for i in pos_text.split()]
+
+                xyMap = self.gh.prjPtToMapCrs(xylb, crs)
                 pts.append(xyMap)
                 graphic = self.gh.addPointGraphic(xyMap)
                 self.graphicsLayer.append(graphic)

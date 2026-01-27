@@ -3,6 +3,7 @@ from qgis.PyQt.QtNetwork import QNetworkRequest
 from qgis.PyQt.QtCore import QUrl
 from urllib.parse import urlencode
 from typing import Callable
+import sys
 
 def getUrlData(url:str, params:dict={}, data:bytes=None, returnBytes=False, headers:dict={}) -> str:
     """Performs a blocking “get” operation on the specified *url* and returns the response,
@@ -22,17 +23,20 @@ def getUrlData(url:str, params:dict={}, data:bytes=None, returnBytes=False, head
     for k,v in headers.items():
         request.setRawHeader( k.encode(), v.encode())
     
-    if not data:
-        respcode = bnr.get( request )
-    else:
-        respcode = bnr.post( request , data )
+    try: 
+        if not data:
+            respcode = bnr.get( request )
+        else:
+            respcode = bnr.post( request , data )
 
-    if respcode == 0: 
-        response = bnr.reply().content().data() 
-        if returnBytes == False: 
-            response = response.decode('utf-8') 
-    else: 
-        raise Exception( bnr.reply().errorString() )
+        if respcode == 0: 
+            response = bnr.reply().content().data() 
+            if returnBytes == False: 
+                response = response.decode('utf-8') 
+        else: 
+            raise Exception( bnr.reply().errorString() )
+    except Exception as e:
+         Exception( f"{url} ({e}) {sys.exc_info}" )
     return response
 
 

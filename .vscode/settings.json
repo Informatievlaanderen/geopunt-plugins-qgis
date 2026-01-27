@@ -3,9 +3,9 @@
     "editor.wordWrapColumn": 100,
     // PyQt Integration
     "pyqt-integration.qtdesigner.path": "C:/OSGeo4W/bin/qgis-designer.bat",
-    "pyqt-integration.pyuic.cmd": "C:/OSGeo4W/apps/Python39/Scripts/pyuic5.exe",
-    "pyqt-integration.pylupdate.cmd": "C:/OSGeo4W/apps/Python39/Scripts/pylupdate5.exe",
-    "pyqt-integration.pyrcc.cmd": "C:/OSGeo4W/apps/Python39/Scripts/pyrcc5.exe",
+    "pyqt-integration.pyuic.cmd": "C:/OSGeo4W/apps/Python312/Scripts/pyuic5.exe",
+    "pyqt-integration.pylupdate.cmd": "C:/OSGeo4W/apps/Python312/Scripts/pylupdate5.exe",
+    "pyqt-integration.pyrcc.cmd": "C:/OSGeo4W/apps/Python312/Scripts/pyrcc5.exe",
     "pyqt-integration.pyrcc.compile.filepath": "${workspace}/${qrc_name}.py",
     // Linter
     "python.linting.enabled": false,
@@ -19,18 +19,15 @@
     "python.defaultInterpreterPath": "C:\\Users\\sa64489\\Anaconda3\\envs\\gemgis\\python.exe",
 
     // Formatting with black
-    "python.formatting.provider": "black",
-    "python.formatting.blackPath": "${workspaceFolder}\\.venv_dev\\Scripts\\black.exe",
-    "python.formatting.blackArgs": ["--target-version=py39",],
-    "python.analysis.extraPaths": ["C:\\Users\\sa64489\\Anaconda3\\envs\\gemgis\\Library\\python", 
-            "C:\\OSGeo4W\\apps\\qgis\\python", "C:\\OSGeo4W\\apps\\Python39\\Lib\\site-packages"],
+    "python.analysis.extraPaths": [
+            "C:\\OSGeo4W\\apps\\qgis\\python", "C:\\OSGeo4W\\apps\\Python312\\Lib\\site-packages"],
 
     // Replicate the QGIS environment
     "terminal.integrated.env.windows": {
         // Path
-        "PATH": "C:\\OSGeo4W\\apps\\qgis-ltr\\bin;C:\\OSGeo4W\\apps\\Python39;C:\\OSGeo4W\\apps\\Python39\\Scripts;C:\\OSGeo4W\\apps\\qt5\\bin;C:\\OSGeo4W\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\system32\\WBem;C:\\OSGeo4W\\apps\\Python39\\lib\\site-packages\\pywin32_system32;C:\\OSGeo4W\\apps\\Python39\\lib\\site-packages\\numpy\\.libs",
+        "PATH": "C:\\OSGeo4W\\apps\\qgis-ltr\\bin;C:\\OSGeo4W\\apps\\Python312;C:\\OSGeo4W\\apps\\Python312\\Scripts;C:\\OSGeo4W\\apps\\qt5\\bin;C:\\OSGeo4W\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\system32\\WBem;C:\\OSGeo4W\\apps\\Python312\\lib\\site-packages\\pywin32_system32;C:\\OSGeo4W\\apps\\Python312\\lib\\site-packages\\numpy\\.libs",
         // Python
-        "PYTHONHOME": "C:\\OSGeo4W\\apps\\Python39",
+        "PYTHONHOME": "C:\\OSGeo4W\\apps\\Python312",
         "PYTHONPATH": "C:\\OSGeo4W\\apps\\qgis-ltr\\python;%PYTHONPATH%",
         // GDAL
         "GDAL_DATA": "C:\\OSGeo4W\\share\\gdal",

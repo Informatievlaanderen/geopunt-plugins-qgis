@@ -95,7 +95,7 @@
         </property>
         <item>
          <property name="text">
-          <string>Service</string>
+          <string>Alles</string>
          </property>
         </item>
         <item>
@@ -105,7 +105,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Alles</string>
+          <string>Service</string>
          </property>
         </item>
        </widget>
@@ -186,6 +186,101 @@
         </widget>
        </item>
        <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLabel" name="pageLbl">
+           <property name="text">
+            <string>1</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSlider" name="pageSlider">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>1</number>
+           </property>
+           <property name="pageStep">
+            <number>1</number>
+           </property>
+           <property name="tracking">
+            <bool>false</bool>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="invertedControls">
+            <bool>false</bool>
+           </property>
+           <property name="tickPosition">
+            <enum>QSlider::TicksAbove</enum>
+           </property>
+           <property name="tickInterval">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="maxPage">
+           <property name="text">
+            <string>1</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="prevBtn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resources.qrc">
+             <normaloff>:/plugins/geopunt4Qgis/images/previous.png</normaloff>:/plugins/geopunt4Qgis/images/previous.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="nextBtn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Next</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resources.qrc">
+             <normaloff>:/plugins/geopunt4Qgis/images/next.png</normaloff>:/plugins/geopunt4Qgis/images/next.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <widget class="QLabel" name="countLbl">
          <property name="text">
           <string/>
@@ -234,6 +329,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Toevoegen als laag:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -258,11 +360,28 @@
         </size>
        </property>
        <property name="text">
-        <string>WMS toevoegen</string>
+        <string>WMS</string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
          <normaloff>:/plugins/geopunt4Qgis/images/Wms.png</normaloff>:/plugins/geopunt4Qgis/images/Wms.png</iconset>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="addWMTSbtn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>WMTS</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/svg/images/vectorTileLayer.svg</normaloff>:/svg/images/vectorTileLayer.svg</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -275,7 +394,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>WFS toevoegen</string>
+        <string>WFS </string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
@@ -296,7 +415,10 @@
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
-         <normaloff>:/plugins/geopunt4Qgis/images/Wfs.png</normaloff>:/plugins/geopunt4Qgis/images/Wfs.png</iconset>
+         <normaloff>:/plugins/geopunt4Qgis/images/ogc_feats.png</normaloff>:/plugins/geopunt4Qgis/images/ogc_feats.png</iconset>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -306,11 +428,14 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>WCS toevoegen</string>
+        <string>WCS </string>
        </property>
        <property name="icon">
         <iconset resource="resources.qrc">
          <normaloff>:/plugins/geopunt4Qgis/images/WcsLayer.png</normaloff>:/plugins/geopunt4Qgis/images/WcsLayer.png</iconset>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -361,9 +486,9 @@
       <string>&lt;html&gt;&lt;head/&gt;
 &lt;body&gt;
 &lt;span style=&quot; font-size:small;&quot;&gt;
-&lt;a href=&quot;https://metadata.geopunt.be&quot;&gt;
-Geopunt metadatacenter&lt;/a&gt; en 
-&lt;a href=&quot;http://www.geopunt.be/catalogus&quot;&gt;Geopunt catalogus &lt;/a&gt; 
+&lt;a href=&quot;https://metadata.vlaanderen.be&quot;&gt;
+Vlaams metadatacenter&lt;/a&gt; en 
+&lt;a href=&quot;https://www.vlaanderen.be/datavindplaats/catalogus?domain.CONTAINS_ANY=Geografisch&amp;order_relevance=asc &quot;&gt;Datavindplaats&lt;/a&gt; 
 &lt;/span&gt;
 &lt;/body&gt;&lt;/html&gt;</string>
      </property>
@@ -397,6 +522,7 @@ Geopunt metadatacenter&lt;/a&gt; en
  </widget>
  <resources>
   <include location="resources.qrc"/>
+  <include location="E:/work/geopunt4Qgis/resources.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -428,6 +554,22 @@ Geopunt metadatacenter&lt;/a&gt; en
     <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pageSlider</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>pageLbl</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>127</x>
+     <y>485</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>22</x>
+     <y>485</y>
     </hint>
    </hints>
   </connection>

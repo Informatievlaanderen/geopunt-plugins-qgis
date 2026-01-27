@@ -19,6 +19,7 @@ Lijst TODO's:
 
 ### Uitgeoverd
 Geocoding:  
+-   Improvement: Vertaling optimaliseren. 
 -	Bug: Geocoding: Python error bij zoom to location	
 
 Catalogus:

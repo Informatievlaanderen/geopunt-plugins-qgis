@@ -30,7 +30,7 @@ email=kaywarrie@gmail.com
 
 # Optional items:
 # Uncomment the following line and add your changelog entries:
-changelog=Aanoassingen 27/2/2026
+changelog=Aanpassingen 27/2/2026
     ----------------------
     Geocoding:  
     -	Bug: Geocoding: Python error bij zoom to location	

@@ -1,40 +1,46 @@
-#!/usr/bin/env python
-from __future__ import print_function
-import os, glob
+#!/usr/bin/env python3
+import os
 import zipfile
+from pathlib import Path
 
 PROJECT = "geopunt4Qgis"
-INCLUDEFILE = ["*.py", "*.txt", "*.qrc", "*.md", "*.gif", "*.jpg", "*.png", "*.html", "*.qm", "*.json", "*.xml" ] 
-INCLUDEDIR = ["images","i18n","data","tools","geopunt","mapTools"]
+INCLUDE_EXTENSIONS = {".py", 'LICENSE', ".txt", ".qrc", ".md", ".gif", ".jpg", ".png", ".html", ".qm", ".json", ".xml"}
+INCLUDE_DIRS = {"images", "i18n", "data", "tools", "geopunt", "mapTools"}
 
-def makeList( src ):
-  fileList = []    
-  for idir in INCLUDEDIR:
-    fileList = fileList + glob.glob( os.path.join(  src , idir , "*" ))
-    fileList = fileList + glob.glob( os.path.join(  src , idir , "*","*" ))
-    fileList = fileList + glob.glob( os.path.join(  src , idir , "*","*","*" ))
-    fileList = fileList + glob.glob( os.path.join(  src , idir , "*","*","*","*" ))
-    fileList = fileList + glob.glob( os.path.join(  src , idir , "*","*","*","*","*" ))
-  for incl in INCLUDEFILE: 
-    fileList = fileList + glob.glob(os.path.join( src , incl )) 
-  return fileList
-
-def zipdir(path, zipf):
-  files = makeList(path)
-  for zfile in files: 
-     sbase = os.path.dirname(path)
-     arcName = zfile.replace( sbase ,"")
-     zipf.write( zfile , arcName)
-
-def main(src, target):
-    if os.path.exists( target ):
-       os.remove(target)
-    if not os.path.exists( os.path.dirname(target) ):
-        os.mkdir( os.path.dirname(target) )
-    with zipfile.ZipFile( target , mode='w') as zipf:
-        zipdir( src , zipf)
+def get_file_list(src_path):
+    """Generates the list of files based on directory and extension filters."""
+    file_list = []
+    
+    # Recursive search in specific directories
+    for folder in INCLUDE_DIRS:
+        folder_path = src_path / folder
+        if folder_path.exists():
+            file_list.extend([f for f in folder_path.rglob('*') if f.is_file()])
         
+    # Search for specific file types in the root
+    for ext in INCLUDE_EXTENSIONS:
+        file_list.extend([f for f in src_path.glob(f"*{ext}") if f.is_file()])
+        
+    return file_list
+
+def main():
+    # SOURCE is the folder containing the plugin code
+    source_dir = Path(__file__).resolve().parent.parent
+    target_dir = source_dir / "build"
+    target_zip = target_dir / f"{PROJECT}.zip"
+
+    target_dir.mkdir(parents=True, exist_ok=True)
+    
+    if target_zip.exists():
+        target_zip.unlink()
+
+    print(f"Creating archive: {target_zip}")
+
+    with zipfile.ZipFile(target_zip, mode='w', compression=zipfile.ZIP_DEFLATED) as zipf:
+        for file_path in get_file_list(source_dir):
+            relative_path = file_path.relative_to(source_dir)
+            arc_name = Path(PROJECT) / relative_path
+            zipf.write(file_path, arcname=arc_name)
+
 if __name__ == '__main__':
-    SOURCE = os.path.dirname( os.path.dirname(os.path.realpath(__file__)) )
-    TARGET = os.path.join( SOURCE , "build" , "{}.zip".format( PROJECT ) )
-    main(SOURCE, TARGET)
+    main()

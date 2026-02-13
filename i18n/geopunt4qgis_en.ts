@@ -388,7 +388,7 @@
     <message>
         <location filename="../ui_geopunt4qgis.ui" line="38"/>
         <source>straat huisnummer</source>
-        <translation>street  housenummer</translation>
+        <translation>street house number</translation>
     </message>
     <message>
         <location filename="ui_geopunt4qgis.ui" line="66"/>

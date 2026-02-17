@@ -1,7 +1,7 @@
 from qgis.PyQt.QtCore import QVariant
 from qgis.core import (QgsField, QgsProject, QgsVectorLayer, QgsPointXY, 
-                       QgsFeature, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsVectorLayerSimpleLabeling,
-                       QgsGeometry, QgsVectorFileWriter, QgsPalLayerSettings, QgsTextBufferSettings, QgsTextFormat )
+     QgsFeature, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsVectorLayerSimpleLabeling,
+     QgsGeometry, QgsVectorFileWriter, QgsPalLayerSettings, QgsTextBufferSettings, QgsTextFormat )
 from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.PyQt.QtGui import QColor
 import os

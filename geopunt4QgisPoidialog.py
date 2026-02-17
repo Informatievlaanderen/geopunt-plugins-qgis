@@ -82,7 +82,8 @@ class geopunt4QgisPoidialog(QDialog):
     def loadSettings(self):
         self.saveToFile = int( self.s.value("geopunt4qgis/poiSavetoFile" , 1))
         layerName =  self.s.value("geopunt4qgis/poilayerText", "")
-        if layerName: self.layerName= layerName
+        if layerName: 
+           self.layerName= layerName
         self.timeout =  int( self.s.value("geopunt4qgis/timeout" ,15))
         self.startDir = self.s.value("geopunt4qgis/startDir", os.path.expanduser("~") )
        

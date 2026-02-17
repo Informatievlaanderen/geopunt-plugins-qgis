@@ -42,7 +42,7 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         #set vars
         self.csv = None
         self.delimiter = ';'
-        self.headers = None
+        self.headers = {}
         self.graphicsLayer = []
         self.reverseAdresTool = None
         self.batcGeoHelper = batcGeoHelper(self.iface, self, startFolder=self.startDir )
@@ -251,7 +251,7 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
               warnMsg += QCoreApplication.translate("batcGeoCodedialog", 
               "Je bestand heeft meer dan %s rijen.<br/>" ) % self.maxRows 
               warnMsg += QCoreApplication.translate("batcGeoCodedialog",
-              "Om de servers van agiv niet te zwaar te belasten is de toepassing beperkt tot %s rijen.<br/>" ) % self.maxRows 
+              "Om de servers van digitaal vlaanderen niet te zwaar te belasten is de toepassing beperkt tot %s rijen.<br/>" ) % self.maxRows 
           
               self.ui.statusMsg.setText("<div style='color:red'>"+ warnTitle +"</div>")
               QMessageBox.warning(self, warnTitle, warnMsg )
@@ -324,15 +324,15 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
             #status Progress
             self.ui.statusProgress.setValue(i)
 
-            adres = self.ui.outPutTbl.item(rowIdx, adresCol).text()  if adresCol else ''
-            huisNr = self.ui.outPutTbl.item(rowIdx, huisnrCol).text()  if huisnrCol else ''
-            pc = self.ui.outPutTbl.item(rowIdx, pcCol).text() if pcCol else ''
-            muni = self.ui.outPutTbl.item(rowIdx, gemeenteCol).text() if gemeenteCol else ''
+            adres = self.ui.outPutTbl.item(rowIdx, adresCol).text()  if adresCol is not None else ''
+            huisNr = self.ui.outPutTbl.item(rowIdx, huisnrCol).text()  if huisnrCol is not None  else ''
+            pc = self.ui.outPutTbl.item(rowIdx, pcCol).text() if pcCol is not None  else ''
+            muni = self.ui.outPutTbl.item(rowIdx, gemeenteCol).text() if gemeenteCol is not None else ''
             if not self.ui.singleLineChk.isChecked():
                 validAdres = self.am.findAdresSuggestions(municipality=muni, postalcode=pc, housenr=huisNr, streetname=adres)
             else:
                 validAdres = self.am.findAdresSuggestions(single=adres)
-            
+
             if type( validAdres ) is list: 
                 if len(validAdres) > 1 and len( validAdres[0].split(',')) >= 2 and len(adres.strip()): 
                     resultNR =  validAdres[0].split(',')[0].split()[-1] if len(validAdres[0].split(',')[0].split()) > 0 else validAdres[0]
@@ -437,7 +437,6 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         #vars
         self.csv = None
         self.delimiter = ';'
-        self.headers = None
         self.headers = {}
         self.clearGraphicsLayer()
         #unsetMapTool

@@ -6,7 +6,11 @@ Lijst TODO's:
 
 **TODO**
 
-- Deployment op <https://plugins.qgis.org>
+- TASK: Vertaling
+- TASK: Deployment op <https://plugins.qgis.org>
+- WCS geeft fout bij peelde lagen 
+- WMTS idem
+- OGC ook nog eens nakijken
 
 
 ###  **Niet reproduceerbaar**
@@ -61,6 +65,24 @@ POI:
 -	Bug: POI: Error on Add selection to map	
 
 
+### 30/1/2026
+
+- BUG: de knop ‘WCS’ blijft actief, ook al gaat het niet om een WCS (knop is niet functioneel in dat geval). Kan deze een greyed out state krijgen als het niet gaat om een WCS
+  - Ja ik was vergeten die aan de *'reset'* toe te voegen.
+- BUG: OGC API Features toevoegen geeft een error. Bijvoorbeeld de OGC ‘Historisch landgebruik’
+  - Aanpast laag wordt nu meegegeven als collection ipv typename, typename werkt bijkbaar niet voor ieder implementatie, ik merk wel dat OGC-featurs in QGIS trager is dan WFS
+- BUG: bij het toevoegen van een Service waaronder meerdere TileMatrixSets kunnen voorkomen (vb. WMTS Orthofotowerkbestand)
+  - Niet feit dat het meerdere zijn een probleem, maar dat het de restfull implementatie van WMTS en niet de KVP.
+    - KVP: https://geo.api.vlaanderen.be/OMWRGBMRVL/wmts?request=getcapabilities&service=wmts&version=1.0.0
+    - REST:  https://geo.api.vlaanderen.be/OFW/wmts/1.0.0/WMTSCapabilities.xml
+    - --> Logica: eindigd op WMTSCapabilities.xml -> REST anders default KVP
+
+### 16/2/2026
+- Url datavindplaats + Metadata Vlaanderen
+- Vermelding AGIV
+- Verdwijnen labels onderaan datacatalog
+- Indien gemeente op eerste lijn staat wordt die niet meegenomen (heeft niets met postcode te maken)
+- 
 
 Fake proxy-firewall
 ------------------

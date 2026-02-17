@@ -487,8 +487,8 @@
 &lt;body&gt;
 &lt;span style=&quot; font-size:small;&quot;&gt;
 &lt;a href=&quot;https://metadata.vlaanderen.be&quot;&gt;
-Vlaams metadatacenter&lt;/a&gt; en 
-&lt;a href=&quot;https://www.vlaanderen.be/datavindplaats/catalogus?domain.CONTAINS_ANY=Geografisch&amp;order_relevance=asc &quot;&gt;Datavindplaats&lt;/a&gt; 
+Metadata Vlaanderen&lt;/a&gt; en 
+&lt;a href=&quot;https://www.vlaanderen.be/datavindplaats/catalogus?dataCatalogRecordDomains.IN=Geographical&amp;order_publicationdate=desc&quot;&gt;Datavindplaats&lt;/a&gt; 
 &lt;/span&gt;
 &lt;/body&gt;&lt;/html&gt;</string>
      </property>
@@ -522,7 +522,7 @@ Vlaams metadatacenter&lt;/a&gt; en
  </widget>
  <resources>
   <include location="resources.qrc"/>
-  <include location="E:/work/geopunt4Qgis/resources.qrc"/>
+  <include location="resources.qrc"/>
  </resources>
  <connections>
   <connection>

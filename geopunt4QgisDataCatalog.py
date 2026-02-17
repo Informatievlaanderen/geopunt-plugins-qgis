@@ -341,7 +341,7 @@ class geopunt4QgisDataCatalog(QDialog):
                 layerName = [n[0] for n in lyrs if n[1] == layerTitle][0]
 
             ogcUri = makeOGCAPIuri(self.ogcfeats, layerName)
-            vlayer = QgsVectorLayer(ogcUri, layerTitle, "OAPIF")
+            vlayer = QgsVectorLayer(ogcUri, layerTitle, "ogr")
 
         if vlayer.isValid():
             QgsProject.instance().addMapLayer(vlayer)
@@ -353,7 +353,6 @@ class geopunt4QgisDataCatalog(QDialog):
             self.resultModel.clear()
             self.ui.zoekTxt.clear()
             self.ui.countLbl.setText("")
-            self.ui.msgLbl.setText("")
 
         self.ui.descriptionText.setText('')
         self.wms = self.wmts = self.wfs = self.wcs = self.ogcfeats = self.arcgis = None
@@ -362,4 +361,5 @@ class geopunt4QgisDataCatalog(QDialog):
         self.ui.addWFSbtn.setEnabled(0)
         self.ui.addWMSbtn.setEnabled(0)
         self.ui.addWMTSbtn.setEnabled(0)
+        self.ui.addWCSbtn.setEnabled(0)
         self.ui.ogcAPIbtn.setEnabled(0)

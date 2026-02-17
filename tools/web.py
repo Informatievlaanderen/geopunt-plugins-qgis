@@ -36,7 +36,7 @@ def getUrlData(url:str, params:dict={}, data:bytes=None, returnBytes=False, head
         else: 
             raise Exception( bnr.reply().errorString() )
     except Exception as e:
-         Exception( f"{url} ({e}) {sys.exc_info}" )
+        raise Exception( f"{url} ({e}) {sys.exc_info}" )
     return response
 
 

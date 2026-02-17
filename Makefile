@@ -100,8 +100,9 @@ package: clean transclean dclean
 # [KW]: added custom compile_translations for html
 transup: 
 	pylupdate5 Makefile
-	lrelease i18n/*.ts
-	script/compile_html_translations.sh
+	lrelease i18n/geopunt4qgis_en.ts
+	lrelease i18n/geopunt4qgis_ln.ts
+#script/compile_html_translations.sh
 
 # transclean
 # deletes all .qm (form .ts) and html (from .mk) files

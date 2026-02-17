@@ -55,6 +55,7 @@ def getWmsLayerNames( url='',  name_test=None):
       capability = url
         
     response = getUrlData(capability )
+    
     result = ET.fromstring(response)
     layers =  result.findall( ".//{http://www.opengis.net/wms}Layer" ) + result.findall( ".//Layer" ) 
     layerNames=[]
@@ -66,8 +67,10 @@ def getWmsLayerNames( url='',  name_test=None):
       if title is None: title = lyr.find("Title")
       style = lyr.find("{http://www.opengis.net/wms}Style/{http://www.opengis.net/wms}Name")
       if ( name != None) and ( title != None ):
-         if style == None: layerNames.append(( name.text, title.text, ''))
-         else: layerNames.append(( name.text, title.text, style.text))
+         if style == None: 
+             layerNames.append(( name.text, title.text, ''))
+         else: 
+             layerNames.append(( name.text, title.text, style.text))
 
     if name_test in [l[0] for l in layerNames]:
         return [l for  l in layerNames if l[0] == name_test] 
@@ -107,11 +110,12 @@ def getWFSLayerNames( url, name_test=None):
 def getWMTSlayersNames( url,  name_test=None):
     p = urlparse(url)
     baseurl = f"{p.scheme}://{p.netloc}{p.path}"
-    if not "capabilities" in p.query.lower() or 'capabilities' in p.path:
-        capability = baseurl + "?service=WMTS&request=Getcapabilities"
+
+    if p.path.lower().endswith('capabilities.xml'): 
+        capability = baseurl
     else:
-        capability = url
-            
+        capability = baseurl + "?request=getcapabilities&service=wmts&version=1.0.0"
+
     response = getUrlData(capability )
     result = ET.fromstring(response)
 
@@ -130,8 +134,10 @@ def getWMTSlayersNames( url,  name_test=None):
         srsList = [ n.find("{http://www.opengis.net/ows/1.1}SupportedCRS").text
                     for n in matrixSets if n.find("{http://www.opengis.net/ows/1.1}Identifier").text == matrix.text]
 
-        if srsList: srs =  "EPSG:"+ srsList[0].split(':')[-1]
-        else: srs = ""
+        if srsList: 
+            srs =  "EPSG:"+ srsList[0].split(':')[-1]
+        else: 
+            srs = ""
 
         if ( name != None) and ( title != None ) and ( matrix != None ) and ( format != None ):
               layerNames.append(( name.text, title.text, matrix.text, format.text, srs ))
@@ -220,7 +226,6 @@ def makeWMTSuri( url, layer, tileMatrixSet, styles='', format='image/png', crs='
             f"&tilePixelRatio=0"
              '&styles='
             f"&url={baseurl}" )
-    print(uri)
     return uri
 
 def makeWCSuri( url, layer ):
@@ -239,13 +244,7 @@ def makeOGCAPIuri( url, name='' ):
     else:
         baseurl = f"{p.scheme}://{p.netloc}/{p.path}"
 
-    uri = (
-        f"url={baseurl}"
-        f"$typename={name}"
-        '&restrictToRequestBBOX=1'
-        '&pageSize=10000'
-        '&pagingEnabled=enabled'
-    )
+    uri = f"OAPIF:{baseurl}|layername={name}"
     return uri
 
 

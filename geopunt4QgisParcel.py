@@ -1,6 +1,6 @@
 from qgis.PyQt.QtCore import Qt, QSettings, QTranslator, QCoreApplication, QStringListModel
 from qgis.PyQt.QtWidgets import QDialog, QInputDialog, QCompleter
-from qgis.PyQt.QtGui import QColor
+from qgis.PyQt.QtGui import QColor, QIcon
 from qgis.core import Qgis, QgsGeometry
 from qgis.gui  import QgsRubberBand
 from .ui_geopunt4QgisParcel import Ui_geopunt4QgisParcelDlg
@@ -29,6 +29,11 @@ class geopunt4QgisParcelDlg(QDialog):
         """setup the user interface"""
         self.ui = Ui_geopunt4QgisParcelDlg()
         self.ui.setupUi(self)
+
+        self.ui.ZoomKnop_dep.setIcon( QIcon( os.path.join( PLUGIN_DIR , "images/binocularsSmall.png" ) ) )
+        self.ui.ZoomKnop_muni.setIcon( QIcon( os.path.join( PLUGIN_DIR , "images/binocularsSmall.png" ) ) )
+        self.ui.ZoomKnop_parcel.setIcon( QIcon( os.path.join( PLUGIN_DIR , "images/binocularsSmall.png" ) ) )
+        self.ui.ZoomKnop_sect.setIcon( QIcon( os.path.join( PLUGIN_DIR , "images/binocularsSmall.png" ) ) )
 
         #get settings
         self.s = QSettings()

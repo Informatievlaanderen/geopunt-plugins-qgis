@@ -90,11 +90,14 @@ class batcGeoHelper(object):
   
   def _saveToFile( self, sender , startFolder=None):
      'save to file'
-     filter = "OGC GeoPackage (*.gpkg);;ESRI Shape Files (*.shp);;SpatiaLite (*.sqlite);;Geojson File (*.geojson);;GML ( *.gml);;Comma separated value File (excel) (*.csv);;MapInfo TAB (*.TAB);;Any File (*.*)" 
+     filter = ("OGC GeoPackage (*.gpkg);;ESRI Shape Files (*.shp);;SpatiaLite (*.sqlite);;Geojson File (*.geojson);;"
+               "GML ( *.gml);;Comma separated value File (excel) (*.csv);;MapInfo TAB (*.TAB);;Any File (*.*)" )
      fName, __ = QFileDialog.getSaveFileName( sender, "open file" , filter=filter, directory=startFolder)
 
-     if fName: ext = os.path.splitext( fName )[1]
-     else: return 
+     if fName: 
+         ext = os.path.splitext( fName )[1]
+     else: 
+         return 
 
      if "GPKG" in ext.upper():
          flType = "GPKG"

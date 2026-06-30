@@ -8,7 +8,8 @@ class gipodHelper(object):
     @staticmethod
     def openOutput(sender=None, startFolder=None):
         fd = QFileDialog()
-        filter =  "OGC GeoPackage (*.gpkg);;ESRI Shape File (*.shp);;Comma separated value File (excel) (*.csv);;geojson (*.geojson);;GML File (*.gml);;MapInfo TAB (*.tab);;SpatiaLite (*.sqlite);;KML (google earth) (*.kml);;Any File (*.*)"
+        filter =  ("OGC GeoPackage (*.gpkg);;ESRI Shape File (*.shp);;Comma separated value File (excel) (*.csv);;"
+        "geojson (*.geojson);;GML File (*.gml);;SpatiaLite (*.sqlite);;KML (google earth) (*.kml);;Any File (*.*)")
         fName = fd.getSaveFileName( sender, "open file", filter=filter, directory=startFolder)
 
         if fName:
@@ -34,8 +35,6 @@ class gipodHelper(object):
                 fType = "KML"  
             elif file2check.upper().endswith('SQLITE'):
                 fType = "SQLite"  
-            elif file2check.upper().endswith('TAB'):
-                fType = "MapInfo File"  
             return fType
         else:
             return None

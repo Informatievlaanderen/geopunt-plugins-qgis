@@ -68,7 +68,7 @@ class geopunt4Qgis(object):
 	        self.iface.mainWindow())	
         self.elevationAction =  QAction(QIcon(os.path.join(PLUGIN_DIR,"images/Hoogte.svg")),
                 QCoreApplication.translate("geopunt4Qgis" , u"Hoogteprofiel"), self.iface.mainWindow())
-        self.datacatalogusAction =  QAction(QIcon("images/Catalogus.svg"),
+        self.datacatalogusAction =  QAction(QIcon(os.path.join(PLUGIN_DIR,"images/Catalogus.svg")),
                 QCoreApplication.translate("geopunt4Qgis" , u"Datavindplaats"), self.iface.mainWindow())
         self.parcelAction =  QAction(QIcon(os.path.join(PLUGIN_DIR,"images/Perceel.svg")),
                 QCoreApplication.translate("geopunt4Qgis" , u"Zoeken naar perceel"), self.iface.mainWindow())

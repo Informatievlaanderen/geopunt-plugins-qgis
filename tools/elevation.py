@@ -151,7 +151,8 @@ class elevationHelper(object):
         return self.sampleslayer
 
     def _saveToFile( self, sender, startFolder=None ):
-        filter = "OGC GeoPackage (*.gpkg);;ESRI Shape Files (*.shp);;SpatiaLite (*.sqlite);;Geojson File (*.geojson);;GML ( *.gml);;Comma separated value File (excel) (*.csv);;MapInfo TAB (*.TAB);;Any File (*.*)" 
+        filter = ("OGC GeoPackage (*.gpkg);;ESRI Shape Files (*.shp);;SpatiaLite (*.sqlite);;"
+        "Geojson File (*.geojson);;GML ( *.gml);;Comma separated value File (excel) (*.csv);;Any File (*.*)" )
         fName, __ = QFileDialog.getSaveFileName( sender, "open file" , filter= filter, directory=startFolder)
         if fName:
           ext = os.path.splitext( fName )[1]
@@ -165,8 +166,6 @@ class elevationHelper(object):
             flType = "GeoJSON"
           elif "GML" in ext.upper():    #no update possible -> hidden
             flType = "GML"
-          elif 'TAB' in ext.upper():    #no update possible -> hidden
-            flType = 'MapInfo File'
           elif 'CSV' in ext.upper():    #no update possible -> hidden
             flType = 'CSV'
           else:

@@ -1,5 +1,5 @@
 from qgis.PyQt.QtCore import QVariant
-from qgis.core import QgsField, QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsFeature, QgsCoordinateReferenceSystem
+from qgis.core import QgsField, QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsFeature
 from qgis.PyQt.QtWidgets import QFileDialog
 import os
 
@@ -59,7 +59,8 @@ class parcelHelper(object):
           save = self._saveToFile( sender, startFolder )
           if save:
             fpath, flType = save                
-            error, msg = QgsVectorFileWriter.writeAsVectorFormat(self.parcellayer,fileName=fpath, fileEncoding="utf-8", driverName=flType )
+            error, msg = QgsVectorFileWriter.writeAsVectorFormat(self.parcellayer,
+                                            fileName=fpath, fileEncoding="utf-8", driverName=flType )
             if error == QgsVectorFileWriter.NoError:
               self.parcellayer = QgsVectorLayer( fpath, layername, "ogr")
               self.parcelProvider = self.parcellayer.dataProvider()
@@ -78,9 +79,11 @@ class parcelHelper(object):
         self.canvas.refresh()
         
     def _saveToFile( self, sender, startFolder=None ):
-        filter =  "OGC GeoPackage (*.gpkg);;ESRI Shape Files (*.shp);;SpatiaLite (*.sqlite);;Geojson File (*.geojson);;GML ( *.gml);;Comma separated value File (excel) (*.csv);;MapInfo TAB (*.TAB);;Any File (*.*)" 
+        filter = ( "OGC GeoPackage (*.gpkg);;ESRI Shape Files (*.shp);;SpatiaLite (*.sqlite);"
+        ";Geojson File (*.geojson);;GML ( *.gml);;Comma separated value File (excel) (*.csv);;"
+        "MapInfo TAB (*.TAB);;Any File (*.*)" )
         Fdlg = QFileDialog()
-        Fdlg.setFileMode(QFileDialog.AnyFile)
+        Fdlg.setFileMode(QFileDialog.FileMode.AnyFile)
         fName, __ = QFileDialog.getSaveFileName(sender, "open file", filter=filter, directory=startFolder)
         if fName:
             ext = os.path.splitext( fName )[1]

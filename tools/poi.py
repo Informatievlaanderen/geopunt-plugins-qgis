@@ -207,7 +207,6 @@ class poiHelper(object):
             if "authors" in point: 
                 owner = point["authors"][0]["value"]
 
-            
             # add a feature
             fet = QgsFeature(fields)
 
@@ -282,9 +281,10 @@ class poiHelper(object):
     
     def _saveToFile( self, sender, startFolder=None ):
         'save to file'
-        filter = "OGC GeoPackage (*.gpkg);;ESRI Shape Files (*.shp);;SpatiaLite (*.sqlite);;Geojson File (*.geojson);;GML ( *.gml);;Comma separated value File (excel) (*.csv);;MapInfo TAB (*.TAB);;Any File (*.*)" 
+        filter = ("OGC GeoPackage (*.gpkg);;ESRI Shape Files (*.shp);;SpatiaLite (*.sqlite);;"
+        "Geojson File (*.geojson);;GML ( *.gml);;Comma separated value File (excel) (*.csv);;Any File (*.*)" )
         Fdlg = QFileDialog()
-        Fdlg.setFileMode(QFileDialog.AnyFile)
+        Fdlg.setFileMode(QFileDialog.FileMode.AnyFile)
         fName, __ = QFileDialog.getSaveFileName(sender, "open file", filter=filter, directory=startFolder)
         if fName:
           ext = os.path.splitext( fName )[1]

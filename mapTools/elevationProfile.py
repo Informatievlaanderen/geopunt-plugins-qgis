@@ -1,5 +1,5 @@
 from qgis.PyQt.QtCore import Qt
-from qgis.PyQt.QtGui import QCursor
+from qgis.PyQt.QtGui import QCursor, QColor
 from qgis.core import QgsGeometry, QgsPointXY, QgsWkbTypes
 from qgis.gui import QgsMapTool, QgsRubberBand
 
@@ -8,30 +8,34 @@ class lineTool(QgsMapTool):
         QgsMapTool.__init__(self,iface.mapCanvas())
         self.iface  = iface
         self.canvas = iface.mapCanvas()
-        self.cursor = QCursor(Qt.CrossCursor)
+        self.cursor = QCursor(Qt.CursorShape.CrossCursor)
         self.callback   = callback
         
-        self.rubberBand = QgsRubberBand(self.canvas, geometryType=QgsWkbTypes.LineGeometry)
+        self.rubberBand = QgsRubberBand(self.canvas, geometryType
+                                        =QgsWkbTypes.LineGeometry)
         self.points  = []
-        self.rubberBand.setColor(Qt.red)
+        self.rubberBand.setColor( QColor('red') )
         self.rubberBand.setWidth(1)
 
     def canvasReleaseEvent(self,event):
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.MouseButton.RightButton:
           self.points.append(QgsPointXY( self.toMapCoordinates( event.pos()) ) )
-          if len(self.points) <= 1 :return
+          if len(self.points) <= 1 : 
+              return
         
           self.rubberBand.setToGeometry( QgsGeometry.fromPolylineXY(self.points), None )
           self.callback( self.rubberBand )
           QgsMapTool.deactivate(self)
         else:
           self.points.append(QgsPointXY( self.toMapCoordinates(event.pos()) ) )
-          if len(self.points) <= 1 : return
+          if len(self.points) <= 1 : 
+              return
           self.rubberBand.setToGeometry( QgsGeometry.fromPolylineXY(self.points), None )
 
     def canvasDoubleClickEvent(self,event):
         self.points.append(QgsPointXY( self.toMapCoordinates( event.pos()) ))
-        if len(self.points) <= 1 : return
+        if len(self.points) <= 1 : 
+            return
       
         self.rubberBand.setToGeometry( QgsGeometry.fromPolylineXY(self.points), None )
         self.callback( self.rubberBand )

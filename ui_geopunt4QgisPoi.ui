@@ -12,7 +12,7 @@
    </rect>
   </property>
   <property name="contextMenuPolicy">
-   <enum>Qt::DefaultContextMenu</enum>
+   <enum>Qt::ContextMenuPolicy::DefaultContextMenu</enum>
   </property>
   <property name="acceptDrops">
    <bool>false</bool>
@@ -21,8 +21,8 @@
    <string>Zoek een interessante plaats via Geopunt</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
-    <normaloff>:/svg/images/POI.svg</normaloff>:/svg/images/POI.svg</iconset>
+   <iconset>
+    <normaloff>images/POI.svg</normaloff>images/POI.svg</iconset>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
@@ -148,7 +148,7 @@
      <item>
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -164,7 +164,7 @@
         <string>Zoek</string>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
+        <iconset>
          <normaloff>:/plugins/geopunt4Qgis/images/magnifyingGlass.png</normaloff>:/plugins/geopunt4Qgis/images/magnifyingGlass.png</iconset>
        </property>
        <property name="autoDefault">
@@ -180,22 +180,22 @@
    <item>
     <widget class="QTableWidget" name="resultLijst">
      <property name="contextMenuPolicy">
-      <enum>Qt::ActionsContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::ActionsContextMenu</enum>
      </property>
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::Shape::StyledPanel</enum>
      </property>
      <property name="verticalScrollBarPolicy">
-      <enum>Qt::ScrollBarAsNeeded</enum>
+      <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
      </property>
      <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
+      <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
      </property>
      <property name="selectionMode">
-      <enum>QAbstractItemView::ExtendedSelection</enum>
+      <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
      </property>
      <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
+      <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
      </property>
      <property name="sortingEnabled">
       <bool>true</bool>
@@ -270,7 +270,7 @@
       <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -286,8 +286,8 @@
          <string>Voeg selectie toe aan kaart </string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/addPointLayer.png</normaloff>:/plugins/geopunt4Qgis/images/addPointLayer.png</iconset>
+         <iconset>
+          <normaloff>images/addPointLayer.png</normaloff>images/addPointLayer.png</iconset>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
@@ -300,8 +300,8 @@
          <string>Zoom naar selectie </string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/binocularsSmall.png</normaloff>:/plugins/geopunt4Qgis/images/binocularsSmall.png</iconset>
+         <iconset>
+          <normaloff>images/binocularsSmall.png</normaloff>images/binocularsSmall.png</iconset>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
@@ -316,7 +316,7 @@
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -362,10 +362,10 @@
         </sizepolicy>
        </property>
        <property name="frameShape">
-        <enum>QFrame::Panel</enum>
+        <enum>QFrame::Shape::Panel</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
+        <enum>QFrame::Shadow::Sunken</enum>
        </property>
        <property name="text">
         <string/>
@@ -381,10 +381,10 @@
         </sizepolicy>
        </property>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="standardButtons">
-        <set>QDialogButtonBox::Help</set>
+        <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Help</set>
        </property>
        <property name="centerButtons">
         <bool>false</bool>
@@ -406,9 +406,7 @@
   </action>
  </widget>
  <layoutdefault spacing="4" margin="4"/>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

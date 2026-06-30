@@ -1,5 +1,5 @@
 from qgis.PyQt.QtCore import Qt, QSettings, QTranslator, QCoreApplication 
-from qgis.PyQt.QtWidgets import QDialog, QPushButton, QDialogButtonBox, QSizePolicy, QInputDialog, QTableWidgetItem
+from qgis.PyQt.QtWidgets import QDialog, QSizePolicy, QInputDialog, QTableWidgetItem
 from qgis.PyQt.QtGui import QColor
 from qgis.core import Qgis, QgsPointXY
 from qgis.gui import QgsMessageBar, QgsVertexMarker
@@ -9,17 +9,15 @@ from .tools.geometry import geometryHelper
 from .tools.poi import poiHelper
 from .geopunt import Poi, basisregisters
 
+PLUGIN_DIR = os.path.dirname(__file__)
 class geopunt4QgisPoidialog(QDialog):
     def __init__(self, iface):
-        QDialog.__init__(self, None)
-        self.setWindowFlags( self.windowFlags() & ~Qt.WindowContextHelpButtonHint )
+        super().__init__()
         self.iface = iface
 
         # initialize locale
-        locale = QSettings().value("locale/userLocale", "nl")
-        if not locale: locale == 'nl' 
-        else: locale = locale[0:2]
-        localePath = os.path.join(os.path.dirname(__file__), 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
+        locale = QSettings().value("locale/userLocale", "nl")[:2]
+        localePath = os.path.join(PLUGIN_DIR, 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
         if os.path.exists(localePath):
             self.translator = QTranslator()
             self.translator.load(localePath) 
@@ -44,14 +42,8 @@ class geopunt4QgisPoidialog(QDialog):
         self.graphicsLayer = []
     
         #setup a message bar
-        self.bar = QgsMessageBar() 
-        self.bar.setSizePolicy( QSizePolicy.Minimum, QSizePolicy.Fixed )
-        self.ui.verticalLayout.addWidget(self.bar)
-    
-        self.ui.buttonBox.addButton( QPushButton("Sluiten"), QDialogButtonBox.RejectRole  )
-        for btn in self.ui.buttonBox.buttons():
-            btn.setAutoDefault(0)
-            
+        self.bar = self.iface.messageBar()
+
         #table ui
         self.ui.resultLijst.hideColumn(0)
        
@@ -75,7 +67,8 @@ class geopunt4QgisPoidialog(QDialog):
         self.ui.addToMapKnop.clicked.connect(self.onAddSelClicked)
         self.ui.addMinModelBtn.clicked.connect( self.addMinModel )
         self.ui.poiText.textChanged.connect( self.searchTxtChanged )
-        self.ui.buttonBox.helpRequested.connect(self.openHelp)
+        self.ui.buttonBox.helpRequested.connect(lambda:  webbrowser.open_new_tab(
+           "https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/zoek-een-interessante-plaats-in-qgis") )
         
         self.finished.connect(self.clean )
     
@@ -90,7 +83,7 @@ class geopunt4QgisPoidialog(QDialog):
     
     def show(self):
         QDialog.show(self)
-        self.setWindowModality(0) 
+        self.setWindowModality(Qt.WindowModality.NonModal)
 
         if self.firstShow:
             am =  basisregisters.adresMatch()
@@ -118,11 +111,7 @@ class geopunt4QgisPoidialog(QDialog):
             self.ui.filterPoiCategoryCombo.activated.connect(self.onCategorieFilterChange)
             
             self.firstShow = False      
-      
-    def openHelp(self):
-        webbrowser.open_new_tab(
-           "https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/functionaliteiten-qgis-plug-in/zoek-een-interessante-plaats-in-qgis")
-    
+
     def onZoekActivated(self):
         txt = self.ui.poiText.text()
         self.ui.resultLijst.clearContents()
@@ -256,7 +245,7 @@ class geopunt4QgisPoidialog(QDialog):
         self.clearGraphicsLayer()
         pts = self._getSelectedPois()
         self.ph.save_pois_points( pts ,  layername=self.layerName, 
-                                    startFolder= os.path.join(self.startDir, self.layerName),
+                  startFolder= os.path.join(self.startDir, self.layerName),
                   saveToFile=self.saveToFile, sender=self )
 
     def onThemeFilterChange(self): 

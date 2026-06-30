@@ -4,17 +4,14 @@ from qgis.PyQt.QtWidgets import QDialog, QPushButton, QDialogButtonBox, QFileDia
 from .ui_geopunt4QgisSettings import Ui_settingsDlg
 import os
 
+PLUGIN_DIR = os.path.dirname(__file__)
 class geopunt4QgisSettingsDialog(QDialog):
     def __init__(self):
-      QDialog.__init__(self, None)
-      self.setWindowFlags( self.windowFlags() & ~Qt.WindowContextHelpButtonHint )
-      self.setWindowFlags( self.windowFlags() | Qt.WindowStaysOnTopHint)
-        
+      super().__init__()
+
       # initialize locale
-      locale = QSettings().value("locale/userLocale", "nl")
-      if not locale: locale == 'en'
-      else: locale = locale[0:2]
-      localePath = os.path.join(os.path.dirname(__file__), 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
+      locale = QSettings().value("locale/userLocale", "nl")[:2]
+      localePath = os.path.join(PLUGIN_DIR , 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
       if os.path.exists(localePath):
           self.translator = QTranslator()
           self.translator.load(localePath)
@@ -30,10 +27,7 @@ class geopunt4QgisSettingsDialog(QDialog):
         #get and load settings
         self.s = QSettings()
         self.loadSettings()
-        
-        self.ui.buttonBox.addButton( QPushButton("Sluiten"), QDialogButtonBox.RejectRole  )
-        self.ui.buttonBox.addButton( QPushButton("Opslaan"), QDialogButtonBox.AcceptRole  )
-            
+
         #event handlers, on accept:  save, on reject: return to previous 
         self.accepted.connect(self.saveSettings)
         self.rejected.connect(self.loadSettings)
@@ -49,14 +43,6 @@ class geopunt4QgisSettingsDialog(QDialog):
         if isinstance(startDir, str): 
             self.ui.startDirTxt.setText(startDir)                                   
         
-        #proxysettings
-        # proxyOverwiteEnabled = int( self.s.value("geopunt4qgis/proxyOverwiteEnabled" , 0))
-        # self.ui.proxyChk.setChecked(proxyOverwiteEnabled)
-
-        # proxyText = self.s.value("geopunt4qgis/proxyUrl", "")
-        # if isinstance(proxyText, str): self.ui.proxyText.setText(proxyText)
-        
-        #geopunt4Qgis AdresDialog settings
         adresSearchOnEdit = int( self.s.value("geopunt4qgis/adresSearchOnEdit" , 1))
         self.ui.adresSearchOnEditChk.setChecked(adresSearchOnEdit)
         
@@ -151,15 +137,7 @@ class geopunt4QgisSettingsDialog(QDialog):
         self.s.setValue("geopunt4qgis/timeout" , timeout )
         startDir = self.ui.startDirTxt.text()
         self.s.setValue("geopunt4qgis/startDir", startDir)           
-        
-        #proxysettings
-        # proxyOverwiteEnabled = int( self.ui.proxyChk.isChecked() )
-        # self.s.setValue("geopunt4qgis/proxyOverwiteEnabled" , proxyOverwiteEnabled)
-        # if proxyOverwiteEnabled:
-        #     proxyText = self.ui.proxyText.text()
-        #     self.s.setValue("geopunt4qgis/proxyUrl" , proxyText)
 
-        #'save geopunt4QgisAdresDialog settings'
         adresSearchOnEdit = int( self.ui.adresSearchOnEditChk.isChecked())
         self.s.setValue("geopunt4qgis/adresSearchOnEdit" , adresSearchOnEdit)
         

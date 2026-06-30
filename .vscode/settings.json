@@ -3,10 +3,8 @@
     "editor.wordWrapColumn": 100,
     // PyQt Integration
     "pyqt-integration.qtdesigner.path": "C:/OSGeo4W/bin/qgis-designer.bat",
-    "pyqt-integration.pyuic.cmd": "C:/OSGeo4W/apps/Python312/Scripts/pyuic5.exe",
-    "pyqt-integration.pylupdate.cmd": "C:/OSGeo4W/apps/Python312/Scripts/pylupdate5.exe",
-    "pyqt-integration.pyrcc.cmd": "C:/OSGeo4W/apps/Python312/Scripts/pyrcc5.exe",
-    "pyqt-integration.pyrcc.compile.filepath": "${workspace}/${qrc_name}.py",
+    "pyqt-integration.pyuic.cmd": "C:/OSGeo4W/bin/pyuic6.bat",
+    "pyqt-integration.pylupdate.cmd": "C:/OSGeo4W/apps/Python312/Scripts/pylupdate6.exe",
     // Linter
     "python.linting.enabled": false,
     "python.linting.flake8Enabled": false,

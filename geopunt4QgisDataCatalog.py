@@ -1,6 +1,5 @@
 from qgis.PyQt.QtCore import (Qt, QSettings, QTranslator, QCoreApplication)
-from qgis.PyQt.QtWidgets import (QDialog, QPushButton, QDialogButtonBox,
-                                 QInputDialog, QSizePolicy)
+from qgis.PyQt.QtWidgets import QDialog,  QInputDialog
 from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
 from .ui_geopunt4QgisDataCatalog import Ui_geopunt4QgisDataCatalogDlg
 from qgis.core import Qgis, QgsProject, QgsRasterLayer, QgsVectorLayer
@@ -8,21 +7,19 @@ from .geopunt.metadataParser import (getWmsLayerNames, getWFSLayerNames, get_ogc
                      getWMTSlayersNames,getWCSlayerNames, makeWFSuri, makeWCSuri, makeOGCAPIuri, makeWMTSuri)
 from .geopunt.datavindPlaats import datavindPlaats
 from .tools.geometry import geometryHelper
-import os, webbrowser, sys
+import os, webbrowser
 from urllib.parse import urlparse
 
+PLUGIN_DIR = os.path.dirname(__file__)
 class geopunt4QgisDataCatalog(QDialog):
     def __init__(self, iface):
-        QDialog.__init__(self, None)
-        self.setWindowFlags(self.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        super().__init__()
         self.iface = iface
         self.pageSize = 100
 
         # initialize locale
-        locale = QSettings().value("locale/userLocale", "en")
-        if not locale: locale = 'en'
-        else: locale = locale[0:2]
-        localePath = os.path.join(os.path.dirname(__file__), 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
+        locale = QSettings().value("locale/userLocale", "en")[:2]
+        localePath = os.path.join(PLUGIN_DIR, 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
         if os.path.exists(localePath):
             self.translator = QTranslator()
             self.translator.load(localePath)
@@ -39,10 +36,6 @@ class geopunt4QgisDataCatalog(QDialog):
         self.s = QSettings()
         self.dvp = datavindPlaats()
         self.gh = geometryHelper(self.iface)
-
-        self.ui.buttonBox.addButton(QPushButton("Sluiten"), QDialogButtonBox.RejectRole)
-        for btn in self.ui.buttonBox.buttons():
-            btn.setAutoDefault(0)
 
         # vars
         self.firstShow = True
@@ -67,7 +60,7 @@ class geopunt4QgisDataCatalog(QDialog):
 
         self.ui.resultView.clicked.connect(self.resultViewClicked)
         self.ui.buttonBox.helpRequested.connect(lambda: webbrowser.open_new_tab(
-            "https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/functionaliteiten-qgis-plug-in/geopunt-catalogus-in-qgis"))
+            "https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/geopunt-catalogus-in-qgis"))
         self.finished.connect(self.clean)
 
     def _setModel(self, records):
@@ -82,7 +75,7 @@ class geopunt4QgisDataCatalog(QDialog):
 
     def show(self):
         QDialog.show(self)
-        self.setWindowModality(0)
+        self.setWindowModality(Qt.WindowModality.NonModal)
         if self.firstShow:
             self.firstShow = False
 
@@ -210,7 +203,7 @@ class geopunt4QgisDataCatalog(QDialog):
             if not accept: return
             layerName = [n[0] for n in lyrs if n[1] == layerTitle][0]
         
-        crs = self.gh.getGetMapCrs(self.iface).authid()
+        crs = self.gh.getMapCrs(self.iface).authid()
         if  crs != 'EPSG:31370' or crs != 'EPSG:3857' or crs != 'EPSG:3043' or crs != 'EPSG:3812':
             crs = 'EPSG:31370'
         
@@ -254,7 +247,7 @@ class geopunt4QgisDataCatalog(QDialog):
             format_   = next(n[3] for n in lyrs if n[1] == layerTitle)
             srs_      = next(n[4] for n in lyrs if n[1] == layerTitle)
 
-        srs = self.gh.getGetMapCrs(self.iface).authid() if not srs_ else srs_
+        srs = self.gh.getMapCrs(self.iface).authid() if not srs_ else srs_
         wmsUrl = makeWMTSuri(self.wmts, layer=layerName, tileMatrixSet=matrix_, format=format_, crs=srs )
 
         rlayer = QgsRasterLayer(wmsUrl, layerTitle, 'wms')

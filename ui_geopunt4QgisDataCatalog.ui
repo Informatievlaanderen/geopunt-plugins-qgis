@@ -20,8 +20,8 @@
    <string>Datavindplaats</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
-    <normaloff>:/svg/images/Catalogus.svg</normaloff>:/svg/images/Catalogus.svg</iconset>
+   <iconset>
+    <normaloff>images/Catalogus.svg</normaloff>images/Catalogus.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="bottomMargin">
@@ -42,7 +42,7 @@
         <string>Zoek</string>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
+        <iconset>
          <normaloff>:/plugins/geopunt4Qgis/images/magnifyingGlass.png</normaloff>:/plugins/geopunt4Qgis/images/magnifyingGlass.png</iconset>
        </property>
        <property name="checkable">
@@ -88,7 +88,7 @@
          </size>
         </property>
         <property name="sizeAdjustPolicy">
-         <enum>QComboBox::AdjustToContents</enum>
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
         </property>
         <property name="frame">
          <bool>true</bool>
@@ -135,7 +135,7 @@
       </sizepolicy>
      </property>
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <property name="childrenCollapsible">
       <bool>false</bool>
@@ -154,10 +154,10 @@
        </size>
       </property>
       <property name="frameShape">
-       <enum>QFrame::Panel</enum>
+       <enum>QFrame::Shape::Panel</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Sunken</enum>
+       <enum>QFrame::Shadow::Sunken</enum>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
@@ -169,19 +169,19 @@
           </size>
          </property>
          <property name="contextMenuPolicy">
-          <enum>Qt::ActionsContextMenu</enum>
+          <enum>Qt::ContextMenuPolicy::ActionsContextMenu</enum>
          </property>
          <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
+          <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
          </property>
          <property name="alternatingRowColors">
           <bool>true</bool>
          </property>
          <property name="selectionMode">
-          <enum>QAbstractItemView::SingleSelection</enum>
+          <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
          </property>
          <property name="selectionBehavior">
-          <enum>QAbstractItemView::SelectRows</enum>
+          <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
          </property>
         </widget>
        </item>
@@ -209,13 +209,13 @@
             <bool>false</bool>
            </property>
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="invertedControls">
             <bool>false</bool>
            </property>
            <property name="tickPosition">
-            <enum>QSlider::TicksAbove</enum>
+            <enum>QSlider::TickPosition::TicksAbove</enum>
            </property>
            <property name="tickInterval">
             <number>1</number>
@@ -247,8 +247,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/plugins/geopunt4Qgis/images/previous.png</normaloff>:/plugins/geopunt4Qgis/images/previous.png</iconset>
+            <iconset>
+             <normaloff>images/previous.png</normaloff>images/previous.png</iconset>
            </property>
           </widget>
          </item>
@@ -273,8 +273,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/plugins/geopunt4Qgis/images/next.png</normaloff>:/plugins/geopunt4Qgis/images/next.png</iconset>
+            <iconset>
+             <normaloff>images/next.png</normaloff>images/next.png</iconset>
            </property>
           </widget>
          </item>
@@ -290,10 +290,10 @@
        <item>
         <widget class="QFrame" name="modelFilter">
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
+          <enum>QFrame::Shadow::Sunken</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <property name="leftMargin">
@@ -315,10 +315,10 @@
      </widget>
      <widget class="QTextBrowser" name="descriptionText">
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::Shape::StyledPanel</enum>
       </property>
       <property name="frameShadow">
-       <enum>QFrame::Sunken</enum>
+       <enum>QFrame::Shadow::Sunken</enum>
       </property>
       <property name="openExternalLinks">
        <bool>true</bool>
@@ -338,7 +338,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -363,8 +363,8 @@
         <string>WMS</string>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/plugins/geopunt4Qgis/images/Wms.png</normaloff>:/plugins/geopunt4Qgis/images/Wms.png</iconset>
+        <iconset>
+         <normaloff>images/Wms.png</normaloff>images/Wms.png</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -380,8 +380,8 @@
         <string>WMTS</string>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/svg/images/vectorTileLayer.svg</normaloff>:/svg/images/vectorTileLayer.svg</iconset>
+        <iconset>
+         <normaloff>images/vectorTileLayer.svg</normaloff>images/vectorTileLayer.svg</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -397,8 +397,8 @@
         <string>WFS </string>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/plugins/geopunt4Qgis/images/Wfs.png</normaloff>:/plugins/geopunt4Qgis/images/Wfs.png</iconset>
+        <iconset>
+         <normaloff>images/Wfs.png</normaloff>images/Wfs.png</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -414,8 +414,8 @@
         <string>OGC features</string>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/plugins/geopunt4Qgis/images/ogc_feats.png</normaloff>:/plugins/geopunt4Qgis/images/ogc_feats.png</iconset>
+        <iconset>
+         <normaloff>images/ogc_feats.png</normaloff>images/ogc_feats.png</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -431,8 +431,8 @@
         <string>WCS </string>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/plugins/geopunt4Qgis/images/WcsLayer.png</normaloff>:/plugins/geopunt4Qgis/images/WcsLayer.png</iconset>
+        <iconset>
+         <normaloff>images/WcsLayer.png</normaloff>images/WcsLayer.png</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -446,7 +446,7 @@
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -465,10 +465,10 @@
         </sizepolicy>
        </property>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="standardButtons">
-        <set>QDialogButtonBox::Help</set>
+        <set>QDialogButtonBox::StandardButton::Close|QDialogButtonBox::StandardButton::Help</set>
        </property>
       </widget>
      </item>
@@ -493,13 +493,13 @@ Metadata Vlaanderen&lt;/a&gt; en
 &lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+      <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing</set>
      </property>
      <property name="openExternalLinks">
       <bool>true</bool>
      </property>
      <property name="textInteractionFlags">
-      <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
+      <set>Qt::TextInteractionFlag::LinksAccessibleByKeyboard|Qt::TextInteractionFlag::LinksAccessibleByMouse</set>
      </property>
     </widget>
    </item>
@@ -520,10 +520,7 @@ Metadata Vlaanderen&lt;/a&gt; en
    </property>
   </action>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

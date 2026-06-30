@@ -20,14 +20,17 @@
    <string>Instellingen</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
-    <normaloff>:/svg/images/Settings.svg</normaloff>:/svg/images/Settings.svg</iconset>
+   <iconset>
+    <normaloff>images/Settings.svg</normaloff>images/Settings.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QToolBox" name="settingsTab">
      <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
      </property>
      <widget class="QWidget" name="generalTab">
       <property name="geometry">
@@ -35,12 +38,12 @@
         <x>0</x>
         <y>0</y>
         <width>482</width>
-        <height>302</height>
+        <height>276</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/plugins/geopunt4Qgis/images/geopuntSmal.png</normaloff>:/plugins/geopunt4Qgis/images/geopuntSmal.png</iconset>
+       <iconset>
+        <normaloff>images/geopuntSmal.png</normaloff>images/geopuntSmal.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Algemeen</string>
@@ -86,7 +89,7 @@
          <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -122,7 +125,7 @@
        <item>
         <spacer name="verticalSpacer_5">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -139,13 +142,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>308</width>
-        <height>244</height>
+        <width>298</width>
+        <height>268</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/plugins/geopunt4Qgis/images/geopuntAddressSmall.png</normaloff>:/plugins/geopunt4Qgis/images/geopuntAddressSmall.png</iconset>
+       <iconset>
+        <normaloff>images/geopuntAddressSmall.png</normaloff>images/geopuntAddressSmall.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Zoeken naar adressen</string>
@@ -222,7 +225,7 @@
        <item>
         <spacer name="verticalSpacer_1">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -239,13 +242,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>251</width>
-        <height>156</height>
+        <width>234</width>
+        <height>170</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/plugins/geopunt4Qgis/images/geopuntReverse.png</normaloff>:/plugins/geopunt4Qgis/images/geopuntReverse.png</iconset>
+       <iconset>
+        <normaloff>images/geopuntReverse.png</normaloff>images/geopuntReverse.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Prikken van een adres</string>
@@ -293,7 +296,7 @@
        <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -310,13 +313,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>397</width>
-        <height>196</height>
+        <width>406</width>
+        <height>210</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/plugins/geopunt4Qgis/images/geopuntBatchgeocodeSmall.png</normaloff>:/plugins/geopunt4Qgis/images/geopuntBatchgeocodeSmall.png</iconset>
+       <iconset>
+        <normaloff>images/geopuntBatchgeocodeSmall.png</normaloff>images/geopuntBatchgeocodeSmall.png</iconset>
       </attribute>
       <attribute name="label">
        <string>CSV-adresbestanden geocoderen</string>
@@ -398,7 +401,7 @@
        <item>
         <spacer name="verticalSpacer_3">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -415,13 +418,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>251</width>
-        <height>156</height>
+        <width>234</width>
+        <height>170</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/plugins/geopunt4Qgis/images/geopuntPoiSmall.png</normaloff>:/plugins/geopunt4Qgis/images/geopuntPoiSmall.png</iconset>
+       <iconset>
+        <normaloff>images/geopuntPoiSmall.png</normaloff>images/geopuntPoiSmall.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Zoeken naar plaatsen</string>
@@ -469,7 +472,7 @@
        <item>
         <spacer name="verticalSpacer_4">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -486,13 +489,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>282</width>
-        <height>156</height>
+        <width>266</width>
+        <height>170</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/plugins/geopunt4Qgis/images/geopuntGIPODsmall.png</normaloff>:/plugins/geopunt4Qgis/images/geopuntGIPODsmall.png</iconset>
+       <iconset>
+        <normaloff>images/geopuntGIPODsmall.png</normaloff>images/geopuntGIPODsmall.png</iconset>
       </attribute>
       <attribute name="label">
        <string>GIPOD</string>
@@ -543,7 +546,7 @@
        <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -560,13 +563,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>280</width>
-        <height>294</height>
+        <width>259</width>
+        <height>322</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/plugins/geopunt4Qgis/images/geopuntElevationSmall.png</normaloff>:/plugins/geopunt4Qgis/images/geopuntElevationSmall.png</iconset>
+       <iconset>
+        <normaloff>images/geopuntElevationSmall.png</normaloff>images/geopuntElevationSmall.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Hoogteprofiel</string>
@@ -659,7 +662,7 @@
        <item>
         <spacer name="verticalSpacer_6">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -676,13 +679,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>254</width>
-        <height>156</height>
+        <width>232</width>
+        <height>170</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="resources.qrc">
-        <normaloff>:/plugins/geopunt4Qgis/images/geopuntParcelSmall.png</normaloff>:/plugins/geopunt4Qgis/images/geopuntParcelSmall.png</iconset>
+       <iconset>
+        <normaloff>images/geopuntParcelSmall.png</normaloff>images/geopuntParcelSmall.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Percelen zoeken</string>
@@ -733,7 +736,7 @@
        <item>
         <spacer name="verticalSpacer_7">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -750,10 +753,10 @@
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::NoButton</set>
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Save</set>
      </property>
      <property name="centerButtons">
       <bool>false</bool>
@@ -762,9 +765,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

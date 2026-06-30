@@ -18,19 +18,16 @@ from .tools.settings import settings
 import os.path, webbrowser
 from threading import Timer
 
+PLUGIN_DIR= os.path.dirname(__file__)
 class geopunt4Qgis(object):
     def __init__(self, iface):
         'initialize'
         # Save reference to the QGIS interface
         self.iface = iface
-        # initialize plugin directory
-        self.plugin_dir = os.path.dirname(__file__)
         
         # initialize locale
-        locale = QSettings().value("locale/userLocale", "nl")
-        if not locale: locale == 'nl' 
-        else: locale = locale[0:2]
-        localePath = os.path.join(self.plugin_dir, 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
+        locale = QSettings().value("locale/userLocale", "nl")[:2]
+        localePath = os.path.join(PLUGIN_DIR, 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
         if os.path.exists(localePath):
             self.translator = QTranslator()
             self.translator.load(localePath)
@@ -40,9 +37,9 @@ class geopunt4Qgis(object):
         self.adresdlg = geopunt4QgisAdresDialog(self.iface)
         self.batchgeoDlg = geopunt4QgisBatcGeoCodeDialog(self.iface) 
         self.poiDlg = geopunt4QgisPoidialog(self.iface)        
-        # self.gipodDlg = geopunt4QgisGipodDialog(self.iface)
         self.settingsDlg = geopunt4QgisSettingsDialog()
-        if mathplotlibWorks : self.elevationDlg = geopunt4QgisElevationDialog(self.iface)
+        if mathplotlibWorks : 
+            self.elevationDlg = geopunt4QgisElevationDialog(self.iface)
         self.datacatalogusDlg = geopunt4QgisDataCatalog(self.iface)
         self.parcelDlg = geopunt4QgisParcelDlg(self.iface)
         self.aboutDlg = geopunt4QgisAboutDialog()
@@ -58,26 +55,26 @@ class geopunt4Qgis(object):
         self.graphicsLayer = []
 
         # Create actions that will start plugin configuration
-        self.adresAction = QAction(QIcon(":/svg/images/Adres.svg"),
+        self.adresAction = QAction(QIcon( os.path.join(PLUGIN_DIR, "images/Adres.svg")),
             QCoreApplication.translate("geopunt4Qgis" , u"Zoek een adres"), self.iface.mainWindow())
-        self.reverseAction = QAction(QIcon(":/svg/images/Place.svg"),
+        self.reverseAction = QAction(QIcon(os.path.join(PLUGIN_DIR,"images/Place.svg")),
                 QCoreApplication.translate("geopunt4Qgis", u"Prik een adres op de kaart"), 
                 self.iface.mainWindow())
-        self.batchAction = QAction(QIcon(":/svg/images/Bestand.svg"),
+        self.batchAction = QAction(QIcon(os.path.join(PLUGIN_DIR,"images/Bestand.svg")),
 	        QCoreApplication.translate("geopunt4Qgis", u"CSV-adresbestanden geocoderen"),
 	        self.iface.mainWindow())
-        self.poiAction = QAction(QIcon(":/svg/images/POI.svg"),
+        self.poiAction = QAction(QIcon(os.path.join(PLUGIN_DIR,"images/POI.svg")),
                 QCoreApplication.translate("geopunt4Qgis" , u"Zoek een interessante plaats"), 
 	        self.iface.mainWindow())	
-        self.elevationAction =  QAction(QIcon(":/svg/images/Hoogte.svg"),
+        self.elevationAction =  QAction(QIcon(os.path.join(PLUGIN_DIR,"images/Hoogte.svg")),
                 QCoreApplication.translate("geopunt4Qgis" , u"Hoogteprofiel"), self.iface.mainWindow())
-        self.datacatalogusAction =  QAction(QIcon(":/svg/images/Catalogus.svg"),
+        self.datacatalogusAction =  QAction(QIcon("images/Catalogus.svg"),
                 QCoreApplication.translate("geopunt4Qgis" , u"Datavindplaats"), self.iface.mainWindow())
-        self.parcelAction =  QAction(QIcon(":/svg/images/Perceel.svg"),
+        self.parcelAction =  QAction(QIcon(os.path.join(PLUGIN_DIR,"images/Perceel.svg")),
                 QCoreApplication.translate("geopunt4Qgis" , u"Zoeken naar perceel"), self.iface.mainWindow())
-        self.settingsAction = QAction(QIcon(":/svg/images/Settings.svg"),
+        self.settingsAction = QAction(QIcon(os.path.join(PLUGIN_DIR,"images/Settings.svg")),
                 QCoreApplication.translate("geopunt4Qgis" , u"Instellingen"), self.iface.mainWindow())  
-        self.aboutAction = QAction(QIcon(":/svg/images/Info.svg"),
+        self.aboutAction = QAction(QIcon(os.path.join(PLUGIN_DIR,"images/Info.svg")),
                 QCoreApplication.translate("geopunt4Qgis" , u"Over geopunt4Qgis"), self.iface.mainWindow())
  
         # connect the action to the run method
@@ -90,8 +87,7 @@ class geopunt4Qgis(object):
         self.parcelAction.triggered.connect(self.runParcel)
         self.settingsAction.triggered.connect(self.runSettingsDlg)
         self.aboutAction.triggered.connect(self.runAbout)
-            ##lambda: webbrowser.open_new_tab("https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in") )
-        
+
         #Create toolbar
         self.toolbar = self.iface.addToolBar("Geopunt toolbar")
         self.toolbar.setObjectName("Geopunt toolbar")
@@ -156,7 +152,7 @@ class geopunt4Qgis(object):
            self.aboutDlg.activateWindow()
            return
         self.aboutDlg.show()
-        self.aboutDlg.exec_()
+        self.aboutDlg.exec()
 
     def runSettingsDlg(self):
         ' show the dialog'
@@ -167,7 +163,7 @@ class geopunt4Qgis(object):
         
         self.settingsDlg.show()
         # Run the dialog event loop
-        result = self.settingsDlg.exec_()
+        result = self.settingsDlg.exec()
         if result:
             self.loadSettings()
             
@@ -181,7 +177,7 @@ class geopunt4Qgis(object):
         self.adresdlg.loadSettings()
         self.adresdlg.show()
         # Run the dialog event loop
-        self.adresdlg.exec_()
+        self.adresdlg.exec()
         
     def runPoiDlg(self):
         'show the dialog'
@@ -193,7 +189,7 @@ class geopunt4Qgis(object):
         self.poiDlg.loadSettings()
         self.poiDlg.show()
         # Run the dialog event loop
-        self.poiDlg.exec_()
+        self.poiDlg.exec()
   
     def runBatch(self):
         'show the dialog'
@@ -205,7 +201,7 @@ class geopunt4Qgis(object):
         self.batchgeoDlg.loadSettings()
         self.batchgeoDlg.show()
         # Run the dialog event loop
-        self.batchgeoDlg.exec_()
+        self.batchgeoDlg.exec()
 
     def runElevation(self):
         if mathplotlibWorks == False: 
@@ -222,7 +218,7 @@ class geopunt4Qgis(object):
         self.elevationDlg.loadSettings()
         self.elevationDlg.show()
         # Run the dialog event loop
-        self.elevationDlg.exec_()
+        self.elevationDlg.exec()
 
     def rundatacatalog(self):
         'show the dialog'
@@ -233,7 +229,7 @@ class geopunt4Qgis(object):
 
         self.datacatalogusDlg.show()
         # Run the dialog event loop
-        self.datacatalogusDlg.exec_()
+        self.datacatalogusDlg.exec()
 
     def runParcel(self):
         'show the dialog'  
@@ -244,7 +240,7 @@ class geopunt4Qgis(object):
         self.parcelDlg.loadSettings()
         self.parcelDlg.show()
         # Run the dialog event loop
-        self.parcelDlg.exec_()
+        self.parcelDlg.exec()
 
     def reverse(self):
         widget = self.iface.messageBar().createMessage(
@@ -263,7 +259,7 @@ class geopunt4Qgis(object):
     def _reverseAdresCallback(self, point):
         self._addMarker( point )
         lam72 = QgsCoordinateReferenceSystem("EPSG:31370")
-        mapCrs = self.gh.getGetMapCrs(self.iface)
+        mapCrs = self.gh.getMapCrs(self.iface)
         xform = QgsCoordinateTransform(mapCrs, lam72, QgsProject.instance())
         lam72clickt = xform.transform(point)
         
@@ -329,7 +325,8 @@ class geopunt4Qgis(object):
         self._clearGraphicLayer()
         
     def openReverseHelp(self):
-        webbrowser.open_new_tab("https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/functionaliteiten-qgis-plug-in/prik-een-adres-op-kaart-in-qgis")
+        webbrowser.open_new_tab(
+            "https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/prik-een-adres-op-kaart-in-qgis")
                 
     def _addMarker(self, pnt, clr=QColor(255,255,0)):
         m = QgsVertexMarker(self.iface.mapCanvas())

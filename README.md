@@ -1,77 +1,125 @@
-Geopunt4Qgis
+Geopunt4QGis
 ============
 
 ![Geopunt for QGIS](images/logogeopunt4Q.png "Geopunt for QGIS")
 
+## Functions
 
-Functions
---------
-
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/zoek-een-adres" ><img src="images/geopuntAddressSmall.png" /> Search an Address</a> 
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/prik-een-adres-op-kaart" ><img src="images/geopuntReverseSmall.png" /> Click an Address on the map</a>
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/csv-bestanden-geocoderen" ><img src="images/geopuntBatchgeocodeSmall.png" /> Geocode CSV-files </a>
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/poi" ><img src="images/geopuntPoiSmall.png" /> Find a point of intrest</a>
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/gipod" ><img src="images/geopuntGIPODsmall.png" /> GIPOD</a>
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plugins/functionaliteiten/hoogteprofiel" ><img src="images/geopuntElevationSmall.png" /> Elevation profile</a>
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/zoek-een-perceel" ><img src="images/geopuntParcelSmall.png" /> Find a parcel</a>
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/catalogus" ><img src="images/geopuntDataCatalogusSmall.png" /> Geopunt catalog</a>
-
-  
-System requirements
--------------------
-
-- QGIS 3.0 or above
-- Python 3 (installed with qgis)
-- Any OS capable of running QGIS with python plug-ins: ao. MS Windows, Mac OSX and Linux
-- The python modules mathplotlib and numpy, installed with the Windows and Linux version of QGIS, but on MacOSX you have to install them separately. 
-- Requires internet connection, restrictive firewalls may block connection
-
- 
-Goals
------
-
-geopunt4Qgis - *"Geopunt for QGIS"* is a plugin for the [QGIS](http://www.qgis.org/) open source desktop GIS. 
-
-The Flemish government Geographical Portal Geopunt offers several web-services that can be used freely by third party's, including other governments and citizens. 
-
-The mapping services are based on the OGC open standard WMS or WMTS and can be added to to QGIS easily. These services can be found through the [metadacenter](https://metadata.geopunt.be/zoekdienst/apps/tabsearch/index.html).
-
-But some services are not standardized because there is no widely used open standard. These public web-services are  composed with a REST-full API, this easier to use for programmers then OGC-services. But because they are not standardized, they can't be used directly by desktop software.
-
-These include:
-
-- **Geocoding** based on the Flemish [CRAB](http://www.agiv.be/gis/projecten/?catid=34) address-database
-- **Location search** based on databases joined to the CRAB database, like the locations of the schools in Flanders.
-- **Traffic obstruction information** from the [GIPOD](http://gipod.api.agiv.be/#!index.md) public works and manifestation database.
-- **Elevation profile** a service that queries the digital elevation model Flanders, a set of along a line is retrieved. The source-data is [DHM-Vlaanderen](https://www.agiv.be/producten/digitaal-hoogtemodel-vlaanderen).
-- **Find parcels** find parcels in KADMAP.
-- **Metadata catalog** the [metadatacenter](https://metadata.geopunt.be) of Geopunt contains information about datasets and services from AGIV, DOV (geology) and MercatorNet (a co-operation between several Flemish governmental agencies).
-
-The goal of this project is to make these web-services available to QGIS-users, so they can be uses for creating print-maps and for doing research and analyses.
+* <a href="https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/zoek-een-adres-in-qgis"><img src="images/geopuntAddressSmall.png" /> Search an address</a>  
+* <a href="https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/prik-een-adres-op-kaart-in-qgis"><img src="images/geopuntReverseSmall.png" /> Click an address on the map</a>  
+* <a href="https://www.vlaanderen.be/geopunt/plug-ins/csv-bestanden-geocoderen-in-qgis"><img src="images/geopuntBatchgeocodeSmall.png" /> Geocode CSV files</a>  
+* <a href="https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/zoek-een-interessante-plaats-in-qgis"><img src="images/geopuntPoiSmall.png" /> Find a point of interest</a>  
+* <a href="https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/hoogteprofiel-in-qgis"><img src="images/geopuntElevationSmall.png" /> Elevation profile</a>  
+* <a href="https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/zoek-een-perceel-in-qgis"><img src="images/geopuntParcelSmall.png" /> Find a parcel</a>  
+* <a href="https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/geopunt-catalogus-in-qgis"><img src="images/geopuntDataCatalogusSmall.png" /> Geopunt catalog</a>  
 
 
-What is Geopunt ?
---------------
+## System Requirements
 
-[Geopunt](http://www.geopunt.be/) is the central gateway to government geographic information in Flanders. The portal focuses on a comprehensive data, services and application offerings to a broad and diverse audience. Citizens looking for a suitable land or the GIS-user or engineer who wishes to perform an environmental study. Socially relevant geographic data and services are brought together in an intelligent and user-friendly manner. 
+- QGIS 3.x or higher (compatible with QGIS 4.x from release 2.7 onward)
+- Python 3 (bundled with QGIS)
+- Any OS capable of running QGIS with Python plugins: Windows, macOS, or Linux
+- Python modules `matplotlib` and `numpy`  
+  - Included with Windows and Linux QGIS installations  
+  - May need manual installation on macOS
+- Active internet connection (restricted firewalls may block access to services)
 
-All components (metadata catalog , download application, data and network services) are directly integrated. The geoportal is the Flemish node in a European spatial data infrastructure and meets the requirements of the [European INSPIRE directive](http://inspire-geoportal.ec.europa.eu/).
+---
 
-Geopunt is the website of the partnership for geographic information within the Flemish government, GDI Flanders (GDI = Spatial Data Infrastructures). The Flemish Agency for Geographical Information [(AGIV)](http://www.agiv.be/gis/) is responsible for organizing and maintaining geopunt.
+## Goals
 
-About the author
-----------------
+**Geopunt4QGis – "Geopunt for QGIS"** is a plugin for the [QGIS](https://qgis.org/) open‑source desktop GIS.
 
-My name is **Kay Warrie**. I am geospatial data-analyst and developer from Belgium. 
-My current employer is the research department of the city of Antwerp. 
-Professionaly I work on webmapping with ESRI arcgis-server or Mapbox Tilemill and on desktop GIS using arcgis or QGIS and other open source GIS. I also maintain INSPIRE-compliant metadata as a part of the Flemish Geodata Infrastruce (GDI). But above all I do all kinds of GIS analyses on city data. Most analyses are related to adressing-geocoding, spatial relationships,  proximity analyses (routing, service area's etc.) for environmental impact studies, zoning or construction permits.
+The Flemish government geoportal **Geopunt** offers a wide range of web services that can be used freely by third parties, including governments, organisations, and citizens.
 
-[Contact me](mailto:kaywarrie@gmail.com)
+Standard map services are based on OGC standards such as **WMS** and **WMTS**, and can easily be added to QGIS. These services are discoverable via the metadata catalogue:
 
-[More about me](http://kgis.be)
+👉 https://metadata.vlaanderen.be/srv/dut/catalog.search  
 
-#### Sources:
+However, some services are **not standardized** and are only available through REST APIs. While these APIs are convenient for developers, they are not directly usable in desktop GIS software like QGIS.
 
-- *[http://www.geopunt.be](http://www.geopunt.be/voor-experts/geopunt-plugins)* 
-- *[http://gditestbed.agiv.be/](http://gditestbed.agiv.be/)*
-- *[https://www.agiv.be/](https://www.agiv.be/)*
+This plugin bridges that gap by integrating these services into QGIS.
+
+### Included services
+
+- **Geocoding**  
+  Based on the Flemish address register:  
+  <https://www.vlaanderen.be/digitaal-vlaanderen/onze-diensten-en-platformen/gebouwen-en-adressenregister>  
+
+- **Location search (POI)**  
+  ased on datasets linked to the address register (e.g. schools, public services)
+
+- **Traffic obstruction information (GIPOD)**  
+  <https://gipod.vlaanderen.be>  
+
+- **Elevation profile**  
+  Uses the Digital Elevation Model (DHM Vlaanderen):  
+  <https://overheid.vlaanderen.be/informatie-vlaanderen/producten-diensten/digitaal-hoogtemodel>  
+
+- **Parcel search (KADMAP / GRB-based services)**  
+
+- **Metadata catalogue**  
+  <https://metadata.vlaanderen.be/srv/dut/catalog.search>
+
+The goal is to make these services accessible for:
+
+- map creation
+- spatial analysis
+- research workflows
+- integration into GIS projects
+
+---
+
+## What is Geopunt?
+
+[Geopunt](https://www.geopunt.be/) is the central gateway to geographic information of the Flemish government.
+
+It provides:
+
+- datasets  
+- web services  
+- applications  
+- metadata catalogues  
+
+for a broad audience, including citizens, GIS professionals, engineers, and policy makers.
+
+All components (metadata, downloads, services, and applications) are integrated into one platform. Geopunt is also the Flemish node of the European Spatial Data Infrastructure and complies with the **INSPIRE Directive**:
+
+👉 https://inspire-geoportal.ec.europa.eu/  
+
+Geopunt is managed within **GDI Flanders** (Geographic Data Infrastructure).  
+The operational management is handled by:
+
+👉 https://www.vlaanderen.be/digitaal-vlaanderen  
+
+---
+
+## About the Author
+
+My name is **Kay Warrie**. I am a geospatial data analyst and developer based in Belgium.
+
+I work in the research department of the City of Antwerp. My work includes:
+
+- web mapping (ArcGIS Server, Mapbox)
+- desktop GIS (QGIS, ArcGIS)
+- INSPIRE-compliant metadata management (GDI Flanders)
+- spatial analysis on urban data  
+
+Typical analyses include:
+
+- geocoding and address matching  
+- proximity and routing analyses  
+- environmental impact studies  
+- zoning and permit support  
+
+📧 [Contact me](mailto:kaywarrie@gmail.com)  
+🌐 [More about me](http://kgis.be)  
+
+---
+
+## Sources
+
+- <https://www.geopunt.be>  
+- <https://www.vlaanderen.be/geopunt>  
+- <https://metadata.geopunt.be>  
+- <https://www.vlaanderen.be/digitaal-vlaanderen>

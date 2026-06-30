@@ -12,14 +12,14 @@
    </rect>
   </property>
   <property name="contextMenuPolicy">
-   <enum>Qt::DefaultContextMenu</enum>
+   <enum>Qt::ContextMenuPolicy::DefaultContextMenu</enum>
   </property>
   <property name="windowTitle">
    <string>CSV-adresbestanden geocoderen</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
-    <normaloff>:/svg/images/Bestand.svg</normaloff>:/svg/images/Bestand.svg</iconset>
+   <iconset>
+    <normaloff>images/Bestand.svg</normaloff>images/Bestand.svg</iconset>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
@@ -115,7 +115,7 @@
            <string>Separator: </string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -167,7 +167,7 @@
            <string/>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -250,7 +250,7 @@
             <string>Straatnaam kolom:</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -289,7 +289,7 @@
          <item row="0" column="4">
           <spacer name="horizontalSpacer_3">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -317,7 +317,7 @@
             <string> Huisnummer kolom:</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -367,7 +367,7 @@
             <string>Gemeente kolom:</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -405,14 +405,14 @@
             <string>Postcode kolom:</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
            </property>
           </widget>
          </item>
          <item row="1" column="4">
           <spacer name="horizontalSpacer_4">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -431,10 +431,10 @@
    <item>
     <widget class="QFrame" name="tlFrame">
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::Shape::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Shadow::Plain</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <property name="spacing">
@@ -455,10 +455,10 @@
       <item>
        <widget class="QFrame" name="toolFrame">
         <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
+         <enum>QFrame::Shape::NoFrame</enum>
         </property>
         <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
+         <enum>QFrame::Shadow::Sunken</enum>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <property name="spacing">
@@ -485,8 +485,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/plugins/geopunt4Qgis/images/validAll.png</normaloff>:/plugins/geopunt4Qgis/images/validAll.png</iconset>
+            <iconset>
+             <normaloff>images/validAll.png</normaloff>images/validAll.png</iconset>
            </property>
            <property name="autoDefault">
             <bool>false</bool>
@@ -508,8 +508,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/plugins/geopunt4Qgis/images/select.png</normaloff>:/plugins/geopunt4Qgis/images/select.png</iconset>
+            <iconset>
+             <normaloff>images/select.png</normaloff>images/select.png</iconset>
            </property>
            <property name="autoDefault">
             <bool>false</bool>
@@ -531,8 +531,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/plugins/geopunt4Qgis/images/binocularsSmall.png</normaloff>:/plugins/geopunt4Qgis/images/binocularsSmall.png</iconset>
+            <iconset>
+             <normaloff>images/binocularsSmall.png</normaloff>images/binocularsSmall.png</iconset>
            </property>
            <property name="autoDefault">
             <bool>false</bool>
@@ -557,8 +557,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/plugins/geopunt4Qgis/images/prik.png</normaloff>:/plugins/geopunt4Qgis/images/prik.png</iconset>
+            <iconset>
+             <normaloff>images/prik.png</normaloff>images/prik.png</iconset>
            </property>
            <property name="autoDefault">
             <bool>false</bool>
@@ -568,7 +568,7 @@
          <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -584,13 +584,13 @@
       <item>
        <widget class="QTableWidget" name="outPutTbl">
         <property name="contextMenuPolicy">
-         <enum>Qt::ActionsContextMenu</enum>
+         <enum>Qt::ContextMenuPolicy::ActionsContextMenu</enum>
         </property>
         <property name="selectionMode">
-         <enum>QAbstractItemView::ExtendedSelection</enum>
+         <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
         </property>
         <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
+         <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
         </property>
         <property name="sortingEnabled">
          <bool>true</bool>
@@ -603,7 +603,7 @@
    <item>
     <widget class="Line" name="line">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -634,8 +634,8 @@
          <string>Alle gevalideerde adressen opslaan</string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/addPointLayer.png</normaloff>:/plugins/geopunt4Qgis/images/addPointLayer.png</iconset>
+         <iconset>
+          <normaloff>images/addPointLayer.png</normaloff>images/addPointLayer.png</iconset>
         </property>
         <property name="checkable">
          <bool>false</bool>
@@ -654,7 +654,7 @@
       <item>
        <spacer name="horizontalSpacer_5">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -691,7 +691,7 @@
          <bool>false</bool>
         </property>
         <property name="textDirection">
-         <enum>QProgressBar::TopToBottom</enum>
+         <enum>QProgressBar::Direction::TopToBottom</enum>
         </property>
        </widget>
       </item>
@@ -704,10 +704,10 @@
          </sizepolicy>
         </property>
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="standardButtons">
-         <set>QDialogButtonBox::Help</set>
+         <set>QDialogButtonBox::StandardButton::Close|QDialogButtonBox::StandardButton::Help</set>
         </property>
        </widget>
       </item>
@@ -719,16 +719,16 @@
      <item>
       <widget class="QLabel" name="statusMsg">
        <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
+        <enum>QFrame::Shape::NoFrame</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
+        <enum>QFrame::Shadow::Sunken</enum>
        </property>
        <property name="text">
         <string/>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -738,7 +738,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.vlaanderen.be/digitaal-vlaanderen/onze-diensten-en-platformen/loket-voor-authentieke-registratie-lara&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Foute adressen kunt u melden via LARA&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+        <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing</set>
        </property>
        <property name="margin">
         <number>-1</number>
@@ -747,7 +747,7 @@
         <bool>true</bool>
        </property>
        <property name="textInteractionFlags">
-        <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
+        <set>Qt::TextInteractionFlag::LinksAccessibleByKeyboard|Qt::TextInteractionFlag::LinksAccessibleByMouse</set>
        </property>
       </widget>
      </item>
@@ -756,7 +756,7 @@
   </layout>
   <action name="actionAddValidToMap">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/plugins/geopunt4Qgis/images/addPointLayer.png</normaloff>:/plugins/geopunt4Qgis/images/addPointLayer.png</iconset>
    </property>
    <property name="text">
@@ -765,7 +765,7 @@
   </action>
   <action name="actionValidateSelection">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/plugins/geopunt4Qgis/images/select.png</normaloff>:/plugins/geopunt4Qgis/images/select.png</iconset>
    </property>
    <property name="text">
@@ -774,7 +774,7 @@
   </action>
   <action name="actionValidateAll">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/plugins/geopunt4Qgis/images/validAll.png</normaloff>:/plugins/geopunt4Qgis/images/validAll.png</iconset>
    </property>
    <property name="text">
@@ -783,7 +783,7 @@
   </action>
   <action name="actionZoomToSelection">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/plugins/geopunt4Qgis/images/binocularsSmall.png</normaloff>:/plugins/geopunt4Qgis/images/binocularsSmall.png</iconset>
    </property>
    <property name="text">
@@ -792,7 +792,7 @@
   </action>
   <action name="adresFromMapAction">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/plugins/geopunt4Qgis/images/prik.png</normaloff>:/plugins/geopunt4Qgis/images/prik.png</iconset>
    </property>
    <property name="text">
@@ -803,9 +803,7 @@
    </property>
   </action>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

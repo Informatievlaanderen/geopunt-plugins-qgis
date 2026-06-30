@@ -1,5 +1,5 @@
 from qgis.PyQt.QtCore import Qt, QSettings, QTranslator, QCoreApplication 
-from qgis.PyQt.QtWidgets import (QDialog, QPushButton, QDialogButtonBox, QFileDialog, QSizePolicy,
+from qgis.PyQt.QtWidgets import (QDialog, QFileDialog, QSizePolicy,
                                  QToolButton, QColorDialog, QInputDialog)
 from qgis.PyQt.QtGui import QIcon, QColor
 from qgis.core import Qgis, QgsProject, QgsPointXY, QgsUnitTypes
@@ -23,18 +23,15 @@ from .tools.elevation import elevationHelper
 from .mapTools.elevationProfile import lineTool
 from .geopunt import dhm
 
+PLUGIN_DIR = os.path.dirname(__file__)
 class geopunt4QgisElevationDialog(QDialog):
     def __init__(self, iface):
-        QDialog.__init__(self, None)
-        self.setWindowFlags( self.windowFlags() & ~Qt.WindowContextHelpButtonHint )
-
+        super().__init__()
         self.iface = iface
     
         # initialize locale
-        locale = QSettings().value("locale/userLocale", "en")
-        if not locale: locale == 'en'
-        else: locale = locale[0:2]
-        localePath = os.path.join(os.path.dirname(__file__), 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
+        locale = QSettings().value("locale/userLocale", "en")[:2]
+        localePath = os.path.join(PLUGIN_DIR , 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
         if os.path.exists(localePath):
             self.translator = QTranslator()
             self.translator.load(localePath)
@@ -56,13 +53,7 @@ class geopunt4QgisElevationDialog(QDialog):
         self.dhm = dhm()
         
         #setup a message bar
-        self.bar = QgsMessageBar() 
-        self.bar.setSizePolicy( QSizePolicy.Minimum, QSizePolicy.Fixed )
-        self.ui.verticalLayout.addWidget(self.bar)
-        
-        self.ui.buttonBox.addButton(QPushButton("Sluiten"), QDialogButtonBox.RejectRole )
-        for btn in self.ui.buttonBox.buttons():
-            btn.setAutoDefault(0)
+        self.bar = self.iface.messageBar()
                   
         # graph global vars
         self.Rubberline =  None
@@ -90,7 +81,8 @@ class geopunt4QgisElevationDialog(QDialog):
         self.ui.savePntBtn.clicked.connect(self.savePntClicked)
         self.ui.addDHMbtn.clicked.connect(lambda: QgsProject.instance().addMapLayer(self.dhm.dhmLayer()) ) 
         self.ui.refreshBtn.clicked.connect( self.onRefresh )
-        self.ui.buttonBox.helpRequested.connect(self.openHelp)
+        self.ui.buttonBox.helpRequested.connect(lambda: webbrowser.open_new_tab(
+           "https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/hoogteprofiel-in-qgis") )
         
         self.rejected.connect(self.clean )
 
@@ -115,27 +107,27 @@ class geopunt4QgisElevationDialog(QDialog):
                                                       border-color: #fbd837; border-radius: 5px ; background-color: white }
                                          QToolButton:pressed { border-style: inset;   background-color: grey } """)
         toolbarBtns[0].setToolTip(QCoreApplication.translate("geopunt4QgisElevationDialog", "Keer terug naar overzicht"))
-        toolbarBtns[0].setIcon( QIcon(":/plugins/geopunt4Qgis/images/full_extent.png"))
+        toolbarBtns[0].setIcon( QIcon( os.path.join(PLUGIN_DIR,"images/full_extent.png") ))
         toolbarBtns[0].clicked.connect( self.toolbar.home )
         toolbarBtns[1].setToolTip(QCoreApplication.translate("geopunt4QgisElevationDialog", "Vorige"))
-        toolbarBtns[1].setIcon( QIcon(":/plugins/geopunt4Qgis/images/previous.png")) 
+        toolbarBtns[1].setIcon( QIcon( os.path.join(PLUGIN_DIR,"images/previous.png") )) 
         toolbarBtns[1].clicked.connect( self.toolbar.back )
         toolbarBtns[2].setToolTip(QCoreApplication.translate("geopunt4QgisElevationDialog", "Volgende"))
-        toolbarBtns[2].setIcon( QIcon(":/plugins/geopunt4Qgis/images/next.png"))
+        toolbarBtns[2].setIcon( QIcon( os.path.join(PLUGIN_DIR,"images/next.png") ))
         toolbarBtns[2].clicked.connect( self.toolbar.forward )
         toolbarBtns[3].setToolTip(QCoreApplication.translate("geopunt4QgisElevationDialog", "Pannen"))
-        toolbarBtns[3].setIcon( QIcon(":/plugins/geopunt4Qgis/images/pan.png")) 
+        toolbarBtns[3].setIcon( QIcon( os.path.join(PLUGIN_DIR,"images/pan.png") )) 
         toolbarBtns[3].clicked.connect( self.toolbar.pan )
         toolbarBtns[4].setToolTip(QCoreApplication.translate("geopunt4QgisElevationDialog", "Zoom naar rechthoek"))
-        toolbarBtns[4].setIcon( QIcon(":/plugins/geopunt4Qgis/images/rectangleZoom.png"))  
+        toolbarBtns[4].setIcon( QIcon( os.path.join(PLUGIN_DIR,"images/rectangleZoom.png") ))  
         toolbarBtns[4].clicked.connect( self.toolbar.zoom )
         toolbarBtns[5].setToolTip(QCoreApplication.translate("geopunt4QgisElevationDialog", "Opslaan als afbeelding"))
-        toolbarBtns[5].setIcon( QIcon(":/plugins/geopunt4Qgis/images/save.png"))
+        toolbarBtns[5].setIcon( QIcon( os.path.join(PLUGIN_DIR,"images/save.png") ))
         toolbarBtns[5].clicked.connect( self.save_fig ) #semf.toolbar.save_figure
         toolbarBtns[6].setToolTip(QCoreApplication.translate("geopunt4QgisElevationDialog", "Vorm grafiek aanpassen"))
-        toolbarBtns[6].setIcon( QIcon(":/plugins/geopunt4Qgis/images/wrench.png")) 
+        toolbarBtns[6].setIcon( QIcon( os.path.join(PLUGIN_DIR,"images/wrench.png") )) 
         toolbarBtns[6].clicked.connect( self.toolbar.edit_parameters)
-        toolbarBtns[7].setIcon( QIcon(":/plugins/geopunt4Qgis/images/fill.png"))
+        toolbarBtns[7].setIcon( QIcon( os.path.join(PLUGIN_DIR,"images/fill.png") ))
         toolbarBtns[7].setToolTip( QCoreApplication.translate("geopunt4QgisElevationDialog", "Kies de vulkleur"))
         toolbarBtns[7].clicked.connect( self.setFill)
         
@@ -179,10 +171,6 @@ class geopunt4QgisElevationDialog(QDialog):
     
     def onResize(self, _):
         self.figure.tight_layout()
-    
-    def openHelp(self):
-        webbrowser.open_new_tab(
-           "https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/functionaliteiten-qgis-plug-in/hoogteprofiel-in-qgis")
     
     def drawBtnClicked(self):
         self.clean()

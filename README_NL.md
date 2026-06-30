@@ -1,78 +1,120 @@
-Geopunt4Qgis
-============
+# Geopunt4QGis
 
-![Geopunt voor QGIS](images/logogeopunt4Q.png "Geopunt voor QGIS")
- 
-Functies
---------
+## Functies
 
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/zoek-een-adres" ><img src="images/geopuntAddressSmall.png" /> Zoek een Adres</a> 
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/prik-een-adres-op-kaart" ><img src="images/geopuntReverseSmall.png" /> Prik een Adres op kaart</a>
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/csv-bestanden-geocoderen" ><img src="images/geopuntBatchgeocodeSmall.png" /> CSV-adresbestanden geocoderen</a>
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/poi" ><img src="images/geopuntPoiSmall.png" /> Zoek een Plaats - interesse punt</a>
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/gipod" ><img src="images/geopuntGIPODsmall.png" /> GIPOD</a>
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/hoogteprofiel" ><img src="images/geopuntElevationSmall.png" /> Hoogteprofiel</a>
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/zoek-een-perceel" ><img src="images/geopuntParcelSmall.png" /> Zoek een perceel</a>
-  * <a href="http://www.geopunt.be/voor-experts/geopunt-plug-ins/functionaliteiten/catalogus" ><img src="images/geopuntDataCatalogusSmall.png" /> Geopunt catalogus</a>
- 
-Systeem vereisten
------------------
+*  Zoek een adres
+*  Prik een adres op de kaart
+*  CSV-bestanden geocoderen
+*  Zoek een interessante plaats (POI)
+*  Hoogteprofiel
+*  Zoek een perceel
+*  Geopunt catalogus
 
-- QGIS 3.0 of hoger
-- Python 3 (wordt geïnstalleerd met qgis)
-- De python modules numpy en matplotlib (worden op Windows en Linux samen met QGIS geïnstalleerd, op Mac OSX dien je die zelf nog te installeren.)
-- Elk besturingssysteem dat QGIS met python plug-ins ondersteund: ea. MS Windows, Mac OSX en Linux
-- Vereist internet connectie, restrictieve firewalls kunnen mogelijk de connectie blokkeren.
+## Systeemvereisten
 
-Doelstelling
------------
-
-geopunt4Qgis - *"Geopunt voor QGIS"* is een plugin voor de [QGIS](http://www.qgis.org/) open source desktop GIS, die de webservices van het Vlaamse geoportaal Geopunt ontsluit naar desktop GIS-gebruikers. 
-
-Het Vlaamse Geoportaal Geopunt biedt een aantal geografische diensten (web-services) aan die mogen gebruikt worden door derden zoals andere overheden en bedrijven.
-
-De kaartdiensten zijn gebaseerd op de OGC open standaard WMS of WMTS en kunnen gemakkelijk worden toegevoegd aan desktop GIS. GIS-gebruikers kunnen deze diensten ontdekken via het [metadatacenter](https://metadata.geopunt.be). 
-De achterliggende zoekservice voor deze diensten is niet direct bruikbaar in QGIS en wordt in deze plugin ingebouwd.
-
-Sommige diensten aangeboden door geopunt zijn niet gebaseerd op een open standaard omdat het gaat om diensten die geen  courant gebruikte open standaard hebben. Deze publieke webdiensten zijn opgesteld volgens een REST-volle API, die eenvoudiger in gebruik is voor programmeurs dan OGC-diensten, maar omdat ze niet gestandaardiseerd zijn, kunnen ze niet zomaar binnen getrokken worden in desktop software.
-
-Het gaat onder andere over:
-
-- **Geocoderen**, gebaseerd op de officiële [CRAB](https://www.agiv.be/producten/crab) adressen-databank
-- **Locaties zoeken**, door koppeling van adressen aan de crab-databank, bijvoorbeeld de scholendatabank van de Vlaamse overheid. (documentatie  nog niet beschikbaar)
-- **Innames van openbaar domein**, van het Generiek Informatieplatform Openbaar Domein (GIPOD)  [GIPOD](hhttp://gipod.api.agiv.be/#!index.md), de officiële databank met manifestaties, wegenwerken en andere obstructies op het openbaar domein.
-- **Hoogteprofiel**, een dienst waarmee de hoogte, in digitaal hoogte model Vlaanderen, langsheen een lijn kan worden opgevraagd. De brondata is [DHM-Vlaanderen](https://www.agiv.be/producten/digitaal-hoogtemodel-vlaanderen).
-- **Percelen zoeken**, op getrapte wijze op de basis van gemeente naar departement, sectie dan naar perceelnummer in KADMAP.
-- **Metadata zoekdienst**, deze diensten worden gebruik in het [metadatacenter](https://metadata.geopunt.be) van geopunt en bevat ondermeer metadatafiches van AGIV, het samenwerkingsverband MercatorNet en DOV. 
-
-Om GIS gebruikers binnen en buiten de Vlaamse Overheid dezelfde functionaliteit ter beschikking te stellen als aangeboden in Geopunt, wenst AGIV deze gebruikers te voorzien van software plug-ins die deze functionaliteit geïntegreerd aanbieden binnen de meest gangbare GIS desktop  omgevingen. 
-Op basis van voorafgaand overleg met de GDI-Vlaanderen gemeenschap werd volgende GIS software geselecteerd: Quantum GIS (QGIS) v2.0 Dufour en ESRI ArcMap v10. 
-
-Wat is Geopunt ?
---------------
-
-[Geopunt](http://www.geopunt.be/) is de centrale toegangspoort tot geografische overheidsinformatie, en het uithangbord van het samenwerkingsverband voor geografische informatie in Vlaanderen (GDI-Vlaanderen). Het portaal richt zich met een uitgebreid data-, diensten- en toepassingenaanbod naar een breed en divers publiek. Van burgers op zoek naar een geschikte bouwgrond tot de GIS-coördinator of het studiebureau die een milieu-studie wensen uit te voeren. Het geoportaal maakt laagdrempelig gebruik van geografische informatie door zowel overheidsinstanties, burgers, organisaties als bedrijven mogelijk. Maatschappelijk relevante geografische gegevens en diensten worden op een slimme en gebruiksvriendelijke wijze bijeengebracht. 
-
-Alle componenten (metadata-cataloog, downloadapplicatie, e-commerce-applicatie, data en netwerkdiensten) worden rechtstreeks en geïntegreerd aangeboden. Het geoportaal vormt het Vlaams knooppunt in een Europese geografische data-infrastructuur en voldoet aan de vereisten van de [European INSPIRE richtlijn](http://inspire-geoportal.ec.europa.eu/).
-
-Geopunt is de website van het samenwerkingsverband voor geografische informatie binnen de Vlaamse overheid, GDI-Vlaanderen (GDI = Geografische Data Infrastructuur). In de rol van geografische dienstenintegrator en als uitvoerend orgaan van het samenwerkingsverband GDI-Vlaanderen staat het Agentschap voor Geografische Informatie Vlaanderen (AGIV) in voor de realisatie en het onderhoud van Geopunt. 
-
-Over de auteur
--------------
-
-[Kay Warrie](http://kgis.be)
-
-Ik ben geodata analyst en programmeur, werkzaam als freelance GIS consultant en bij de Studiedienst van stad Antwerpen. 
-
-Professioneel werk ik op desktop GIS, voornamelijk Arcgis en QGIS en op webmapping met ESRI Arcgis-server of opensource webGIS en Maptiling Systemen. Ik beheer ook mee de centrale geodatabases van het stad en INSPIRE-compliant metadata in kader van GDI, Voor de rest doe ik vooral allerlei GIS analyses op data van het Stad. De meeste analyses zijn gerelateerd aan adressering-geocoding, ruimtelijke relaties, nabijheidsanalyses (routing, service area's ed.) voor onder andere MER studies, ruimtelijke ordening of bouwvergunningen.
-
-[Contact mij](mailto:kaywarrie@gmail.com)
-
-[Meer over mij](http://warrieka.github.io/#!aboutMe.md)
-
-#### Online Bronnen:
-
-- *[http://www.geopunt.be](http://www.geopunt.be/voor-experts/geopunt-plugins)* 
-- *[https://www.agiv.be/](https://www.agiv.be/)*
+* QGIS 3.x of hoger (compatibel met QGIS 4.x vanaf release 2.7)
+* Python 3 (gebundeld met QGIS)
+* Elk besturingssysteem dat QGIS met Python plug-ins kan draaien: Windows, macOS of Linux
+* Python modules `matplotlib` en `numpy`
+* Inbegrepen bij Windows en Linux QGIS-installaties
+* Vereist mogelijk handmatige installatie op macOS
 
 
+* Actieve internetverbinding (strikte firewalls kunnen de toegang tot diensten blokkeren)
+
+---
+
+## Doelstellingen
+
+**Geopunt4QGis – "Geopunt voor QGIS"** is een plug-in voor de open-source desktop GIS [QGIS](https://qgis.org/).
+
+Het geoportaal van de Vlaamse overheid **Geopunt** biedt een breed scala aan webservices die vrij kunnen worden gebruikt door derden, inclusief overheden, organisaties en burgers.
+
+Standaard kaartdiensten zijn gebaseerd op OGC-standaarden zoals **WMS** en **WMTS**, en kunnen eenvoudig worden toegevoegd in QGIS. Deze diensten zijn vindbaar via de metadatacatalogus:
+
+👉 https://metadata.vlaanderen.be/srv/dut/catalog.search
+
+Sommige diensten zijn echter **niet gestandaardiseerd** en zijn enkel beschikbaar via REST API's. Hoewel deze API's handig zijn voor ontwikkelaars, zijn ze niet direct bruikbaar in desktop GIS-software zoals QGIS.
+
+Deze plug-in overbrugt die kloof door deze diensten te integreren in QGIS.
+
+### Inbegrepen diensten
+
+* **Geocodering**
+Gebaseerd op het Vlaamse gebouwen- en adressenregister:
+[https://www.vlaanderen.be/digitaal-vlaanderen/onze-diensten-en-platformen/gebouwen-en-adressenregister](https://www.vlaanderen.be/digitaal-vlaanderen/onze-diensten-en-platformen/gebouwen-en-adressenregister)
+* **Locatie zoeken (POI)**
+Gebaseerd op datasets gekoppeld aan het adressenregister (bijv. scholen, openbare diensten)
+* **Informatie over verkeershinder (GIPOD)**
+[https://gipod.vlaanderen.be](https://gipod.vlaanderen.be)
+* **Hoogteprofiel**
+Gebruikt het Digitaal Hoogtemodel (DHM Vlaanderen):
+[https://overheid.vlaanderen.be/informatie-vlaanderen/producten-diensten/digitaal-hoogtemodel](https://overheid.vlaanderen.be/informatie-vlaanderen/producten-diensten/digitaal-hoogtemodel)
+* **Perceel zoeken (KADMAP / GRB-gebaseerde diensten)**
+* **Metadatacatalogus**
+[https://metadata.vlaanderen.be/srv/dut/catalog.search](https://metadata.vlaanderen.be/srv/dut/catalog.search)
+
+Het doel is om deze diensten toegankelijk te maken voor:
+
+* het maken van kaarten
+* ruimtelijke analyses
+* onderzoeksworkflows
+* integratie in GIS-projecten
+
+---
+
+## Wat is Geopunt?
+
+[Geopunt](https://www.geopunt.be/) is de centrale toegangspoort tot geografische informatie van de Vlaamse overheid.
+
+Het biedt:
+
+* datasets
+* webservices
+* toepassingen
+* metadatacatalogi
+
+voor een breed publiek, waaronder burgers, GIS-professionals, ingenieurs en beleidsmakers.
+
+Alle componenten (metadata, downloads, diensten en toepassingen) zijn geïntegreerd in één platform. Geopunt is ook het Vlaamse knooppunt van de Europese Ruimtelijke Data Infrastructuur en voldoet aan de **INSPIRE-richtlijn**:
+
+👉 https://inspire-geoportal.ec.europa.eu/
+
+Geopunt wordt beheerd binnen **GDI-Vlaanderen** (Geografische Data Infrastructuur).
+
+Het operationele beheer wordt uitgevoerd door:
+
+👉 https://www.vlaanderen.be/digitaal-vlaanderen
+
+---
+
+## Over de auteur
+
+Mijn naam is **Kay Warrie**. Ik ben een ruimtelijke data-analist en ontwikkelaar, gevestigd in België.
+
+Ik werk op de onderzoeksafdeling van de stad Antwerpen. Mijn werk omvat:
+
+* web mapping (ArcGIS Server, Mapbox)
+* desktop GIS (QGIS, ArcGIS)
+* INSPIRE-conforme metadata-beheer (GDI-Vlaanderen)
+* ruimtelijke analyse van stedelijke data
+
+Typische analyses omvatten:
+
+* geocodering en adresmatching
+* nabijheids- en routeanalyses
+* milieueffectstudies
+* ondersteuning bij ruimtelijke ordening en vergunningen
+
+📧 [Neem contact op](https://www.google.com/search?q=mailto%3Akaywarrie%40gmail.com)
+
+🌐 [Meer over mij](http://kgis.be)
+
+---
+
+## Bronnen
+
+* [https://www.geopunt.be](https://www.geopunt.be)
+* [https://www.vlaanderen.be/geopunt](https://www.vlaanderen.be/geopunt)
+* [https://metadata.geopunt.be](https://metadata.geopunt.be)
+* [https://www.vlaanderen.be/digitaal-vlaanderen](https://www.vlaanderen.be/digitaal-vlaanderen)

@@ -13,14 +13,6 @@ Lijst TODO's:
 - OGC ook nog eens nakijken
 
 
-###  **Niet reproduceerbaar**
-11	Bug: Geocoding werkt niet als er geen postcode wordt meegegeven	 
-- De combinatie {Straat} {nr}, {postcode} {"Gemeente"} wordt doorgegeven aan de API:
-	- https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Molenstraat 1, antwerpen
-- Ik heb getest met een eigen bestand zonder postcodes, sommige worden gevonden, andere niet, maar dat ligt aan de kwaliteit van de data.
-	- Als ik dezelfde combo doorgeef in de browser heb ik hetzelfde resultaat.
-
-
 ### Uitgeoverd
 Geocoding:  
 -   Improvement: Vertaling optimaliseren. 
@@ -82,7 +74,10 @@ POI:
 - Vermelding AGIV
 - Verdwijnen labels onderaan datacatalog
 - Indien gemeente op eerste lijn staat wordt die niet meegenomen (heeft niets met postcode te maken)
-- 
+- 11	Bug: Geocoding werkt niet als er geen postcode wordt meegegeven	 
+- De combinatie {Straat} {nr}, {postcode} {"Gemeente"} wordt doorgegeven aan de API:
+	- https://geo.api.vlaanderen.be/geolocation/v4/Location?q=Molenstraat 1, antwerpen
+- TASK: Vertaling
 
 Fake proxy-firewall
 ------------------

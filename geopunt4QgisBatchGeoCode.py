@@ -1,6 +1,6 @@
 import csv, webbrowser, os.path
 from qgis.PyQt.QtCore import Qt, QSettings, QTranslator, QCoreApplication
-from qgis.PyQt.QtWidgets import (QDialog, QDialogButtonBox, QPushButton, QInputDialog, 
+from qgis.PyQt.QtWidgets import (QDialog, QInputDialog, 
                                  QComboBox, QMessageBox, QTableWidgetItem, QFileDialog)
 from qgis.PyQt.QtGui import QColor, QBrush
 from .ui_geopunt4QgisBatchGeoCode import Ui_batchGeocodeDlg
@@ -12,16 +12,15 @@ from .tools.settings import settings
 from .tools.geometry import geometryHelper
 import xml.etree.ElementTree as ET
 
+PLUGIN_DIR = os.path.dirname(__file__)
 class geopunt4QgisBatcGeoCodeDialog(QDialog):
     def __init__(self, iface):
-        QDialog.__init__(self, None)
-        self.setWindowFlags( self.windowFlags() & ~Qt.WindowContextHelpButtonHint )
-        #self.setWindowFlags( self.windowFlags() |Qt.WindowStaysOnTopHint)
+        super().__init__()
         self.iface = iface
         
         # initialize locale
-        locale = QSettings().value("locale/userLocale", "nl")[0:2]
-        localePath = os.path.join(os.path.dirname(__file__), 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
+        locale = QSettings().value("locale/userLocale", "nl")[:2]
+        localePath = os.path.join(PLUGIN_DIR, 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
         if os.path.exists(localePath):
             self.translator = QTranslator()
             self.translator.load(localePath)
@@ -51,10 +50,6 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         self.ui.delimEdit.setEnabled(False)
         self.ui.addToMapKnop.setEnabled(False)
         self.ui.tlFrame.setEnabled(False)
-        
-        self.ui.buttonBox.addButton( QPushButton("Sluiten"), QDialogButtonBox.RejectRole )
-        for btn in self.ui.buttonBox.buttons():
-            btn.setAutoDefault(0)
             
         #actions
         self.ui.outPutTbl.addAction( self.ui.actionValidateSelection)      
@@ -72,7 +67,8 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         self.ui.validateBtn.clicked.connect(self.validateAll)
         self.ui.addToMapKnop.clicked.connect(self.addToMap)
         self.ui.singleLineChk.toggled.connect(self.on_singleLineToggled)
-        self.ui.buttonBox.helpRequested.connect(self.openHelp)
+        self.ui.buttonBox.helpRequested.connect(lambda:  webbrowser.open_new_tab(
+            "https://www.vlaanderen.be/geopunt/plug-ins/csv-bestanden-geocoderen-in-qgis"))
         self.finished.connect(self.clean)
     
     def loadSettings(self): 
@@ -86,11 +82,6 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         s = settings()
         self.proxy = s.proxy  
         self.startDir = self.s.value("geopunt4qgis/startDir", os.path.expanduser("~") )
-
-    #eventHandlers
-    def openHelp(self):
-        webbrowser.open_new_tab(
-            "https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/functionaliteiten-qgis-plug-in/csv-bestanden-geocoderen-in-qgis")
 
     def addToMap(self): 
         if not self.layernameValid(): return

@@ -20,8 +20,8 @@
    <string>Hoogteprofiel</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
-    <normaloff>:/svg/images/Hoogte.svg</normaloff>:/svg/images/Hoogte.svg</iconset>
+   <iconset>
+    <normaloff>images/Hoogte.svg</normaloff>images/Hoogte.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -32,8 +32,8 @@
         <string>Teken de profiellijn</string>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/plugins/geopunt4Qgis/images/draw.png</normaloff>:/plugins/geopunt4Qgis/images/draw.png</iconset>
+        <iconset>
+         <normaloff>images/draw.png</normaloff>images/draw.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -49,10 +49,10 @@
      <item>
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
+        <enum>QSizePolicy::Policy::Expanding</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -72,6 +72,10 @@
        </property>
        <property name="text">
         <string>Voeg hoogtemodel toe als laag</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>images/Hoogte.svg</normaloff>images/Hoogte.svg</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -109,8 +113,8 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/full_extent.png</normaloff>:/plugins/geopunt4Qgis/images/full_extent.png</iconset>
+         <iconset>
+          <normaloff>images/full_extent.png</normaloff>images/full_extent.png</iconset>
         </property>
        </widget>
       </item>
@@ -120,8 +124,8 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/previous.png</normaloff>:/plugins/geopunt4Qgis/images/previous.png</iconset>
+         <iconset>
+          <normaloff>images/previous.png</normaloff>images/previous.png</iconset>
         </property>
        </widget>
       </item>
@@ -131,8 +135,8 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/next.png</normaloff>:/plugins/geopunt4Qgis/images/next.png</iconset>
+         <iconset>
+          <normaloff>images/next.png</normaloff>images/next.png</iconset>
         </property>
        </widget>
       </item>
@@ -142,8 +146,8 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/pan.png</normaloff>:/plugins/geopunt4Qgis/images/pan.png</iconset>
+         <iconset>
+          <normaloff>images/pan.png</normaloff>images/pan.png</iconset>
         </property>
        </widget>
       </item>
@@ -153,8 +157,8 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/rectangleZoom.png</normaloff>:/plugins/geopunt4Qgis/images/rectangleZoom.png</iconset>
+         <iconset>
+          <normaloff>images/rectangleZoom.png</normaloff>images/rectangleZoom.png</iconset>
         </property>
        </widget>
       </item>
@@ -164,8 +168,8 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/save.png</normaloff>:/plugins/geopunt4Qgis/images/save.png</iconset>
+         <iconset>
+          <normaloff>images/save.png</normaloff>images/save.png</iconset>
         </property>
        </widget>
       </item>
@@ -175,8 +179,8 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/wrench.png</normaloff>:/plugins/geopunt4Qgis/images/wrench.png</iconset>
+         <iconset>
+          <normaloff>images/wrench.png</normaloff>images/wrench.png</iconset>
         </property>
        </widget>
       </item>
@@ -186,15 +190,15 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/fill.png</normaloff>:/plugins/geopunt4Qgis/images/fill.png</iconset>
+         <iconset>
+          <normaloff>images/fill.png</normaloff>images/fill.png</iconset>
         </property>
        </widget>
       </item>
       <item>
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -210,7 +214,7 @@
          <string>Aantal profielpunten</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -263,7 +267,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
+         <iconset>
           <normaloff>:/plugins/geopunt4Qgis/images/Refresh.png</normaloff>:/plugins/geopunt4Qgis/images/Refresh.png</iconset>
         </property>
         <property name="autoDefault">
@@ -292,8 +296,8 @@
          <string>Profiellijn opslaan </string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/addVectorLayer.png</normaloff>:/plugins/geopunt4Qgis/images/addVectorLayer.png</iconset>
+         <iconset>
+          <normaloff>images/addVectorLayer.png</normaloff>images/addVectorLayer.png</iconset>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
@@ -312,8 +316,8 @@
          <string>Profielpunten opslaan</string>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
-          <normaloff>:/plugins/geopunt4Qgis/images/addPointLayer.png</normaloff>:/plugins/geopunt4Qgis/images/addPointLayer.png</iconset>
+         <iconset>
+          <normaloff>images/addPointLayer.png</normaloff>images/addPointLayer.png</iconset>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
@@ -323,7 +327,7 @@
       <item>
        <spacer name="horizontalSpacer_4">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -348,7 +352,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -367,10 +371,10 @@
         </sizepolicy>
        </property>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="standardButtons">
-        <set>QDialogButtonBox::Help</set>
+        <set>QDialogButtonBox::StandardButton::Close|QDialogButtonBox::StandardButton::Help</set>
        </property>
       </widget>
      </item>
@@ -378,9 +382,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

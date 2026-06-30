@@ -1,25 +1,21 @@
 from qgis.PyQt.QtCore import Qt, QSettings, QTranslator, QCoreApplication, QStringListModel
-from qgis.PyQt.QtWidgets import QDialog, QPushButton, QDialogButtonBox, QSizePolicy, QInputDialog, QCompleter
+from qgis.PyQt.QtWidgets import QDialog, QInputDialog, QCompleter
 from qgis.PyQt.QtGui import QColor
 from qgis.core import Qgis, QgsGeometry
-from qgis.gui  import QgsMessageBar, QgsRubberBand
+from qgis.gui  import QgsRubberBand
 from .ui_geopunt4QgisParcel import Ui_geopunt4QgisParcelDlg
 import os, json, webbrowser
 from .geopunt import capakey
 from .tools.geometry import geometryHelper
 from .tools.parcel import parcelHelper
 
+PLUGIN_DIR = os.path.dirname(__file__)
 class geopunt4QgisParcelDlg(QDialog):
     def __init__(self, iface):
-        QDialog.__init__(self, None)
-        self.setWindowFlags( self.windowFlags() & ~Qt.WindowContextHelpButtonHint )
+        super().__init__()
         self.iface = iface
-    
-        # initialize locale
-        locale = QSettings().value("locale/userLocale", "en")
-        if not locale: locale == 'en'
-        else: locale = locale[0:2]
-        localePath = os.path.join(os.path.dirname(__file__), 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
+        locale = QSettings().value("locale/userLocale", "en")[:2]
+        localePath = os.path.join( PLUGIN_DIR, 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
         if os.path.exists(localePath):
             self.translator = QTranslator()
             self.translator.load(localePath)
@@ -33,10 +29,7 @@ class geopunt4QgisParcelDlg(QDialog):
         """setup the user interface"""
         self.ui = Ui_geopunt4QgisParcelDlg()
         self.ui.setupUi(self)
-        self.ui.buttonBox.addButton(QPushButton("Sluiten"), QDialogButtonBox.RejectRole  )
-        for btn in self.ui.buttonBox.buttons():
-            btn.setAutoDefault(0)
-            
+
         #get settings
         self.s = QSettings()
         self.loadSettings()
@@ -55,9 +48,7 @@ class geopunt4QgisParcelDlg(QDialog):
         self.graphics = []
         
         #setup a message bar
-        self.bar = QgsMessageBar() 
-        self.bar.setSizePolicy( QSizePolicy.Minimum, QSizePolicy.Fixed )
-        self.ui.verticalLayout.addWidget(self.bar)
+        self.bar = self.iface.messageBar()
         
         #event handlers 
         self.ui.municipalityCbx.currentIndexChanged.connect(self.municipalityChanged)
@@ -69,7 +60,8 @@ class geopunt4QgisParcelDlg(QDialog):
         self.ui.ZoomKnop_dep.clicked.connect(self.zoomTo)
         self.ui.ZoomKnop_sect.clicked.connect(self.zoomTo)
         self.ui.ZoomKnop_parcel.clicked.connect(self.zoomTo)
-        self.ui.buttonBox.helpRequested.connect(self.openHelp)
+        self.ui.buttonBox.helpRequested.connect(lambda: webbrowser.open_new_tab(
+            "https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/zoek-een-perceel-in-qgis"))
         self.ui.saveBtn.clicked.connect(self.saveParcel)
         self.finished.connect(self.clean)
         
@@ -276,10 +268,6 @@ class geopunt4QgisParcelDlg(QDialog):
                 self.addGraphic(n)
             return
 
-    def openHelp(self):
-        webbrowser.open_new_tab(
-            "https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/functionaliteiten-qgis-plug-in/zoek-een-perceel-in-qgis")
-
     def layernameValid(self):   
         if not hasattr(self, 'layerName'):
           layerName, accept = QInputDialog.getText(None,
@@ -319,8 +307,8 @@ class geopunt4QgisParcelDlg(QDialog):
         for rings in mPolygon:
             prjPolygon = []
             for ring in rings:
-              prjRing = self.gh.prjLineToMapCrs( ring, self.epsg )
-              prjPolygon.append( prjRing.asPolyline() )
+                prjRing = self.gh.prjLineToMapCrs( ring, self.epsg )
+                prjPolygon.append( prjRing.asPolyline() )
             
             gPolygon = QgsGeometry.fromPolygonXY( prjPolygon )
             Polygons.append( gPolygon )
@@ -345,7 +333,7 @@ class geopunt4QgisParcelDlg(QDialog):
         completerModel = QStringListModel( self )
         wgt.setCompleter( completer )
         completer.setModel( completerModel )
-        completer.setCaseSensitivity(False)
+        completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         completerModel.setStringList( values )
   
     def clean(self):

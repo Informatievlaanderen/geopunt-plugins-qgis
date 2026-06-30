@@ -4,7 +4,8 @@
 
 [general]
 name=geopunt4Qgis
-qgisMinimumVersion=3.22
+qgisMinimumVersion=4.00
+qgisMaximumVersion=4.99
 description=NL: Plug-in om Geopunt-functionaliteiten in QGIS te gebruiken
     EN: Plug-in to use Geopunt-functionalities in QGIS
 about=Geopunt4Qgis - “Geopunt voor QGIS” is de plug-in voor de QGIS open source desktop GIS, die de webservices van Digitaal Vlaanderen en andere agentschappen van de Vlaamse overheid ontsluit naar desktop GIS-gebruikers. Digitaal Vlaanderen biedt een aantal geografische diensten (webservices) aan die mogen gebruikt worden door derden, zoals andere overheden en bedrijven.
@@ -22,7 +23,7 @@ about=Geopunt4Qgis - “Geopunt voor QGIS” is de plug-in voor de QGIS open sou
     - Search for parcels.
     - Search for layers via the Datavindplaats.
 
-version=2.5.0.4
+version=2.7.0.0
 author=Kay Warrie
 email=kaywarrie@gmail.com 
 
@@ -30,48 +31,9 @@ email=kaywarrie@gmail.com
 
 # Optional items:
 # Uncomment the following line and add your changelog entries:
-changelog=Aanpassingen 27/2/2026
+changelog=Aanpassingen 27/6/2026
     ----------------------
-    Geocoding:  
-    -	Bug: Geocoding: Python error bij zoom to location	
-
-    Catalogus:
-    -   Improvement: WMTS, OGC-featues en WCs toegevoegd. 
-        -   Achter de knop zit de eerste laag per type per dataset, 
-        -   Een beperk aantal datasets (zoals grb) heeft meerdere wms'en per dataset, die zal je dan toch op de manuele mnieer moeten toevoegen 
-        -   -> Dat wordt anders te complex: meedere wms'en per dataset, meerdere lagen per wms. 
-    -   Improvement: Als de laagnaam matched met de naam van de service in de metadata dan moet je gaen laag meer kiezen, Idem ams er maar 1 laag is
-    -   Improvement: Url's in beschrijvingen zijn aanklikbaar 
-    -   Improvement: Er wordt gezocht naar service urls via metadata.vlaanderen en datavindplaats, bescrijving komt alrijd uit datavindplaats.  
-    -	Update: Geopunt metadatacenter URL naamgeving	
-    -	Bug: fout voor WFS	
-        - Opmerking: ik stel nu zelf de query string samen ipv de opgegeven query string uit de url te gebruiken, zou iets mee compatibiliet met qgis moeten geven. 
-        - Opmerking: sommige van de fouten zijn het gevolg van fouten de achterliggnde service dat kan ik niet oplossen
-    -	Improvement: Zoeken op 'bos' in Catalogus crasht/time-out
-        - Paginering zou di moeten oplossen
-    -	Improvement: WCS toevoegen via Datavindplaats
-        - Als de WCS in formaat is dat qgis niet kent, zal het zoiezo niet werken  	
-    -	Improvement: OGC API Features kunnen niet worden toegevoegd	 
-    -	Improvement: Geen knop om WMTS toe te voegen	
-    -	Improvement: Benaming knoppen Datavindplaats 'toevoegen' in verschillende talen	
-        - Ik heb de "Toevoegen" op de knoplabel gewoon laten vallen, met die all nieuwe knoppen wordt het anders te breed. 
-        - Vertaling naar engels door lopen doe ik op het laatste, als er geen nieuwe ui element meer bijkom 
-    -	Typo: QGIS geocoding in tooltip	
-    -	Typo: QGIS official plug-in pagina aanpassingen	
-
-    Hoogte: 
-    -	Bug: Hoogteprofiel trace marker in ETRS89	
-    -	Bug: Tekenlijn volgt de cursor niet tijdens het tekenen	
-    -	Bug: Geopunt metadatacenter en catalogus URL’s verschijnen niet altijd	
-    -	Bug: Hoogteprofiel horizontale afstand in WGS84	
-    -	Bug: Hoogteprofiel fill color wijzigen	
-    -	Bug: Perceel toevoegen (fout CRS toegewezen aan de kaartlaag)	
-    -	Update: Link naar LARA is verouderd	
-    -	Improvement: Toevoegen van een ‘Info’-button aan de plugin	
-    -	Update: Error message: verwijzing naar AGIV en CRAB	
-
-    POI:  
-    -	Bug: POI: Error on Add selection to map	
+    Migration to QGIS4
 
 
 # tags are comma separated with spaces allowed

@@ -1,7 +1,6 @@
 from qgis.PyQt.QtCore import (Qt, QSettings, QCoreApplication, QTranslator, 
                                                             QStringListModel)
-from qgis.PyQt.QtWidgets import (QDialog, QCompleter, QSizePolicy, 
-                                   QPushButton, QDialogButtonBox, QInputDialog)
+from qgis.PyQt.QtWidgets import QDialog, QCompleter, QInputDialog
 from qgis.PyQt.QtGui import QColor
 from .ui_geopunt4qgis import Ui_geopunt4Qgis
 from qgis.gui import QgsMessageBar, QgsVertexMarker
@@ -11,17 +10,15 @@ from .tools.geometry import geometryHelper
 from .tools.settings import settings
 import os, webbrowser
 
+PLUGIN_DIR = os.path.dirname(__file__)
 class geopunt4QgisAdresDialog(QDialog):
     def __init__(self, iface):
-        QDialog.__init__(self, None)
-        self.setWindowFlags( self.windowFlags() & ~Qt.WindowContextHelpButtonHint )
+        super().__init__()
         self.iface = iface
     
         # initialize locale
-        locale = QSettings().value("locale/userLocale", "nl")
-        if not locale: locale == 'nl' 
-        else: locale = locale[0:2]
-        localePath = os.path.join(os.path.dirname(__file__), 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
+        locale = QSettings().value("locale/userLocale", "nl")[:2]
+        localePath = os.path.join(PLUGIN_DIR, 'i18n', 'geopunt4qgis_{}.qm'.format(locale))
         if os.path.exists(localePath):
             self.translator = QTranslator()
             self.translator.load(localePath)
@@ -52,17 +49,11 @@ class geopunt4QgisAdresDialog(QDialog):
         self.completerModel = QStringListModel(self)
         self.ui.gemeenteBox.setCompleter(self.completer )
         self.completer.setModel(self.completerModel )
-        self.completer.setCaseSensitivity(False)
+        self.completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
 
         #setup a message bar
-        self.bar = QgsMessageBar() 
-        self.bar.setSizePolicy( QSizePolicy.Minimum, QSizePolicy.Fixed )
-        self.ui.verticalLayout.addWidget(self.bar)
-        
-        self.ui.buttonBox.addButton( QPushButton("Sluiten"), QDialogButtonBox.RejectRole )
-        for btn in self.ui.buttonBox.buttons():
-            btn.setAutoDefault(0)
-            
+        self.bar = self.iface.messageBar()
+
         #event handlers 
         if self.adresSearchOnEnter:
           self.ui.zoekText.returnPressed.connect(self.onZoekActivated)
@@ -73,7 +64,8 @@ class geopunt4QgisAdresDialog(QDialog):
         self.ui.resultLijst.itemClicked.connect(self.onItemClick)
         self.ui.ZoomKnop.clicked.connect(self.onZoomKnopClick)
         self.ui.Add2mapKnop.clicked.connect(self.onAdd2mapKnopClick)
-        self.ui.buttonBox.helpRequested.connect(self.openHelp)
+        self.ui.buttonBox.helpRequested.connect(lambda: webbrowser.open_new_tab(
+           "https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/zoek-een-adres-in-qgis"))
         self.finished.connect(self.clean )
         
     def loadSettings(self):
@@ -92,7 +84,7 @@ class geopunt4QgisAdresDialog(QDialog):
     # overwrite
     def show(self):
         QDialog.show(self)
-        self.setWindowModality(0)
+        self.setWindowModality(Qt.WindowModality.NonModal)
 
         if self.firstShow: 
             gemeenteNamen =  [n["Naam"] for n in self.am.gemeenten()]
@@ -103,10 +95,6 @@ class geopunt4QgisAdresDialog(QDialog):
             self.ui.gemeenteBox.setStyleSheet('QComboBox {color: #808080}')
             self.ui.gemeenteBox.setFocus()
             self.firstShow = False
-        
-    def openHelp(self):
-        webbrowser.open_new_tab(
-           "https://www.vlaanderen.be/geopunt/plug-ins/qgis-plug-in/functionaliteiten-qgis-plug-in/zoek-een-adres-in-qgis")
     
     def onZoekActivated(self):
         self._clearGraphicsLayer()

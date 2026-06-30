@@ -15,8 +15,8 @@
    <string>Zoek een adres via Geopunt </string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
-    <normaloff>:/svg/images/Adres.svg</normaloff>:/svg/images/Adres.svg</iconset>
+   <iconset>
+    <normaloff>images/Adres.svg</normaloff>images/Adres.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -50,7 +50,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -66,8 +66,8 @@
         <string>Toevoegen aan kaart</string>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/plugins/geopunt4Qgis/images/addPointLayer.png</normaloff>:/plugins/geopunt4Qgis/images/addPointLayer.png</iconset>
+        <iconset>
+         <normaloff>images/addPointLayer.png</normaloff>images/addPointLayer.png</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -80,8 +80,8 @@
         <string>Zoom naar</string>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/plugins/geopunt4Qgis/images/binocularsSmall.png</normaloff>:/plugins/geopunt4Qgis/images/binocularsSmall.png</iconset>
+        <iconset>
+         <normaloff>images/binocularsSmall.png</normaloff>images/binocularsSmall.png</iconset>
        </property>
        <property name="default">
         <bool>true</bool>
@@ -101,10 +101,10 @@
         </size>
        </property>
        <property name="frameShape">
-        <enum>QFrame::Panel</enum>
+        <enum>QFrame::Shape::Panel</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
+        <enum>QFrame::Shadow::Sunken</enum>
        </property>
        <property name="text">
         <string/>
@@ -114,7 +114,7 @@
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -133,10 +133,10 @@
         </sizepolicy>
        </property>
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="standardButtons">
-        <set>QDialogButtonBox::Help</set>
+        <set>QDialogButtonBox::StandardButton::Close|QDialogButtonBox::StandardButton::Help</set>
        </property>
        <property name="centerButtons">
         <bool>false</bool>
@@ -148,10 +148,10 @@
    <item>
     <widget class="QLabel" name="laraLbl">
      <property name="text">
-      <string>&lt;small&gt;&lt;a href=&quot;http://crab.agiv.be/Lara&quot;&gt;Foute adressen kunt u melden via LARA&lt;/a&gt;&lt;/small&gt;</string>
+      <string>&lt;small&gt;&lt;a href=&quot;https://lara.vlaanderen.be&quot;&gt;Foute adressen kunt u melden via LARA&lt;/a&gt;&lt;/small&gt;</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+      <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing</set>
      </property>
      <property name="margin">
       <number>-1</number>
@@ -160,7 +160,7 @@
       <bool>true</bool>
      </property>
      <property name="textInteractionFlags">
-      <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
+      <set>Qt::TextInteractionFlag::LinksAccessibleByKeyboard|Qt::TextInteractionFlag::LinksAccessibleByMouse</set>
      </property>
     </widget>
    </item>
@@ -171,9 +171,7 @@
   <zorder></zorder>
   <zorder></zorder>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

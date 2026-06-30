@@ -2,7 +2,7 @@ import csv, webbrowser, os.path
 from qgis.PyQt.QtCore import Qt, QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtWidgets import (QDialog, QInputDialog, 
                                  QComboBox, QMessageBox, QTableWidgetItem, QFileDialog)
-from qgis.PyQt.QtGui import QColor, QBrush
+from qgis.PyQt.QtGui import QColor, QBrush, QIcon
 from .ui_geopunt4QgisBatchGeoCode import Ui_batchGeocodeDlg
 from .tools.batchGeo import batcGeoHelper
 from .mapTools.reverseAdres import reverseAdresMapTool
@@ -33,6 +33,12 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         self.ui = Ui_batchGeocodeDlg()
         self.ui.setupUi(self)
     
+        self.ui.validateBtn.setIcon(QIcon( os.path.join( PLUGIN_DIR, 'images/validAll.png' )))
+        self.ui.validateSelBtn.setIcon(QIcon( os.path.join( PLUGIN_DIR, 'images/select.png' )))
+        self.ui.zoomToSelBtn.setIcon(QIcon( os.path.join( PLUGIN_DIR, 'images/binocularsSmall.png' )))
+        self.ui.adresFromMapBtn.setIcon(QIcon( os.path.join( PLUGIN_DIR, 'images/prik.png' )))
+        self.ui.addToMapKnop.setIcon(QIcon( os.path.join( PLUGIN_DIR, 'images/addPointLayer.png' )))
+
         #settings
         self.s = QSettings()
         self.loadSettings()

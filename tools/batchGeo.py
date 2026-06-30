@@ -28,7 +28,7 @@ class batcGeoHelper(object):
     
   def save_adres_point(self, point, address, typeAddress='', attritableDict={}, layername="Geopunt_adressen" ):
     
-    mapcrs = geometryHelper.getGetMapCrs( self.iface )
+    mapcrs = geometryHelper.getMapCrs( self.iface )
     
     if not QgsProject.instance().mapLayer(self.adreslayerid):
         attributes = self._createAttributeTable( attritableDict )

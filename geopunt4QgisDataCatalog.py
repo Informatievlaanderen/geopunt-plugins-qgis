@@ -31,6 +31,10 @@ class geopunt4QgisDataCatalog(QDialog):
         """setup the user interface"""
         self.ui = Ui_geopunt4QgisDataCatalogDlg()
         self.ui.setupUi(self)
+        for btn in self.ui.buttonBox.buttons():
+            btn.setAutoDefault(False)
+            btn.setDefault(False)
+
 
         # get settings
         self.s = QSettings()

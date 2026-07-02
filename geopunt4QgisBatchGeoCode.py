@@ -1,6 +1,6 @@
 import csv, webbrowser, os.path
 from qgis.PyQt.QtCore import Qt, QSettings, QTranslator, QCoreApplication
-from qgis.PyQt.QtWidgets import (QDialog, QInputDialog, 
+from qgis.PyQt.QtWidgets import (QDialog, QInputDialog, QDialogButtonBox, 
                                  QComboBox, QMessageBox, QTableWidgetItem, QFileDialog)
 from qgis.PyQt.QtGui import QColor, QBrush, QIcon
 from .ui_geopunt4QgisBatchGeoCode import Ui_batchGeocodeDlg
@@ -32,7 +32,10 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         "Set up the user interface"
         self.ui = Ui_batchGeocodeDlg()
         self.ui.setupUi(self)
-    
+        for btn in self.ui.buttonBox.buttons():
+            btn.setAutoDefault(False)
+            btn.setDefault(False)
+
         self.ui.validateBtn.setIcon(QIcon( os.path.join( PLUGIN_DIR, 'images/validAll.png' )))
         self.ui.validateSelBtn.setIcon(QIcon( os.path.join( PLUGIN_DIR, 'images/select.png' )))
         self.ui.zoomToSelBtn.setIcon(QIcon( os.path.join( PLUGIN_DIR, 'images/binocularsSmall.png' )))
@@ -206,11 +209,16 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
             return 
         
         enc = None
-        if self.ui.codecBox.currentText() == 'utf-8' : enc = 'utf-8'
-        elif self.ui.codecBox.currentText() == 'ansi latin1' : enc = 'latin-1'
+        if self.ui.codecBox.currentText() == 'utf-8' : 
+            enc = 'utf-8-sig'
+        elif self.ui.codecBox.currentText() == 'ansi latin1' : 
+            enc = 'latin-1'
         
         try: 
-            csvReader = csv.reader(open( self.csv, 'r', encoding=enc,  newline=''), delimiter=self.delimiter)
+            csvReader = csv.reader(
+                    open(self.csv, 'r', encoding=enc, newline=''),
+                    delimiter=';'
+                )
         except: 
             QMessageBox.warning(self, "Error", QCoreApplication.translate("batcGeoCodedialog", 
             "Deze file kon niet correct worden ingelezen, probeer eens in te laden als een " +

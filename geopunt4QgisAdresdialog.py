@@ -30,7 +30,10 @@ class geopunt4QgisAdresDialog(QDialog):
         """setup the user interface"""
         self.ui = Ui_geopunt4Qgis()
         self.ui.setupUi(self)
-        
+        for btn in self.ui.buttonBox.buttons():
+            btn.setAutoDefault(False)
+            btn.setDefault(False)
+
         #get settings
         self.s = QSettings()
         self.loadSettings()

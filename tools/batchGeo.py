@@ -13,7 +13,7 @@ class batcGeoHelper(object):
       self.adreslayerid = ''
       self.adresProvider = None
       self.startFolder = startFolder
-    
+
   def _createAttributeTable(self, tableDict, allString=True):
       attributeTable = []
       for name, var in list(tableDict.items()):
@@ -51,7 +51,8 @@ class batcGeoHelper(object):
     fet['fullAdres'] = address
     fet['quality'] = typeAddress
     for name, var in list(attritableDict.items()):
-       field = self.adresProvider.fieldNameMap()[name]
+       fname = self.normalize_field_name(name)
+       field = self.adresProvider.fieldNameMap()[fname]
        fet.setAttribute(field,var)
     self.adresProvider.addFeatures([ fet ])
     
@@ -64,6 +65,9 @@ class batcGeoHelper(object):
     QgsProject.instance().addMapLayer(self.adreslayer)
     self.canvas.refresh()
     
+  @staticmethod
+  def normalize_field_name(name):
+      return str(name).lstrip('\ufeff').strip()
     
   def saveMem2file(self, layername ):
       if self.adresProvider is None or not self.adresProvider.name() == 'memory': return

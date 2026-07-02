@@ -28,7 +28,11 @@ class geopunt4QgisPoidialog(QDialog):
         'Set up the user interface from Designer.'
         self.ui = Ui_geopunt4QgisPoiDlg()
         self.ui.setupUi(self)	
-    
+        for btn in self.ui.buttonBox.buttons():
+            btn.setAutoDefault(False)
+            btn.setDefault(False)
+
+
         #get settings
         self.s = QSettings()
         self.loadSettings()

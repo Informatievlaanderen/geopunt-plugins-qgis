@@ -524,22 +524,6 @@ Metadata Vlaanderen&lt;/a&gt; en
  <connections>
   <connection>
    <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>geopunt4QgisDataCatalogDlg</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>679</x>
-     <y>595</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
    <signal>rejected()</signal>
    <receiver>geopunt4QgisDataCatalogDlg</receiver>
    <slot>reject()</slot>

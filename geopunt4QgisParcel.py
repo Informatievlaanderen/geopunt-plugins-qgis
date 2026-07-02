@@ -29,6 +29,9 @@ class geopunt4QgisParcelDlg(QDialog):
         """setup the user interface"""
         self.ui = Ui_geopunt4QgisParcelDlg()
         self.ui.setupUi(self)
+        for btn in self.ui.buttonBox.buttons():
+            btn.setAutoDefault(False)
+            btn.setDefault(False)
 
         self.ui.ZoomKnop_dep.setIcon( QIcon( os.path.join( PLUGIN_DIR , "images/binocularsSmall.png" ) ) )
         self.ui.ZoomKnop_muni.setIcon( QIcon( os.path.join( PLUGIN_DIR , "images/binocularsSmall.png" ) ) )

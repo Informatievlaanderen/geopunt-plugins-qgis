@@ -23,7 +23,7 @@ about=Geopunt4Qgis - “Geopunt voor QGIS” is de plug-in voor de QGIS open sou
     - Search for parcels.
     - Search for layers via the Datavindplaats.
 
-version=2.7.0.1
+version=2.7.0.2
 author=Kay Warrie
 email=kaywarrie@gmail.com 
 
@@ -36,6 +36,7 @@ changelog=Aanpassingen 27/6/2026
     - Migration to QGIS4
     - Fix UI Icons not appearing 
     - Fix getMapcrs function not working
+    - fix autofocus ande ecoding issues
 
 
 # tags are comma separated with spaces allowed

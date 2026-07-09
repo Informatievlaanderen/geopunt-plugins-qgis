@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from urllib.parse import urlparse, unquote, urlencode
 from ..tools.web import getUrlData
-import xml.etree.ElementTree as ET
+from .defusedxml import ElementTree as ET  # nosec
 
 def listServices(meta_id):
     meta_url = f"https://metadata.vlaanderen.be/srv/dut/csw?service=CSW&version=2.0.2&request=GetRecordById&id={meta_id}&ElementSetName=full"        

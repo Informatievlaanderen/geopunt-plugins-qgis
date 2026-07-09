@@ -7,12 +7,18 @@ from .ui_geopunt4QgisBatchGeoCode import Ui_batchGeocodeDlg
 from .tools.batchGeo import batcGeoHelper
 from .mapTools.reverseAdres import reverseAdresMapTool
 from .geopunt import adresMatch
-from .tools import gmlpointToXY
 from .tools.settings import settings
 from .tools.geometry import geometryHelper
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET # nosec
 
 PLUGIN_DIR = os.path.dirname(__file__)
+
+def _gmlpointToXY(gml):
+    root = ET.fromstring(gml)   # nosec
+    xy_s = root.find('.//{http://www.opengis.net/gml/3.2}pos').text
+    xy = tuple( map(float, xy_s.split(' ') ) )
+    return xy
+
 class geopunt4QgisBatcGeoCodeDialog(QDialog):
     def __init__(self, iface):
         super().__init__()
@@ -124,7 +130,7 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
                 if len(matches) == 0: continue
                 pos = matches[0]["adresPositie"]
                 gml = pos["geometrie"]["gml"]
-                xylb = gmlpointToXY(gml)
+                xylb = _gmlpointToXY(gml)
                 xyType = "|".join([ pos["positieSpecificatie"], 
                                     pos["positieGeometrieMethode"], str(matches[0]["score"]) ])
 
@@ -385,7 +391,7 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
                 # xylb = loc[0]["adresPositie"]["point"]["coordinates"]
                 adresPositie = loc[0].get('adresPositie')
                 gml = adresPositie['geometrie']['gml']
-                root = ET.fromstring(gml)
+                root = ET.fromstring(gml)   # nosec
                 pos_text = root.find('.//gml:pos', {'gml': 'http://www.opengis.net/gml/3.2'}).text
 
                 srs_name = root.attrib.get('srsName', '31370')
@@ -402,7 +408,7 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         bounds = None
         if len(pts) == 1:
           x,y = pts[0]
-          bounds = self.gh.getBoundsOfPoint(x, y)
+          bounds = self.gh.getBoundsOfPoint([x, y])
         elif len(pts) > 1:
           bounds = self.gh.getBoundsOfPointArray(pts)
       

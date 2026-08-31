@@ -225,10 +225,14 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
                     open(self.csv, 'r', encoding=enc, newline=''),
                     delimiter=';'
                 )
-        except: 
-            QMessageBox.warning(self, "Error", QCoreApplication.translate("batcGeoCodedialog", 
-            "Deze file kon niet correct worden ingelezen, probeer eens in te laden als een " +
-            "<strong>ANSI latin-file</strong> of een <strong>UTF-8-file</strong>"))
+        except (IOError, UnicodeDecodeError, FileNotFoundError) as e: 
+            QMessageBox.warning(self, "Error", 
+                QCoreApplication.translate("batcGeoCodedialog",
+                "Deze file kon niet correct worden ingelezen."
+                "probeer eens in te laden als een " +
+                "<b>ANSI latin-file</b> of een <b>UTF-8-file</b>\n") +
+                f"Error: {e}")
+            return
         
         header = next(csvReader)
         colCount = len(header)
@@ -239,14 +243,17 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         self.ui.outPutTbl.setColumnCount(colCount + 1)
         self.ui.outPutTbl.setColumnWidth(colCount, 250)
         
-        self.ui.outPutTbl.setHorizontalHeaderLabels(header + [QCoreApplication.translate("batcGeoCodedialog", "gevalideerd adres")])
+        self.ui.outPutTbl.setHorizontalHeaderLabels(header + [QCoreApplication.translate(
+            "batcGeoCodedialog", "gevalideerd adres")])
         
         self.ui.adresColSelect.insertItems(0, header)
-        self.ui.huisnrSelect.insertItems(0, [QCoreApplication.translate("batcGeoCodedialog", "<geen>")]+ header )
-        
-        self.ui.pcColSelect.insertItems(0, header+ [QCoreApplication.translate("batcGeoCodedialog", "<geen>")]  )
+        self.ui.huisnrSelect.insertItems(0, [QCoreApplication.translate(
+            "batcGeoCodedialog", "<geen>")]+ header )
+        self.ui.pcColSelect.insertItems(0, header+ [QCoreApplication.translate(
+            "batcGeoCodedialog", "<geen>")]  )
         self.ui.pcColSelect.setCurrentIndex(colCount)
-        self.ui.gemeenteColSelect.insertItems(0, header+ [QCoreApplication.translate("batcGeoCodedialog", "<geen>")] )
+        self.ui.gemeenteColSelect.insertItems(0, header+ [QCoreApplication.translate(
+            "batcGeoCodedialog", "<geen>")] )
         self.ui.gemeenteColSelect.setCurrentIndex(colCount)
         
         rowCount = 0
@@ -262,7 +269,7 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
               warnMsg += QCoreApplication.translate("batcGeoCodedialog", 
               "Je bestand heeft meer dan %s rijen.<br/>" ) % self.maxRows 
               warnMsg += QCoreApplication.translate("batcGeoCodedialog",
-              "Om de servers van digitaal vlaanderen niet te zwaar te belasten is de toepassing beperkt tot %s rijen.<br/>" ) % self.maxRows 
+              "De toepassing beperkt tot het inladen van de eerste %s rijen.<br/>" ) % self.maxRows 
           
               self.ui.statusMsg.setText("<div style='color:red'>"+ warnTitle +"</div>")
               QMessageBox.warning(self, warnTitle, warnMsg )
@@ -286,7 +293,8 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         else:
             delimiter, accept = QInputDialog.getText(self, 
                 QCoreApplication.translate("batcGeoCodedialog","Andere separator") , 
-                QCoreApplication.translate("batcGeoCodedialog","Stel zelf een separator in: (Maximaal 1 karakter)"))
+                QCoreApplication.translate("batcGeoCodedialog",
+                                "Stel zelf een separator in: (Maximaal 1 karakter)"))
             if accept:
                 self.delimiter = str( delimiter.strip()[0])
                 self.ui.delimEdit.setText(self.delimiter)

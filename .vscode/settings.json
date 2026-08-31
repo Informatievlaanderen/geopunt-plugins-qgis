@@ -1,5 +1,7 @@
 {
-    "editor.rulers": [100],
+    "editor.rulers": [
+        100
+    ],
     "editor.wordWrapColumn": 100,
     // PyQt Integration
     "pyqt-integration.qtdesigner.path": "C:/OSGeo4W/bin/qgis-designer.bat",
@@ -12,14 +14,13 @@
         "--ignore=E24,E265,E501,W504,W1401",
         "--verbose"
     ],
-
     // Set Python interpreter
-    "python.defaultInterpreterPath": "C:\\Users\\sa64489\\Anaconda3\\envs\\gemgis\\python.exe",
-
+    "python.defaultInterpreterPath": "C:\\OSGeo4W\\bin\\python.exe",
     // Formatting with black
     "python.analysis.extraPaths": [
-            "C:\\OSGeo4W\\apps\\qgis\\python", "C:\\OSGeo4W\\apps\\Python312\\Lib\\site-packages"],
-
+        "C:\\OSGeo4W\\apps\\qgis\\python",
+        "C:\\OSGeo4W\\apps\\Python312\\Lib\\site-packages"
+    ],
     // Replicate the QGIS environment
     "terminal.integrated.env.windows": {
         // Path

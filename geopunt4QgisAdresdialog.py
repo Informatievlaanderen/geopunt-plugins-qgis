@@ -8,9 +8,11 @@ from qgis.core import Qgis, QgsPointXY
 from .geopunt import Adres, basisregisters
 from .tools.geometry import geometryHelper
 from .tools.settings import settings
+from .tools import layernameValid
 import os, webbrowser
 
 PLUGIN_DIR = os.path.dirname(__file__)
+
 class geopunt4QgisAdresDialog(QDialog):
     def __init__(self, iface):
         super().__init__()
@@ -176,7 +178,7 @@ class geopunt4QgisAdresDialog(QDialog):
                 level=Qgis.Critical, duration=3)
         
     def _addToMap(self, txt):
-        if not self.layernameValid(): return
+        if not layernameValid(self): return
         locations = self.gp.fetchLocation(txt)
         if type( locations ) is list and len(locations):
             loc = locations[0]
@@ -189,17 +191,6 @@ class geopunt4QgisAdresDialog(QDialog):
             self.gh.save_adres_point( pt, adres, typeAddress=LocationType, 
               layername=self.layerName, saveToFile=self.saveToFile, sender=self, 
               startFolder= os.path.join(self.startDir, self.layerName))
-      
-    def layernameValid(self):   
-        if not hasattr(self, 'layerName'):
-          layerName, accept = QInputDialog.getText(None,
-              QCoreApplication.translate("geopunt4Qgis", 'Laag toevoegen'),
-              QCoreApplication.translate("geopunt4Qgis", 'Geef een naam voor de laag op:') )
-          if accept == False: 
-             return False
-          else: 
-             self.layerName = layerName
-        return True
       
     def clean(self):
         self.bar.clearWidgets()

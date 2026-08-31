@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from qgis.PyQt.QtCore import Qt, QSettings, QTranslator, QCoreApplication 
 from qgis.PyQt.QtWidgets import QDialog, QPushButton, QDialogButtonBox, QFileDialog
 from .ui_geopunt4QgisSettings import Ui_settingsDlg
@@ -93,10 +92,10 @@ class geopunt4QgisSettingsDialog(QDialog):
         
         #geopunt4Qgis gipod settngs
         gipodSavetoFile = int( self.s.value("geopunt4qgis/gipodSavetoFile" , 1))
-        self.ui.gipodSavetoFileChk.setChecked(poiSavetoFile)
+        self.ui.gipodSavetoFileChk.setChecked(gipodSavetoFile)
         
         gipodSaveMemory = int( self.s.value("geopunt4qgis/gipodSaveMemory" , 0))
-        self.ui.gipodSaveMemoryChk.setChecked(poiSaveMemory)
+        self.ui.gipodSaveMemoryChk.setChecked(gipodSaveMemory)
         
         gipodLayerTxt = self.s.value("geopunt4qgis/gipodLayerTxt", "GIPOD")        
         if isinstance(gipodLayerTxt, str): self.ui.gipodLayerTxt.setText(gipodLayerTxt)
@@ -201,7 +200,7 @@ class geopunt4QgisSettingsDialog(QDialog):
         self.s.setValue("geopunt4qgis/samplesSavetoFile", samplesSavetoFile)
         
         samplesSaveMemory = int( self.ui.samplesSaveMemoryChk.isChecked() )
-        self.s.value("geopunt4qgis/samplesSaveMemory", samplesSaveMemory)
+        self.s.setValue("geopunt4qgis/samplesSaveMemory", samplesSaveMemory)
         
         sampleLayerTxt = self.ui.sampleLayerTxt.text()
         self.s.setValue("geopunt4qgis/sampleLayerTxt", sampleLayerTxt)

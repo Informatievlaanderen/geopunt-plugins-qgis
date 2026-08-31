@@ -1,4 +1,4 @@
-from qgis.PyQt.QtCore import QSettings, QCoreApplication, QTranslator 
+from qgis.PyQt.QtCore import QSettings, QCoreApplication, QTranslator, QTimer 
 from qgis.PyQt.QtWidgets import QMessageBox, QAction, QPushButton, QInputDialog
 from qgis.PyQt.QtGui import QColor, QIcon
 from qgis.core       import Qgis, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsProject
@@ -16,7 +16,6 @@ from .mapTools.reverseAdres import reverseAdresMapTool
 from .tools.geometry import geometryHelper
 from .tools.settings import settings
 import os.path, webbrowser
-from threading import Timer
 
 PLUGIN_DIR= os.path.dirname(__file__)
 class geopunt4Qgis(object):
@@ -268,7 +267,7 @@ class geopunt4Qgis(object):
         
         #fetch Location from geopunt
         adres = self.gp.fetchLocation( str( lam72clickt.x() ) + "," + str( lam72clickt.y() ), 1)
-        Timer( 3, self._clearGraphicLayer, ()).start()
+        QTimer.singleShot(3000, self._clearGraphicLayer)
     
         if len(adres) and type( adres ) is list:
             #only one result in list, was set in request
@@ -297,7 +296,7 @@ class geopunt4Qgis(object):
         elif len(adres) == 0:
             self.iface.messageBar().pushMessage(QCoreApplication.translate("geopunt4Qgis","Waarschuwing"),
             QCoreApplication.translate("geopunt4Qgis", "Geen resultaten gevonden"), 
-                    level=QgsMessageBar.INFO, duration=3)
+                    level=Qgis.WARNING, duration=3)
       
         elif type( adres ) is str:
             self.iface.messageBar().pushMessage(QCoreApplication.translate("geopunt4Qgis", "Waarschuwing"),

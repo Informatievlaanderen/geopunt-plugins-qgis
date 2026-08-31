@@ -52,7 +52,7 @@ def fetch_non_blocking(url:str, callback:Callable, onerror:Callable, params:dict
     """
     fetcher = QgsNetworkContentFetcher()
     fetcher.finished.connect(
-        lambda: callback(fetcher.contentAsString()) if fetcher.reply().error() !=0 
+        lambda: callback(fetcher.contentAsString()) if fetcher.reply().error() ==0 
                                                     else onerror(fetcher.reply().errorString())
     )
     fullUrl = QUrl( url if len(params) == 0 else url +"?"+ urlencode(params) )

@@ -1,5 +1,5 @@
 from qgis.PyQt.QtCore import QVariant
-from qgis.core import QgsField, QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsFeature
+from qgis.core import QgsField, QgsProject, QgsVectorLayer, QgsVectorFileWriter, QgsFeature, QgsCoordinateTransformContext
 from qgis.PyQt.QtWidgets import QFileDialog
 import os
 
@@ -59,8 +59,11 @@ class parcelHelper(object):
           save = self._saveToFile( sender, startFolder )
           if save:
             fpath, flType = save                
-            error, msg = QgsVectorFileWriter.writeAsVectorFormat(self.parcellayer,
-                                            fileName=fpath, fileEncoding="utf-8", driverName=flType )
+            opts = QgsVectorFileWriter.SaveVectorOptions()
+            opts.fileEncoding = "utf-8"
+            opts.driverName = flType
+            error, msg, __, __ = QgsVectorFileWriter.writeAsVectorFormatV3(
+                self.parcellayer, fpath, QgsCoordinateTransformContext(), opts)
             if error == QgsVectorFileWriter.NoError:
               self.parcellayer = QgsVectorLayer( fpath, layername, "ogr")
               self.parcelProvider = self.parcellayer.dataProvider()

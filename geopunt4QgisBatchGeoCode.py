@@ -15,8 +15,10 @@ PLUGIN_DIR = os.path.dirname(__file__)
 
 def _gmlpointToXY(gml):
     root = ET.fromstring(gml)   # nosec
-    xy_s = root.find('.//{http://www.opengis.net/gml/3.2}pos').text
-    xy = tuple( map(float, xy_s.split(' ') ) )
+    pos_el = root.find('.//{http://www.opengis.net/gml/3.2}pos')
+    if pos_el is None or pos_el.text is None:
+        return None
+    xy = tuple( map(float, pos_el.text.split(' ') ) )
     return xy
 
 class geopunt4QgisBatcGeoCodeDialog(QDialog):
@@ -131,6 +133,7 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
                 pos = matches[0]["adresPositie"]
                 gml = pos["geometrie"]["gml"]
                 xylb = _gmlpointToXY(gml)
+                if xylb is None: continue
                 xyType = "|".join([ pos["positieSpecificatie"], 
                                     pos["positieGeometrieMethode"], str(matches[0]["score"]) ])
 
@@ -483,6 +486,9 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
                 gml = adresPositie['geometrie']['gml']
                 root = ET.fromstring(gml)   # nosec
                 pos_text = root.find('.//gml:pos', {'gml': 'http://www.opengis.net/gml/3.2'}).text
+                if pos_text is None:
+                    i += 1
+                    continue
 
                 srs_name = root.attrib.get('srsName', '31370')
                 crs = f"EPSG:{srs_name.split('/')[-1]}"
@@ -505,7 +511,7 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         self.gh.zoomtoRec2(bounds)
     
     def openInputCsv(self):
-        filter = "Comma separated value File (*.csv) (*.csv);;Text Files (*.txt) (*.txt);;Any File (*.*)"
+        filter = "Comma separated value File (*.csv);;Text Files (*.txt);;Any File (*.*)"
         fName, _ = QFileDialog.getOpenFileName( self, "open file" , self.startDir, filter)
         if fName:
             self.ui.inputTxt.setText(fName)

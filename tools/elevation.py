@@ -4,7 +4,7 @@ import numpy as np
 from qgis.PyQt.QtCore import QVariant
 from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.core import (QgsProject, QgsField, QgsVectorLayer, QgsCoordinateReferenceSystem,
-                       QgsCoordinateTransform, QgsGeometry, QgsVectorFileWriter, QgsFeature, QgsPointXY)
+                       QgsCoordinateTransform, QgsGeometry, QgsCoordinateTransformContext, QgsVectorFileWriter, QgsFeature, QgsPointXY)
 from .geometry import geometryHelper
 
 class elevationHelper(object):
@@ -53,8 +53,11 @@ class elevationHelper(object):
             save = self._saveToFile( sender, os.path.join( self.startFolder, layername))
             if save:
               fpath, flType = save
-              error, _ = QgsVectorFileWriter.writeAsVectorFormat(layer=self.sampleslayer, 
-                                              fileName=fpath, fileEncoding="utf-8", driverName=flType ) 
+              opts = QgsVectorFileWriter.SaveVectorOptions()
+              opts.fileEncoding = "utf-8"
+              opts.driverName = flType
+              error, _, __, __ = QgsVectorFileWriter.writeAsVectorFormatV3(
+                  self.sampleslayer, fpath, QgsCoordinateTransformContext(), opts)
               if error == QgsVectorFileWriter.NoError:
                   self.sampleslayer = QgsVectorLayer( fpath , layername, "ogr")
                   self.samplesProvider = self.sampleslayer.dataProvider()
@@ -107,8 +110,11 @@ class elevationHelper(object):
             save = self._saveToFile( sender, os.path.join( self.startFolder, layername ))
             if save:
               fpath, flType = save
-              error, _ = QgsVectorFileWriter.writeAsVectorFormat(layer=self.profilelayer, 
-                                    fileName=fpath, fileEncoding="utf-8", driverName=flType )
+              opts = QgsVectorFileWriter.SaveVectorOptions()
+              opts.fileEncoding = "utf-8"
+              opts.driverName = flType
+              error, _, __, __ = QgsVectorFileWriter.writeAsVectorFormatV3(
+                  self.profilelayer, fpath, QgsCoordinateTransformContext(), opts)
               if error == QgsVectorFileWriter.NoError:
                   self.profilelayer = QgsVectorLayer( fpath , layername, "ogr")
                   self.profileProvider = self.profilelayer.dataProvider()

@@ -15,7 +15,8 @@ from qgis.core import (
     QgsRectangle,
     QgsField,
     QgsProject,
-    QgsVectorFileWriter,
+    Qgis,
+    QgsCoordinateTransformContext, QgsVectorFileWriter,
     QgsVectorLayer,
     QgsFeature,
     QgsPalLayerSettings,
@@ -29,6 +30,8 @@ class geometryHelper:
     def __init__(self, iface) -> None:
         self.iface = iface
         self.canvas = iface.mapCanvas()
+        self.adreslayer: Optional[QgsVectorLayer] = None
+        self.adresProvider = None
         self.adreslayerid: str = ""
 
     @staticmethod
@@ -177,48 +180,30 @@ class geometryHelper:
 
         mapcrs = self.getMapCrs(self.iface)
 
-        if not QgsProject.instance().mapLayer(self.adreslayerid):
-            self.adreslayer = QgsVectorLayer(
-                "Point?crs=epsg:31370", layername, "memory"
-            )
-            self.adresProvider = self.adreslayer.dataProvider()
-            self.adresProvider.addAttributes(attributes)
-            self.adreslayer.updateFields()
+        layer, provider = self._getAdresLayer(saveToFile, attributes, layername,
+                                               sender, startFolder)
+        if layer is None:
+            return
 
-        fields = self.adreslayer.fields()
+        self.adreslayer = layer
+        self.adresProvider = provider
+
+        fields = layer.fields()
         fet = QgsFeature(fields)
 
         xform = QgsCoordinateTransform(
-            mapcrs, self.adreslayer.crs(), QgsProject.instance()
+            mapcrs, layer.crs(), QgsProject.instance()
         )
         prjPoint = xform.transform(point)
         fet.setGeometry(QgsGeometry.fromPointXY(prjPoint))
 
         fet["adres"] = address
         fet["type"] = typeAddress
-        self.adresProvider.addFeatures([fet])
+        provider.addFeatures([fet])
 
-        self.adreslayer.updateExtents()
+        layer.updateExtents()
 
-        if saveToFile and not QgsProject.instance().mapLayer(self.adreslayerid):
-            save = self._saveToFile(sender, startFolder)
-            if save:
-                fpath, flType = save
-                error, _ = QgsVectorFileWriter.writeAsVectorFormat(
-                    self.adreslayer,
-                    fileName=fpath,
-                    fileEncoding="utf-8",
-                    driverName=flType,
-                )
-                if error == QgsVectorFileWriter.NoError:
-                    self.adreslayer = QgsVectorLayer(fpath, layername, "ogr")
-                    self.adresProvider = self.adreslayer.dataProvider()
-                else:
-                    return
-            else:
-                return
-
-        QgsProject.instance().addMapLayer(self.adreslayer)
+        QgsProject.instance().addMapLayer(layer)
 
         text_format = QgsTextFormat()
         text_format.setSize(12)
@@ -241,6 +226,106 @@ class geometryHelper:
 
         self.adreslayerid = self.adreslayer.id()
         self.canvas.refresh()
+
+    def _pushError(self, message: str) -> None:
+        try:
+            self.iface.messageBar().pushMessage(
+                "geopunt4Qgis", message, level=Qgis.Critical, duration=5)
+        except Exception:
+            pass
+
+    def _getAdresLayer(self, saveToFile: bool, attributes: List[QgsField],
+                       layername: str, sender=None,
+                       startFolder: Optional[str] = None):
+        """Resolve the layer and write-provider to add a point to.
+
+        A live provider is always returned so ``addFeatures`` never touches a
+        dangling (deleted) ``QgsVectorDataProvider``. When the user has
+        switched from a temporary (memory) layer to saving to a file, the
+        memory layer is exported to a new file and the file layer is used from
+        then on, so the previous provider reference is discarded before it can
+        be used.
+        """
+        project = QgsProject.instance()
+
+        # 1. Reuse a layer that is still loaded and whose provider is intact.
+        cached_layer = self.adreslayer
+        cached_provider = getattr(self, "adresProvider", None)
+        cached_ok = (
+            cached_layer is not None
+            and cached_provider is not None
+            and project.mapLayer(cached_layer.id()) is not None
+            and cached_provider.isSourceValid()
+        )
+        if cached_ok:
+            if not saveToFile or cached_provider.name() != "memory":
+                return cached_layer, cached_provider
+
+            # 2. Memory layer, but the user now wants a file: export it and use
+            #    the file layer going forward (drop the memory layer).
+            saved = self._saveToFile(sender, startFolder)
+            if not saved:
+                return None, None
+            fpath, fdriver = saved
+            if not self._exportLayerTo(cached_layer, fpath, fdriver):
+                return None, None
+            newlayer, provider = self._openFileLayer(fpath, layername)
+            if newlayer is None:
+                return None, None
+            project.removeMapLayer(cached_layer.id())
+            return newlayer, provider
+
+        # 3. No usable cached layer.
+        try:
+            if saveToFile:
+                newlayer, provider = self._saveToFileAndOpen(
+                    attributes, layername, sender, startFolder)
+                if newlayer is not None:
+                    return newlayer, provider
+
+            return self._newMemoryLayer(attributes, layername)
+        except RuntimeError:
+            self._pushError(
+                "Kunnen niet schrijven naar de adreslaag, probeer het opnieuw.")
+            return None, None
+
+    def _exportLayerTo(self, layer, fpath: str, driver: str) -> bool:
+        opts = QgsVectorFileWriter.SaveVectorOptions()
+        opts.fileEncoding = "utf-8"
+        opts.driverName = driver
+        error, msg, _, _ = QgsVectorFileWriter.writeAsVectorFormatV3(
+            layer, fpath, QgsCoordinateTransformContext(), opts)
+        if error != QgsVectorFileWriter.NoError:
+            self._pushError("Kan de adreslaag niet opslaan: {0}".format(msg))
+            return False
+        return True
+
+    def _openFileLayer(self, path: str, layername: str):
+        layer = QgsVectorLayer(path, layername, "ogr")
+        if not layer.isValid() or layer.dataProvider() is None:
+            self._pushError(
+                "Het adresbestand kon niet geopend worden: {0}".format(path))
+            return None, None
+        return layer, layer.dataProvider()
+
+    def _saveToFileAndOpen(self, attributes: List[QgsField], layername: str,
+                           sender=None, startFolder: Optional[str] = None):
+        mem, _ = self._newMemoryLayer(attributes, layername)
+        saved = self._saveToFile(sender, startFolder)
+        if not saved:
+            return None, None
+        fpath, fdriver = saved
+        if not self._exportLayerTo(mem, fpath, fdriver):
+            return None, None
+        return self._openFileLayer(fpath, layername)
+
+    def _newMemoryLayer(self, attributes: List[QgsField], layername: str):
+        layer = QgsVectorLayer("Point?crs=epsg:31370", layername, "memory")
+        if not layer.isValid() or layer.dataProvider() is None:
+            return None, None
+        layer.dataProvider().addAttributes(attributes)
+        layer.updateFields()
+        return layer, layer.dataProvider()
 
     def _saveToFile(self, sender, startFolder: Optional[str] = None) -> Optional[Tuple[str, str]]:
         filter_str = (

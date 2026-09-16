@@ -67,7 +67,7 @@ Test results for QGIS4 plugin (geopunt4Qgis) supplied by customers of the Flemis
                          RuntimeError: wrapped C/C++ object of type
             QgsVectorDataProvider has been deleted
         ```
-    --> This scenario was not indaad not considered. The issue is that the address layer becomes a new layer, when the user changes the layer from memory to a permanent file. TODO
+    --> FIXED: `geometryHelper.save_adres_point` (tools/geometry.py) no longer trusts a cached `QgsVectorDataProvider` blindly. Before writing it now verifies the provider is still valid (`isSourceValid()`) and that the layer is still loaded; when the source switches from memory to a permanent file the memory layer is exported and the file layer's provider is used, so a dangling `QgsVectorDataProvider` can never be passed to `addFeatures` anymore.
 
 5. **Address:**
 
@@ -83,7 +83,7 @@ Test results for QGIS4 plugin (geopunt4Qgis) supplied by customers of the Flemis
 
     a.  \"Prik een adres op de kaart\", same Python error as 3.c
 
-    --> FIXED: Idem to 3.c, when a user saves the temporary layer to a permanent file, a new layer is created. TODO
+    --> FIXED: uses the same `geometryHelper.save_adres_point` path, so the permanent-file switch is now handled (see item 4 for details).
 
 7. **Reverse geocoding:**
 
@@ -91,7 +91,7 @@ Test results for QGIS4 plugin (geopunt4Qgis) supplied by customers of the Flemis
     b.  Have to click other QGIS tool (e.g. pan map) to get "out" of the
         reverse geocoding tool.
 
-    --> NOERROR: Tested, mouse not stuck, the tool is still active until the user clicks another tool. This is the expected behavior. It is possible to change this behavior, but it is not a bug. TODO
+    --> NOERROR: Tested, mouse not stuck, the tool is still active until the user clicks another tool. This is the expected behavior. It is possible to change this behavior, but it is not a bug. 
 
 8. **Reverse geocoding:**
 
@@ -136,7 +136,7 @@ Test results for QGIS4 plugin (geopunt4Qgis) supplied by customers of the Flemis
 
     a.  Line-draw tool not showing the line while drawing.
 
-    --> Done, a blue line is now shown while drawing, the line already drawn remains red.
+    --> FIXED, a blue line is now shown while drawing, the line already drawn remains red.
 
 13. **Elevation:**
 
@@ -206,92 +206,85 @@ Test results for QGIS4 plugin (geopunt4Qgis) supplied by customers of the Flemis
     17.1  `tools/web.py:39` — `sys.exc_info` is not called. The f-string
         interpolates the function object, so the raised message contains
         `<built-in function exc_info ...>` instead of the exception triple.
-        Needs `sys.exc_info()`. TODO
+        Needs `sys.exc_info()`. FIXED
 
     17.2  `geopunt4QgisBatchGeoCode.py:237` — `next(csvReader)` on an empty
         CSV raises an uncaught `StopIteration`. Wrap in
-        `try/except StopIteration`. TODO
+        `try/except StopIteration`. FIXED
 
-    17.3  `geopunt4QgisBatchGeoCode.py:263` — `line[col]` raises
+    17.3  `geopunt4QgisBatchGeoCode.py:272` — `line[col]` raises
         `IndexError` on any data row with fewer fields than the header.
-        Use a length check or a default value. TODO
+        Use a length check or a default value. NOW:
+        `val = line[col] if col < len(line) else ""`. FIXED
 
     17.4  `geopunt4QgisBatchGeoCode.py:18` and :403 —
         `root.find('.//{...}pos').text` returns `None` when the GML has no
         `<pos>` element, and `.split()` then crashes. Guard with a
-        `None` check. TODO
+        `None` check. FIXED: `_gmlpointToXY` now returns `None` when the
+        `<pos>` element is missing, its caller skips the row, and the
+        second parse site (line ~485) skips when `pos_text` is `None`.
 
     17.5  `geopunt4QgisBatchGeoCode.py:426` — malformed `QFileDialog` filter:
         `"Comma separated value File (*.csv) (*.csv)"` duplicates the
         `(*.ext)` part that belongs to the description only. Compare the
-        correct syntax in `tools/batchGeo.py:98`. TODO
+        correct syntax in `tools/batchGeo.py:98`. FIXED: filter now reads
+        `"Comma separated value File (*.csv);;Text Files (*.txt);;Any File (*.*)"`.
 
     17.6  `geopunt4QgisBatchGeoCode.py:225` — the CSV file handle opened via
         `open(...)` inside `csv.reader(...)` is never closed. Use a context
-        manager or close in a `finally` block. TODO
+        manager or close in a `finally` block. FIXED: call site now reads
+        `with open(self.csv, 'r', encoding=enc, newline='') as f:` (line 232).
 
     **QGIS 4 API deprecations (plugin targets QGIS 4.00–4.99)**
 
-    17.7  `mapTools/reverseAdres.py:13` and
-        `mapTools/elevationProfile.py:22,30,36,46` — `toMapCoordinates` is
-        deprecated in QGIS 4. Use `mapToFrame(...)` instead. TODO
-
-    17.8  `tools/batchGeo.py:79`, `tools/geometry.py:207`,
+    17.7  `tools/batchGeo.py:79`, `tools/geometry.py:207`,
         `tools/poi.py:115,245`, `tools/parcel.py:62`,
         `tools/elevation.py:57,110` — `QgsVectorFileWriter.writeAsVectorFormat`
         is deprecated; migrate to `writeAsVectorFormatV3()` /
         `QgsVectorFileWriter.create()`. Already flagged in
-        `docs/plugin_analysis.md:88`. TODO
+        `docs/plugin_analysis.md:88`. FIXED
 
-    17.9  `tools/web.py` — `QgsBlockingNetworkRequest` is a legacy API; the
+    17.8  `tools/web.py` — `QgsBlockingNetworkRequest` is a legacy API; the
         modern idiom is `QgsNetworkAccessManager` (non-blocking
         `fetch_non_blocking` already exists in the same file but is not used
         by `adresMatch`). TODO
 
     **Code-smell / consistency**
 
-    17.10 `tools/batchGeo.py:119-122` — dead code, a duplicate CSV branch
+    17.9 `tools/batchGeo.py:119-122` — dead code, a duplicate CSV branch
         that is unreachable because lines 117-118 match first. TODO
 
-    17.11 `tools/settings.py:11` and `geopunt4QgisSettingsdialog.py:71,74,156`
+    17.10 `tools/settings.py:11` and `geopunt4QgisSettingsdialog.py:71,74,156`
         — key typo `proxyOverwiteEnabled` (should be `proxyOverwriteEnabled`).
         Consistent on read and write, so no functional impact. TODO
 
-    17.12 `geopunt4QgisBatchGeoCode.py:449-451` — `clean()` clears
+    17.11 `geopunt4QgisBatchGeoCode.py:449-451` — `clean()` clears
         `adresColSelect`, `huisnrSelect` and `gemeenteColSelect` but not
         `pcColSelect`, inconsistent with the `loadTable` reset at line 200.
         TODO
 
-    17.13 `geopunt/basisregisters.py:51,81` — `except BaseException` swallows
+    17.12 `geopunt/basisregisters.py:51,81` — `except BaseException` swallows
         `KeyboardInterrupt`/`SystemExit`; should be `except Exception`. TODO
 
-    17.14 `tools/batchGeo.py:37` — `QgsVectorLayer("Point", ...)` has no CRS
+    17.13 `tools/batchGeo.py:37` — `QgsVectorLayer("Point", ...)` has no CRS
         (defaults to EPSG:4326) while `tools/geometry.py:182` explicitly uses
         `Point?crs=epsg:31370`; inconsistent with the rest of the plugin. TODO
 
-    17.15 `tools/geometry.py:146-152` (`zoomtoRec`) — `setExtent`/`refresh`
+    17.14 `tools/geometry.py:146-152` (`zoomtoRec`) — `setExtent`/`refresh`
         called unconditionally, then again in the `else` branch (redundant).
         TODO
 
-    17.16 `geopunt4QgisBatchGeoCode.py:86` — `webbrowser.open_new_tab(...)`
+    17.15 `geopunt4QgisBatchGeoCode.py:86` — `webbrowser.open_new_tab(...)`
         works, but `QDesktopServices.openUrl(QUrl(...))` is idiomatic PyQt.
         TODO
 
-    17.17 `geopunt4QgisBatchGeoCode.py:98` — `self.proxy` is read from
+    17.16 `geopunt4QgisBatchGeoCode.py:98` — `self.proxy` is read from
         `settings()` but never passed to the API layer (`adresMatch` →
         `web.getUrlData`), so the configured proxy is silently ignored. TODO
 
-    17.18 `geopunt4QgisBatchGeoCode.py:366,370` — `setEnabled(0)` /
+    17.17 `geopunt4QgisBatchGeoCode.py:366,370` — `setEnabled(0)` /
         `addItem("")`: `setEnabled(False)` and a `<geen>` placeholder are
         more idiomatic. TODO
 
-    17.19 `mapTools/reverseAdres.py` — no `keyPressEvent` for `Esc` to cancel
+    17.18 `mapTools/reverseAdres.py` — no `keyPressEvent` for `Esc` to cancel
         the picking tool (minor UX). TODO
-
-    **Suggested fix order**
-
-    1. 17.2, 17.3, 17.4, 17.5, 17.6, 17.1 — user-visible crashes / data
-       loss (small edits, two files).
-    2. 17.7, 17.8, 17.9 — QGIS 4 deprecation migration (plugin claims QGIS
-       4 support).
-    3. 17.10–17.19 — cleanup / consistency.

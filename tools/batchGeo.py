@@ -3,7 +3,7 @@ from .geometry import geometryHelper
 from qgis.PyQt.QtCore import QVariant
 from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.core import (QgsField, QgsVectorLayer, QgsProject, QgsFeature, 
-                       QgsCoordinateTransform, QgsGeometry, QgsVectorFileWriter)
+                       QgsCoordinateTransform, QgsGeometry, QgsCoordinateTransformContext, QgsVectorFileWriter)
 
 class batcGeoHelper(object):
   def __init__(self,iface, parent, startFolder="" ):
@@ -76,7 +76,11 @@ class batcGeoHelper(object):
       save = self._saveToFile( self.parent, os.path.join( self.startFolder, layername ))
       if save:
         fpath, flType = save    
-        error, msg = QgsVectorFileWriter.writeAsVectorFormat(self.adreslayer, fileName=fpath, fileEncoding="utf-8", driverName=flType)
+        opts = QgsVectorFileWriter.SaveVectorOptions()
+        opts.fileEncoding = "utf-8"
+        opts.driverName = flType
+        error, msg, __, __ = QgsVectorFileWriter.writeAsVectorFormatV3(
+            self.adreslayer, fpath, QgsCoordinateTransformContext(), opts)
         if error == QgsVectorFileWriter.NoError:
           QgsProject.instance().removeMapLayer(self.adreslayerid)
           self.adreslayer = QgsVectorLayer( fpath, layername, "ogr")

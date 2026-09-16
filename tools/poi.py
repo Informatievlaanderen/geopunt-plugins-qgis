@@ -1,6 +1,6 @@
 from qgis.PyQt.QtCore import QVariant
 from qgis.core import (QgsField, QgsProject, QgsVectorLayer, QgsPointXY, 
-     QgsFeature, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsVectorLayerSimpleLabeling,
+     QgsFeature, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsCoordinateTransformContext, QgsVectorLayerSimpleLabeling,
      QgsGeometry, QgsVectorFileWriter, QgsPalLayerSettings, QgsTextBufferSettings, QgsTextFormat )
 from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.PyQt.QtGui import QColor
@@ -112,7 +112,11 @@ class poiHelper(object):
             save = self._saveToFile( sender, startFolder )
             if save:
               fpath, flType = save
-              error, msg = QgsVectorFileWriter.writeAsVectorFormat(self.minpoilayer, fileName=fpath, fileEncoding="utf-8", driverName=flType ) 
+              opts = QgsVectorFileWriter.SaveVectorOptions()
+              opts.fileEncoding = "utf-8"
+              opts.driverName = flType
+              error, msg, __, __ = QgsVectorFileWriter.writeAsVectorFormatV3(
+                  self.minpoilayer, fpath, QgsCoordinateTransformContext(), opts)
               if error == QgsVectorFileWriter.NoError:
                   self.minpoilayer = QgsVectorLayer( fpath , layername, "ogr")
                   self.minpoiProvider = self.minpoilayer.dataProvider()
@@ -242,7 +246,11 @@ class poiHelper(object):
             save = self._saveToFile( sender, startFolder )
             if save:
               fpath, flType = save
-              error, msg = QgsVectorFileWriter.writeAsVectorFormat(self.poilayer,fileName=fpath, fileEncoding="utf-8", driverName=flType ) 
+              opts = QgsVectorFileWriter.SaveVectorOptions()
+              opts.fileEncoding = "utf-8"
+              opts.driverName = flType
+              error, msg, __, __ = QgsVectorFileWriter.writeAsVectorFormatV3(
+                  self.poilayer, fpath, QgsCoordinateTransformContext(), opts)
               if error == QgsVectorFileWriter.NoError:
                   self.poilayer = QgsVectorLayer( fpath , layername, "ogr")
                   self.poiProvider = self.poilayer.dataProvider()

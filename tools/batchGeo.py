@@ -2,7 +2,8 @@ import os.path
 from .geometry import geometryHelper
 from qgis.PyQt.QtCore import QVariant
 from qgis.PyQt.QtWidgets import QFileDialog
-from qgis.core import QgsField, QgsVectorLayer, QgsProject, QgsFeature, QgsCoordinateTransform, QgsGeometry, QgsVectorFileWriter
+from qgis.core import (QgsField, QgsVectorLayer, QgsProject, QgsFeature, 
+                       QgsCoordinateTransform, QgsGeometry, QgsVectorFileWriter)
 
 class batcGeoHelper(object):
   def __init__(self,iface, parent, startFolder="" ):
@@ -114,7 +115,7 @@ class batcGeoHelper(object):
      elif "GML" in ext.upper():
          flType = "GML"
      elif "CSV" in ext.upper():
-         ftType = "CSV"
+         flType = "CSV"
      elif 'TAB' in ext.upper():
          flType = 'MapInfo File'
      elif 'CSV' in ext.upper():

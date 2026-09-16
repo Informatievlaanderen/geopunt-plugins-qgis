@@ -23,7 +23,6 @@ from .Adres import Adres
 from .basisregisters import adresMatch
 from .capakey import capakey
 from .elevation import elevation
-from .gipod import gipod
 from .perc import perc
 from .Poi import Poi
 from .dhm import dhm

@@ -223,7 +223,7 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         try: 
             csvReader = csv.reader(
                     open(self.csv, 'r', encoding=enc, newline=''),
-                    delimiter=';'
+                    delimiter= self.delimiter
                 )
         except (IOError, UnicodeDecodeError, FileNotFoundError) as e: 
             QMessageBox.warning(self, "Error", 

@@ -7,9 +7,15 @@ class Adres(object):
       self.sugUrl = "https://geo.api.vlaanderen.be/geolocation/v4/Suggestion"
       
   def fetchLocation(self, q: str, c=1):
-      LocationResult = json.loads( getUrlData(self.locUrl, params={"q": q, "c": c} ) )
-      return LocationResult["LocationResult"]
+      try:
+        resp = getUrlData(self.locUrl, params={"q": q, "c": c} )
+        locationResult = json.loads( resp )
+        if "Message" in locationResult:
+           return locationResult["Message"]
+      except:
+         return []
+      return locationResult.get("LocationResult", [])
 
   def fetchSuggestion(self, q: str, c=5):
       suggestion =  json.loads( getUrlData(self.sugUrl, params={"q": q, "c": c} ) )
-      return suggestion["SuggestionResult"]
+      return suggestion.get("SuggestionResult", [])

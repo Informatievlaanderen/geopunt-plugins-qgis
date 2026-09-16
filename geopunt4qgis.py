@@ -111,30 +111,26 @@ class geopunt4Qgis(object):
         self.iface.addPluginToWebMenu(u"&geopunt4Qgis", self.datacatalogusAction)
         self.iface.addPluginToWebMenu(u"&geopunt4Qgis", self.settingsAction)
         self.iface.addPluginToWebMenu(u"&geopunt4Qgis", self.aboutAction)
-        
+
     def unload(self):
         ' Remove the plugin menu items and icons'
-        self.iface.removePluginMenu(u"&geopunt4Qgis", self.adresAction)
-        self.iface.removePluginMenu(u"&geopunt4Qgis", self.poiAction)
-        self.iface.removePluginMenu(u"&geopunt4Qgis", self.reverseAction)
-        self.iface.removePluginMenu(u"&geopunt4Qgis", self.batchAction)
-        self.iface.removePluginMenu(u"&geopunt4Qgis", self.aboutAction)
-        self.iface.removePluginMenu(u"&geopunt4Qgis", self.settingsAction)
-        self.iface.removePluginMenu(u"&geopunt4Qgis", self.elevationAction)
-        self.iface.removePluginMenu(u"&geopunt4Qgis", self.datacatalogusAction)
-        self.iface.removePluginMenu(u"&geopunt4Qgis", self.parcelAction)
-        
-        self.iface.removeToolBarIcon( self.adresAction)
-        self.iface.removeToolBarIcon( self.poiAction)
-        self.iface.removeToolBarIcon( self.reverseAction)
-        self.iface.removeToolBarIcon( self.batchAction)
-        self.iface.removeToolBarIcon( self.aboutAction)
-        self.iface.removeToolBarIcon( self.elevationAction)
-        self.iface.removeToolBarIcon( self.datacatalogusAction)
-        self.iface.removeToolBarIcon( self.parcelAction)
-        
-        del self.toolbar 
+        # Remove actions from Web menu
+        self.iface.removePluginWebMenu(u"&geopunt4Qgis", self.adresAction)
+        self.iface.removePluginWebMenu(u"&geopunt4Qgis", self.poiAction)
+        self.iface.removePluginWebMenu(u"&geopunt4Qgis", self.reverseAction)
+        self.iface.removePluginWebMenu(u"&geopunt4Qgis", self.batchAction)
+        self.iface.removePluginWebMenu(u"&geopunt4Qgis", self.aboutAction)
+        self.iface.removePluginWebMenu(u"&geopunt4Qgis", self.settingsAction)
+        self.iface.removePluginWebMenu(u"&geopunt4Qgis", self.elevationAction)
+        self.iface.removePluginWebMenu(u"&geopunt4Qgis", self.datacatalogusAction)
+        self.iface.removePluginWebMenu(u"&geopunt4Qgis", self.parcelAction)
 
+        # Remove the toolbar widget from QGIS Interface
+        if hasattr(self, 'toolbar') and self.toolbar is not None:
+            self.iface.mainWindow().removeToolBar(self.toolbar)
+            # self.toolbar.deleteLater()
+            self.toolbar = None
+        
     def loadSettings(self):
         self.saveToFile_reverse = int(self.s.value("geopunt4qgis/reverseSavetoFile", 0))
         layerName_reverse = self.s.value("geopunt4qgis/reverseLayerText", "")
@@ -267,9 +263,8 @@ class geopunt4Qgis(object):
         
         #fetch Location from geopunt
         adres = self.gp.fetchLocation( str( lam72clickt.x() ) + "," + str( lam72clickt.y() ), 1)
-        QTimer.singleShot(3000, self._clearGraphicLayer)
-    
-        if len(adres) and type( adres ) is list:
+
+        if len(adres):
             #only one result in list, was set in request
             FormattedAddress = adres[0]["FormattedAddress"]
       
@@ -296,14 +291,15 @@ class geopunt4Qgis(object):
         elif len(adres) == 0:
             self.iface.messageBar().pushMessage(QCoreApplication.translate("geopunt4Qgis","Waarschuwing"),
             QCoreApplication.translate("geopunt4Qgis", "Geen resultaten gevonden"), 
-                    level=Qgis.WARNING, duration=3)
-      
+                    level=Qgis.Warning, duration=3)
         elif type( adres ) is str:
             self.iface.messageBar().pushMessage(QCoreApplication.translate("geopunt4Qgis", "Waarschuwing"),
-                adres, level=QgsMessageBar.WARNING)
+                adres, level=Qgis.Warning)
         else:
             self.iface.messageBar().pushMessage("Error", 
             QCoreApplication.translate("geopunt4Qgis","onbekende fout"), level=Qgis.Critical)
+
+        QTimer.singleShot(3000, self._clearGraphicLayer)
       
     def _addReverse(self, adres):
         formattedAddress, locationType = adres["FormattedAddress"] , adres["LocationType"]

@@ -1,5 +1,5 @@
 from qgis.PyQt.QtCore import Qt, QSettings, QTranslator, QCoreApplication 
-from qgis.PyQt.QtWidgets import QDialog, QPushButton, QDialogButtonBox, QFileDialog
+from qgis.PyQt.QtWidgets import QDialog, QFileDialog
 from .ui_geopunt4QgisSettings import Ui_settingsDlg
 import os
 
@@ -90,16 +90,6 @@ class geopunt4QgisSettingsDialog(QDialog):
         poilayerText =  self.s.value("geopunt4qgis/poilayerText", "")
         if isinstance(poilayerText, str): self.ui.poiLayerTxt.setText(poilayerText)
         
-        #geopunt4Qgis gipod settngs
-        gipodSavetoFile = int( self.s.value("geopunt4qgis/gipodSavetoFile" , 1))
-        self.ui.gipodSavetoFileChk.setChecked(gipodSavetoFile)
-        
-        gipodSaveMemory = int( self.s.value("geopunt4qgis/gipodSaveMemory" , 0))
-        self.ui.gipodSaveMemoryChk.setChecked(gipodSaveMemory)
-        
-        gipodLayerTxt = self.s.value("geopunt4qgis/gipodLayerTxt", "GIPOD")        
-        if isinstance(gipodLayerTxt, str): self.ui.gipodLayerTxt.setText(gipodLayerTxt)
-        
         #geopunt4Qgis Elevation settings
         samplesSavetoFile = int( self.s.value("geopunt4qgis/samplesSavetoFile" , 1))
         self.ui.samplesSavetoFileChk.setChecked(samplesSavetoFile)
@@ -183,17 +173,7 @@ class geopunt4QgisSettingsDialog(QDialog):
         self.s.setValue("geopunt4qgis/poiSaveMemory" , poiSaveMemory)
         
         poiLayerText =  self.ui.poiLayerTxt.text()
-        self.s.setValue("geopunt4qgis/poiLayerText", poiLayerText)
-        
-        #gipod settings
-        gipodSavetoFile = int( self.ui.gipodSavetoFileChk.isChecked())
-        self.s.setValue("geopunt4qgis/gipodSavetoFile" , gipodSavetoFile)
-        
-        gipodSaveMemory = int( self.ui.gipodSaveMemoryChk.isChecked())
-        self.s.setValue("geopunt4qgis/gipodSaveMemory" , gipodSaveMemory)
-        
-        gipodLayerTxt = self.ui.gipodLayerTxt.text()
-        self.s.setValue("geopunt4qgis/gipodLayerTxt", gipodLayerTxt)        
+        self.s.setValue("geopunt4qgis/poiLayerText", poiLayerText)     
         
         #geopunt4Qgis Elevation settings
         samplesSavetoFile = int( self.ui.samplesSavetoFileChk.isChecked() )

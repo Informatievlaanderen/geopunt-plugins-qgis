@@ -134,6 +134,7 @@ class geopunt4QgisElevationDialog(QDialog):
         toolbarBtns[7].setIcon( QIcon( os.path.join(PLUGIN_DIR,"images/fill.png") ))
         toolbarBtns[7].setToolTip( QCoreApplication.translate("geopunt4QgisElevationDialog", "Kies de vulkleur"))
         toolbarBtns[7].clicked.connect( self.setFill)
+        self.ui.refreshBtn.setIcon( QIcon( os.path.join(PLUGIN_DIR,"images/Refresh.png") ))
         
     def loadSettings(self):
         self.timeout =  int( self.s.value("geopunt4qgis/timeout" ,15))
@@ -185,6 +186,7 @@ class geopunt4QgisElevationDialog(QDialog):
              
     def showGraphMotion(self, event):
         if self.ax == None: return
+        if len( [n for n in self.profile if (n[3] is not None) and (n[3] > -9999) ] ) == 0: return
 
         if event.xdata != None and event.ydata != None:
           if self.ano != None: 
@@ -195,15 +197,14 @@ class geopunt4QgisElevationDialog(QDialog):
              self.anoLbl = None
             
           xdata = np.array( [n[0] for n in self.profile ] ) * self.xscaleUnit[0]
-          ydata = np.array( [n[3] for n in self.profile ] )# if n[3] > -9999 ]
+          ydata = np.array( [n[3] for n in self.profile ] )
           zx = np.interp( event.xdata, xdata, ydata )
-          xmax = np.max( xdata ) 
-          xmin = np.min( xdata )
-          zmax = np.max( ydata )
-          zmin = np.max( [n[3] for n in self.profile if n[3] > -9999 ] )
+          xmax = np.nanmax( xdata ) 
+          xmin = np.nanmin( xdata )
+          zmax = np.nanmax( ydata )
+          zmin = np.nanmin( [n[3] for n in self.profile if n[3] > -9999 ] )
            
           if event.xdata <= xmax and event.xdata >= xmin  :
-            #   self.ano = self.ax.arrow( event.xdata , -9999, 0, zx + 9999, fc="k", ec="k" )
               self.ano = self.ax.annotate("",
                   xy=(event.xdata, zx), xytext=(event.xdata, 0), 
                   xycoords='data', textcoords=('data', 'axes fraction'),
@@ -266,17 +267,17 @@ class geopunt4QgisElevationDialog(QDialog):
         
         xdata = np.array( [n[0] for n in self.profile ] ) * self.xscaleUnit[0]
         ydata = np.array( [n[3] for n in self.profile ] )
-        
+
         #need at least 3 values
-        if len(xdata) <= 2 or len(self.profile) <= 2:
+        if len(xdata) <= 2 or len([n for n in ydata if (n is not None) and (n > -9999)]) <= 2:
            self.bar.pushMessage("Error", 
             QCoreApplication.translate("geopunt4QgisElevationDialog", "Er werd geen of onvoldoende data gevonden"),
             level=Qgis.Warning, duration=5)
            self.profile = []
            return 
         
-        ymin = np.min( [n[3] for n in self.profile if n[3] > -9999 ] )
-        ymax = np.max( ydata )
+        ymin = np.nanmin( [n for n in ydata if (n is not None) and (n > -9999) ] )
+        ymax = np.nanmax( ydata )
      
         # create an axis
         self.ax = self.figure.add_subplot(111)

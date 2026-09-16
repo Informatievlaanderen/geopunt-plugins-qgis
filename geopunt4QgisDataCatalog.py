@@ -1,6 +1,7 @@
 from qgis.PyQt.QtCore import (Qt, QSettings, QTranslator, QCoreApplication)
 from qgis.PyQt.QtWidgets import QDialog,  QInputDialog
 from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
+from qgis.PyQt.QtGui import QColor, QIcon
 from .ui_geopunt4QgisDataCatalog import Ui_geopunt4QgisDataCatalogDlg
 from qgis.core import Qgis, QgsProject, QgsRasterLayer, QgsVectorLayer
 from .geopunt.metadataParser import (getWmsLayerNames, getWFSLayerNames, get_ogc_api_collections, 
@@ -35,6 +36,8 @@ class geopunt4QgisDataCatalog(QDialog):
             btn.setAutoDefault(False)
             btn.setDefault(False)
 
+        self.ui.prevBtn.setIcon(QIcon( os.path.join( PLUGIN_DIR, 'images/previous.png' )))
+        self.ui.nextBtn.setIcon(QIcon( os.path.join( PLUGIN_DIR, 'images/next.png' )))
 
         # get settings
         self.s = QSettings()

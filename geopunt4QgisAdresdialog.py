@@ -158,6 +158,24 @@ class geopunt4QgisAdresDialog(QDialog):
         
             xlb, ylb = loc["Location"]["X_Lambert72"], loc["Location"]["Y_Lambert72"]
             x, y = self.gh.prjPtToMapCrs(QgsPointXY( xlb , ylb), 31370)
+
+            bbox = loc.get('BoundingBox')
+            has_valid_bbox = False
+            if bbox and 'LowerLeft' in bbox and 'UpperRight' in bbox:
+                ll = bbox['LowerLeft']
+                ur = bbox['UpperRight']
+                if 'X_Lambert72' in ll and 'Y_Lambert72' in ll and 'X_Lambert72' in ur and 'Y_Lambert72' in ur:
+                    LowerLeftX = ll['X_Lambert72']
+                    LowerLeftY = ll['Y_Lambert72']
+                    UpperRightX = ur['X_Lambert72']
+                    UpperRightY = ur['Y_Lambert72']
+                    if LowerLeftX != UpperRightX or LowerLeftY != UpperRightY:
+                        has_valid_bbox = True
+
+            if has_valid_bbox:
+                self.gh.zoomtoRec(QgsPointXY(LowerLeftX, LowerLeftY), QgsPointXY(UpperRightX, UpperRightY), 31370)
+            else:
+                self.gh.zoomtoPoint(QgsPointXY(x, y), scale=1000.0)
         
             m = QgsVertexMarker(self.iface.mapCanvas())
             self.graphicsLayer.append(m)

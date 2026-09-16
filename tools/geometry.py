@@ -113,6 +113,23 @@ class geometryHelper:
 
         return QgsGeometry.fromPolyline(wgsLine)
 
+    def zoomtoPoint(self, point: PointLike, scale: float = 1000.0, crs: Optional[Union[str, int]] = None) -> None:
+        if crs is not None:
+            pt = self.prjPtToMapCrs(point, crs)
+        elif isinstance(point, QgsPoint):
+            pt = QgsPointXY(point.x(), point.y())
+        elif isinstance(point, QgsPointXY):
+            pt = point
+        elif isinstance(point, Iterable):
+            coords = list(point)
+            pt = QgsPointXY(coords[0], coords[1])
+        else:
+            pt = QgsPointXY(point)
+
+        self.canvas.setCenter(pt)
+        self.canvas.zoomScale(scale)
+        self.canvas.refresh()
+
     def zoomtoRec( self, xyMin: PointLike, xyMax: PointLike, crs: Optional[Union[str, int]] = None ) -> None:
         if crs is None:
             crs = self.getMapCrs(self.iface)
@@ -128,6 +145,11 @@ class geometryHelper:
         rect = QgsRectangle(pmaxpoint, pminpoint)
         self.canvas.setExtent(rect)
         self.canvas.refresh()
+        if rect.isEmpty() or (rect.width() == 0 and rect.height() == 0):
+            self.zoomtoPoint(pminpoint, scale=1000.0)
+        else:
+            self.canvas.setExtent(rect)
+            self.canvas.refresh()
 
     def zoomtoRec2(self, bounds: List[float], crs: Optional[Union[str, int]] = None) -> None:
         if crs is None:

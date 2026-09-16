@@ -218,8 +218,7 @@ class geopunt4QgisPoidialog(QDialog):
             self.gh.zoomtoRec(bounds[:2], bounds[2:4], 4326)
         elif len(selPois) == 1:
             x,  y = selPois[0]['location']['points'][0]['Point']['coordinates']
-            bounds = self.gh.getBoundsOfPoint([x,y])
-            self.gh.zoomtoRec(bounds[:2], bounds[2:4], 4326)
+            self.gh.zoomtoPoint(QgsPointXY(x, y), scale=1000.0, crs=4326)
     
     def onSelectionChanged(self):
         selPois = self._getSelectedPois()

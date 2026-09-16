@@ -205,78 +205,143 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
         
         self.csv = self.ui.inputTxt.text()
         
-        if not self.csv :  #none or empty string
+        if not self.csv:  # none or empty string
             self.ui.adresWgt.setDisabled(True)
+            self.ui.tlFrame.setDisabled(True)
             return
         elif not os.path.exists(self.csv):
             self.ui.statusMsg.setText(QCoreApplication.translate("batcGeoCodedialog",
                                         "<div style='color:red'>%s bestaat niet</div>") % self.csv)
             self.ui.adresWgt.setDisabled(True)
+            self.ui.tlFrame.setDisabled(True)
             return 
         
         enc = None
-        if self.ui.codecBox.currentText() == 'utf-8' : 
+        current_codec = self.ui.codecBox.currentText()
+        if current_codec == 'utf-8':
             enc = 'utf-8-sig'
-        elif self.ui.codecBox.currentText() == 'ansi latin1' : 
+        elif current_codec == 'ansi latin1':
             enc = 'latin-1'
-        
-        try: 
-            csvReader = csv.reader(
-                    open(self.csv, 'r', encoding=enc, newline=''),
-                    delimiter= self.delimiter
-                )
-        except (IOError, UnicodeDecodeError, FileNotFoundError) as e: 
-            QMessageBox.warning(self, "Error", 
-                QCoreApplication.translate("batcGeoCodedialog",
-                "Deze file kon niet correct worden ingelezen."
-                "probeer eens in te laden als een " +
-                "<b>ANSI latin-file</b> of een <b>UTF-8-file</b>\n") +
-                f"Error: {e}")
+        else:
+            enc = 'utf-8-sig'
+
+        try:
+            with open(self.csv, 'r', encoding=enc, newline='') as f:
+                csvReader = csv.reader(f, delimiter=self.delimiter)
+                try:
+                    header = next(csvReader)
+                except StopIteration:
+                    self.ui.statusMsg.setText(QCoreApplication.translate("batcGeoCodedialog",
+                        "<div style='color:red'>Het CSV-bestand is leeg.</div>"))
+                    self.ui.adresWgt.setDisabled(True)
+                    self.ui.tlFrame.setDisabled(True)
+                    return
+
+                header = [h.strip().lstrip('\ufeff').lstrip('ï»¿') for h in header]
+                colCount = len(header)
+                if colCount == 0:
+                    self.ui.statusMsg.setText(QCoreApplication.translate("batcGeoCodedialog",
+                        "<div style='color:red'>Geen kolommen gevonden in het bestand.</div>"))
+                    self.ui.adresWgt.setDisabled(True)
+                    self.ui.tlFrame.setDisabled(True)
+                    return
+
+                for i in range(colCount):
+                    self.headers[header[i]] = i
+
+                self.ui.outPutTbl.setColumnCount(colCount + 1)
+                self.ui.outPutTbl.setColumnWidth(colCount, 250)
+
+                self.ui.outPutTbl.setHorizontalHeaderLabels(header + [QCoreApplication.translate(
+                    "batcGeoCodedialog", "gevalideerd adres")])
+
+                self.ui.adresColSelect.insertItems(0, header)
+                self.ui.huisnrSelect.insertItems(0, [QCoreApplication.translate(
+                    "batcGeoCodedialog", "<geen>")] + header)
+                self.ui.pcColSelect.insertItems(0, header + [QCoreApplication.translate(
+                    "batcGeoCodedialog", "<geen>")])
+                self.ui.pcColSelect.setCurrentIndex(colCount)
+                self.ui.gemeenteColSelect.insertItems(0, header + [QCoreApplication.translate(
+                    "batcGeoCodedialog", "<geen>")])
+                self.ui.gemeenteColSelect.setCurrentIndex(colCount)
+
+                rowCount = 0
+                for line in csvReader:
+                    self.ui.outPutTbl.insertRow(rowCount)
+                    for col in range(colCount):
+                        val = line[col] if col < len(line) else ""
+                        self.ui.outPutTbl.setItem(rowCount, col, QTableWidgetItem(val))
+                    rowCount += 1
+                    if rowCount > self.maxRows:
+                        warnTitle = QCoreApplication.translate("batcGeoCodedialog", 
+                            "%s heeft meer dan %s rijen") % (os.path.basename(self.csv), self.maxRows)
+                        warnMsg = "<div>" 
+                        warnMsg += QCoreApplication.translate("batcGeoCodedialog", 
+                            "Je bestand heeft meer dan %s rijen.<br/>") % self.maxRows 
+                        warnMsg += QCoreApplication.translate("batcGeoCodedialog",
+                            "De toepassing beperkt tot het inladen van de eerste %s rijen.<br/>") % self.maxRows 
+
+                        self.ui.statusMsg.setText("<div style='color:red'>" + warnTitle + "</div>")
+                        QMessageBox.warning(self, warnTitle, warnMsg)
+                        break
+
+            self.ui.adresWgt.setDisabled(False)
+            self.ui.tlFrame.setDisabled(False)
+
+        except (UnicodeDecodeError, UnicodeError) as e:
+            self.ui.outPutTbl.clearContents()
+            self.ui.outPutTbl.setColumnCount(0)
+            self.ui.outPutTbl.setRowCount(0)
+            self.ui.adresColSelect.clear()
+            self.ui.huisnrSelect.clear()
+            self.ui.pcColSelect.clear()
+            self.ui.gemeenteColSelect.clear()
+            self.headers = {}
+            self.ui.adresWgt.setDisabled(True)
+            self.ui.tlFrame.setDisabled(True)
+
+            suggested_index = 1 if self.ui.codecBox.currentIndex() != 1 else 2
+            suggested_name = self.ui.codecBox.itemText(suggested_index)
+
+            self.ui.statusMsg.setText(QCoreApplication.translate("batcGeoCodedialog",
+                "<div style='color:red'>Coderingsfout: bestand kan niet worden gelezen met codering '%s'.</div>") % current_codec)
+
+            msg = (QCoreApplication.translate("batcGeoCodedialog",
+                "Dit bestand kon niet correct worden ingelezen met de codering <b>%s</b>.<br/><br/>"
+                "Probeer het bestand in te laden als een <b>ANSI latin1-bestand</b> of een <b>UTF-8-bestand</b>.<br/><br/>"
+                "Wilt u proberen over te schakelen naar <b>%s</b>?") % (current_codec, suggested_name))
+
+            yes_btn = QMessageBox.StandardButton.Yes if hasattr(QMessageBox, 'StandardButton') else QMessageBox.Yes
+            no_btn = QMessageBox.StandardButton.No if hasattr(QMessageBox, 'StandardButton') else QMessageBox.No
+            reply = QMessageBox.question(self, 
+                QCoreApplication.translate("batcGeoCodedialog", "Coderingsfout"),
+                msg,
+                yes_btn | no_btn,
+                yes_btn
+            )
+            if reply == yes_btn:
+                if self.ui.codecBox.currentIndex() != suggested_index:
+                    self.ui.codecBox.setCurrentIndex(suggested_index)
+                else:
+                    self.loadTable()
             return
-        
-        header = next(csvReader)
-        colCount = len(header)
-      
-        for i in range(colCount):
-          self.headers[header[i]]= i
-      
-        self.ui.outPutTbl.setColumnCount(colCount + 1)
-        self.ui.outPutTbl.setColumnWidth(colCount, 250)
-        
-        self.ui.outPutTbl.setHorizontalHeaderLabels(header + [QCoreApplication.translate(
-            "batcGeoCodedialog", "gevalideerd adres")])
-        
-        self.ui.adresColSelect.insertItems(0, header)
-        self.ui.huisnrSelect.insertItems(0, [QCoreApplication.translate(
-            "batcGeoCodedialog", "<geen>")]+ header )
-        self.ui.pcColSelect.insertItems(0, header+ [QCoreApplication.translate(
-            "batcGeoCodedialog", "<geen>")]  )
-        self.ui.pcColSelect.setCurrentIndex(colCount)
-        self.ui.gemeenteColSelect.insertItems(0, header+ [QCoreApplication.translate(
-            "batcGeoCodedialog", "<geen>")] )
-        self.ui.gemeenteColSelect.setCurrentIndex(colCount)
-        
-        rowCount = 0
-        for line in csvReader:
-          self.ui.outPutTbl.insertRow(rowCount)
-          for col in range(colCount):
-            self.ui.outPutTbl.setItem(rowCount, col, QTableWidgetItem(line[col]))
-          rowCount += 1
-          if rowCount > self.maxRows:
-              warnTitle = QCoreApplication.translate("batcGeoCodedialog", 
-              "%s heeft meer dan %s rijen") % (os.path.basename(self.csv), self.maxRows)
-              warnMsg = "<div>" 
-              warnMsg += QCoreApplication.translate("batcGeoCodedialog", 
-              "Je bestand heeft meer dan %s rijen.<br/>" ) % self.maxRows 
-              warnMsg += QCoreApplication.translate("batcGeoCodedialog",
-              "De toepassing beperkt tot het inladen van de eerste %s rijen.<br/>" ) % self.maxRows 
-          
-              self.ui.statusMsg.setText("<div style='color:red'>"+ warnTitle +"</div>")
-              QMessageBox.warning(self, warnTitle, warnMsg )
-              break
-      
-        self.ui.adresWgt.setDisabled(False)
-        self.ui.tlFrame.setDisabled(False)
+
+        except (IOError, OSError, csv.Error) as e:
+            self.ui.outPutTbl.clearContents()
+            self.ui.outPutTbl.setColumnCount(0)
+            self.ui.outPutTbl.setRowCount(0)
+            self.ui.adresColSelect.clear()
+            self.ui.huisnrSelect.clear()
+            self.ui.pcColSelect.clear()
+            self.ui.gemeenteColSelect.clear()
+            self.headers = {}
+            self.ui.adresWgt.setDisabled(True)
+            self.ui.tlFrame.setDisabled(True)
+
+            err = QCoreApplication.translate("batcGeoCodedialog", "Fout bij het inlezen van het bestand: %s") % str(e)
+            self.ui.statusMsg.setText(f"<div style='color:red'>{err}</div>")
+            QMessageBox.warning(self, "Error", err)
+            return
 
     def setDelim(self, idx):
         txt = self.ui.delimSelect.itemText(idx)
@@ -327,26 +392,43 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
             QMessageBox.warning(self, 'Warning', msg)
             return
 
-        validAdresCol = self.ui.outPutTbl.columnCount() -1
-        adresCol =    self.headers[adresTxt] 
-        huisnrCol =   None if huisnrTxt == geenSymbol else self.headers[huisnrTxt] 
-        gemeenteCol = None if gemeenteTxt == geenSymbol else self.headers[gemeenteTxt] 
-        pcCol =       None if pcTxt == geenSymbol else self.headers[pcTxt]
+        def _getColIdx(txt):
+            if not txt or txt == geenSymbol:
+                return None
+            if txt in self.headers:
+                return self.headers[txt]
+            cleaned = txt.strip().lstrip('\ufeff').lstrip('ï»¿')
+            if cleaned in self.headers:
+                return self.headers[cleaned]
+            for k, v in self.headers.items():
+                if k.lower() == cleaned.lower():
+                    return v
+            return None
+
+        validAdresCol = self.ui.outPutTbl.columnCount() - 1
+        adresCol = _getColIdx(adresTxt)
+        huisnrCol = _getColIdx(huisnrTxt)
+        gemeenteCol = _getColIdx(gemeenteTxt)
+        pcCol = _getColIdx(pcTxt)
         
         self.ui.statusProgress.setValue(0)
         self.ui.statusProgress.setMaximum(len(rowIds))
         self.ui.statusMsg.setText("")
     
-        i= 0
-        while i < len( rowIds):
+        i = 0
+        while i < len(rowIds):
             rowIdx = rowIds[i]
-            #status Progress
+            # status Progress
             self.ui.statusProgress.setValue(i)
 
-            adres = self.ui.outPutTbl.item(rowIdx, adresCol).text()  if adresCol is not None else ''
-            huisNr = self.ui.outPutTbl.item(rowIdx, huisnrCol).text()  if huisnrCol is not None  else ''
-            pc = self.ui.outPutTbl.item(rowIdx, pcCol).text() if pcCol is not None  else ''
-            muni = self.ui.outPutTbl.item(rowIdx, gemeenteCol).text() if gemeenteCol is not None else ''
+            itemAdres = self.ui.outPutTbl.item(rowIdx, adresCol) if adresCol is not None else None
+            adres = itemAdres.text() if itemAdres else ''
+            itemHuisNr = self.ui.outPutTbl.item(rowIdx, huisnrCol) if huisnrCol is not None else None
+            huisNr = itemHuisNr.text() if itemHuisNr else ''
+            itemPc = self.ui.outPutTbl.item(rowIdx, pcCol) if pcCol is not None else None
+            pc = itemPc.text() if itemPc else ''
+            itemMuni = self.ui.outPutTbl.item(rowIdx, gemeenteCol) if gemeenteCol is not None else None
+            muni = itemMuni.text() if itemMuni else ''
             if not self.ui.singleLineChk.isChecked():
                 validAdres = self.am.findAdresSuggestions(municipality=muni, postalcode=pc, housenr=huisNr, streetname=adres)
             else:

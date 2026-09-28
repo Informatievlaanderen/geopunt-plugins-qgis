@@ -2,7 +2,8 @@ import os.path
 from .geometry import geometryHelper
 from qgis.PyQt.QtCore import QVariant
 from qgis.PyQt.QtWidgets import QFileDialog
-from qgis.core import QgsField, QgsVectorLayer, QgsProject, QgsFeature, QgsCoordinateTransform, QgsGeometry, QgsVectorFileWriter
+from qgis.core import (QgsField, QgsVectorLayer, QgsProject, QgsFeature, 
+                       QgsCoordinateTransform, QgsGeometry, QgsCoordinateTransformContext, QgsVectorFileWriter)
 
 class batcGeoHelper(object):
   def __init__(self,iface, parent, startFolder="" ):
@@ -76,7 +77,7 @@ class batcGeoHelper(object):
       if save:
         fpath, flType = save    
         error, msg = QgsVectorFileWriter.writeAsVectorFormat(self.adreslayer, fileName=fpath, fileEncoding="utf-8", driverName=flType)
-        if error == QgsVectorFileWriter.WriterError.NoError:
+        if error == QgsVectorFileWriter.NoError:
           QgsProject.instance().removeMapLayer(self.adreslayerid)
           self.adreslayer = QgsVectorLayer( fpath, layername, "ogr")
           self.adresProvider = self.adreslayer.dataProvider()
@@ -114,7 +115,7 @@ class batcGeoHelper(object):
      elif "GML" in ext.upper():
          flType = "GML"
      elif "CSV" in ext.upper():
-         ftType = "CSV"
+         flType = "CSV"
      elif 'TAB' in ext.upper():
          flType = 'MapInfo File'
      elif 'CSV' in ext.upper():

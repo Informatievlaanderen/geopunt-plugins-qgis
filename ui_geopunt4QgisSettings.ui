@@ -38,7 +38,7 @@
         <x>0</x>
         <y>0</y>
         <width>482</width>
-        <height>276</height>
+        <height>306</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -142,7 +142,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>298</width>
+        <width>302</width>
         <height>268</height>
        </rect>
       </property>
@@ -242,7 +242,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>234</width>
+        <width>235</width>
         <height>170</height>
        </rect>
       </property>
@@ -313,7 +313,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>406</width>
+        <width>412</width>
         <height>210</height>
        </rect>
       </property>
@@ -418,7 +418,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>234</width>
+        <width>235</width>
         <height>170</height>
        </rect>
       </property>
@@ -484,86 +484,12 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="gipodTab">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>266</width>
-        <height>170</height>
-       </rect>
-      </property>
-      <attribute name="icon">
-       <iconset>
-        <normaloff>images/geopuntGIPODsmall.png</normaloff>images/geopuntGIPODsmall.png</iconset>
-      </attribute>
-      <attribute name="label">
-       <string>GIPOD</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_12">
-       <item>
-        <widget class="QGroupBox" name="add2mapBox_5">
-         <property name="title">
-          <string>Toevoegen punten aan de kaart</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_11">
-          <item>
-           <widget class="QRadioButton" name="gipodSavetoFileChk">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string>Opslaan naar bestand </string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="gipodSaveMemoryChk">
-            <property name="text">
-             <string>Opslaan naar tijdelijke laag</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>Naam  van de laag met GIPOD-activiteiten:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="gipodLayerTxt"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="elevationTab">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>259</width>
+        <width>260</width>
         <height>322</height>
        </rect>
       </property>
@@ -679,7 +605,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>232</width>
+        <width>233</width>
         <height>170</height>
        </rect>
       </property>

@@ -146,6 +146,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Preview (max 32):</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Orientation::Horizontal</enum>
@@ -328,6 +335,9 @@
      </item>
      <item>
       <widget class="QCheckBox" name="clusterCheck">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="toolTip">
         <string>Resultaten Clusteren indien groter dan 1024</string>
        </property>
@@ -335,7 +345,7 @@
         <string>Resultaten geclusterd toevoegen</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>

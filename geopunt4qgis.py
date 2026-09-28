@@ -250,7 +250,7 @@ class geopunt4Qgis(object):
         helpBtn.clicked.connect(self.openReverseHelp)
         widget.layout().addWidget(helpBtn)
         self.iface.messageBar().clearWidgets()
-        self.iface.messageBar().pushWidget(widget, level=Qgis.Info)
+        self.iface.messageBar().pushWidget(widget, level=Qgis.MessageLevel.Info)
 
         reverseAdresTool = reverseAdresMapTool(self.iface, self._reverseAdresCallback) 
         self.iface.mapCanvas().setMapTool(reverseAdresTool)
@@ -291,19 +291,19 @@ class geopunt4Qgis(object):
             widget.layout().addWidget(button)
             
             self.iface.messageBar().clearWidgets()
-            self.iface.messageBar().pushWidget(widget, level=Qgis.Info)
+            self.iface.messageBar().pushWidget(widget, level=Qgis.MessageLevel.Info)
     
         elif len(adres) == 0:
             self.iface.messageBar().pushMessage(QCoreApplication.translate("geopunt4Qgis","Waarschuwing"),
             QCoreApplication.translate("geopunt4Qgis", "Geen resultaten gevonden"), 
-                    level=Qgis.WARNING, duration=3)
+                    level=Qgis.MessageLevel.Warning, duration=3)
       
         elif type( adres ) is str:
             self.iface.messageBar().pushMessage(QCoreApplication.translate("geopunt4Qgis", "Waarschuwing"),
-                adres, level=QgsMessageBar.WARNING)
+                adres, level=Qgis.MessageLevel.Warning)
         else:
             self.iface.messageBar().pushMessage("Error", 
-            QCoreApplication.translate("geopunt4Qgis","onbekende fout"), level=Qgis.Critical)
+            QCoreApplication.translate("geopunt4Qgis","onbekende fout"), level=Qgis.MessageLevel.Critical)
       
     def _addReverse(self, adres):
         formattedAddress, locationType = adres["FormattedAddress"] , adres["LocationType"]
@@ -333,7 +333,7 @@ class geopunt4Qgis(object):
         m.setColor(QColor(0,0,0))
         m.setFillColor(clr)
         m.setIconSize(12)
-        m.setIconType(QgsVertexMarker.ICON_BOX) 
+        m.setIconType(QgsVertexMarker.IconType.ICON_BOX) 
         m.setPenWidth(1)
         self.graphicsLayer.append(m)
         return m

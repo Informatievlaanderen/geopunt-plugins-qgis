@@ -129,8 +129,8 @@ class geopunt4QgisParcelDlg(QDialog):
         try:
           self.departments = self.parcel.getDepartments(niscode)
         except Exception as e:
-          self.bar.pushMessage("Error", str( e.message) , level=Qgis.Critical)
-          return
+            self.bar.pushMessage("Error", str( e.message) , level=Qgis.MessageLevel.Critical)
+            return
         self.ui.departmentCbx.setEnabled(1) 
         self.ui.departmentCbx.clear()
         depNames = [n['departmentName'] +' ('+ n['departmentCode'] +')' for n in self.departments]
@@ -156,8 +156,8 @@ class geopunt4QgisParcelDlg(QDialog):
         try:
           self.sections = [n['sectionCode'] for n in self.parcel.getSections(niscode, departmentcode)]
         except Exception as e:
-          self.bar.pushMessage("Error", str( e.message) , level=Qgis.Critical)
-          return
+            self.bar.pushMessage("Error", str( e.message) , level=Qgis.MessageLevel.Critical)
+            return
 
         self.ui.sectionCbx.clear()
         self.ui.sectionCbx.setEnabled(1)
@@ -183,8 +183,8 @@ class geopunt4QgisParcelDlg(QDialog):
         try:
           self.parcels = self.parcel.getParcels( niscode, departmentcode, section )
         except Exception as e:
-          self.bar.pushMessage("Error", str( e.message) , level=Qgis.Critical)
-          return
+            self.bar.pushMessage("Error", str( e.message) , level=Qgis.MessageLevel.Critical)
+            return
         
         self.ui.parcelCbx.clear()
         self.ui.parcelCbx.setEnabled(1)
@@ -212,7 +212,7 @@ class geopunt4QgisParcelDlg(QDialog):
             addresses = "; ".join(parcelInfo['adres'])
             self.ui.adresLine.setText(addresses)
         except Exception as e:
-            self.bar.pushMessage("Error", str( e.message) , level=Qgis.Critical)
+            self.bar.pushMessage("Error", str( e.message) , level=Qgis.MessageLevel.Critical)
             return
     
         self.ui.saveBtn.setEnabled( self.ui.parcelCbx.currentText() != '' )

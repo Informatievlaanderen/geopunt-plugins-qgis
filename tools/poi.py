@@ -113,7 +113,7 @@ class poiHelper(object):
             if save:
               fpath, flType = save
               error, msg = QgsVectorFileWriter.writeAsVectorFormat(self.minpoilayer, fileName=fpath, fileEncoding="utf-8", driverName=flType ) 
-              if error == QgsVectorFileWriter.NoError:
+              if error == QgsVectorFileWriter.WriterError.NoError:
                   self.minpoilayer = QgsVectorLayer( fpath , layername, "ogr")
                   self.minpoiProvider = self.minpoilayer.dataProvider()
               else: 
@@ -243,7 +243,7 @@ class poiHelper(object):
             if save:
               fpath, flType = save
               error, msg = QgsVectorFileWriter.writeAsVectorFormat(self.poilayer,fileName=fpath, fileEncoding="utf-8", driverName=flType ) 
-              if error == QgsVectorFileWriter.NoError:
+              if error == QgsVectorFileWriter.WriterError.NoError:
                   self.poilayer = QgsVectorLayer( fpath , layername, "ogr")
                   self.poiProvider = self.poilayer.dataProvider()
               else: 
@@ -267,7 +267,7 @@ class poiHelper(object):
         
         palyr.enabled = True 
         palyr.fieldName = 'naam' 
-        palyr.placement = QgsPalLayerSettings.Free 
+        palyr.placement = QgsPalLayerSettings.Placement.Free 
 
         self.poilayer.setLabelsEnabled(True)
         self.poilayer.setLabeling( QgsVectorLayerSimpleLabeling(palyr) )

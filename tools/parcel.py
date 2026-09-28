@@ -61,7 +61,7 @@ class parcelHelper(object):
             fpath, flType = save                
             error, msg = QgsVectorFileWriter.writeAsVectorFormat(self.parcellayer,
                                             fileName=fpath, fileEncoding="utf-8", driverName=flType )
-            if error == QgsVectorFileWriter.NoError:
+            if error == QgsVectorFileWriter.WriterError.NoError:
               self.parcellayer = QgsVectorLayer( fpath, layername, "ogr")
               self.parcelProvider = self.parcellayer.dataProvider()
             else: 

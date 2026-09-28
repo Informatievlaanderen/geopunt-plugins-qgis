@@ -90,7 +90,7 @@ class gipodWriter(object):
     
         if fpath and os.path.exists(fpath):          
             error, errormsg = QgsVectorFileWriter.writeAsVectorFormat(self.gipodlayer , filename, "utf-8", self.gipodlayer.crs(), ftype, layerOptions= layerOptions, datasourceOptions= datasourceOptions )
-            if error == QgsVectorFileWriter.NoError:
+            if error == QgsVectorFileWriter.WriterError.NoError:
                 if ftype == "CSV": 
                     uri =( "file:///%s?delimiter=%s&xField=%s&yField=%s&crs=%s" % ( 
                         filename, ";", "X", "Y", self.gipodlayer.crs().authid()) ).replace("\\","/")

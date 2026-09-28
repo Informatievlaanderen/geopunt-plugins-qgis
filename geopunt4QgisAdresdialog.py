@@ -165,17 +165,17 @@ class geopunt4QgisAdresDialog(QDialog):
             m.setColor(QColor(0,0,0))
             m.setFillColor(QColor(255,255,0))
             m.setIconSize(12)
-            m.setIconType(QgsVertexMarker.ICON_BOX) 
+            m.setIconType(QgsVertexMarker.IconType.ICON_BOX) 
             m.setPenWidth(1)
         
         elif type( locations ) is str:
           self.bar.pushMessage(
             QCoreApplication.translate("geopunt4QgisAdresDialog","Waarschuwing"), 
-                locations, level=Qgis.Warning, duration=3)
+                locations, level=Qgis.MessageLevel.Warning, duration=3)
         else:
           self.bar.pushMessage("Error", 
             QCoreApplication.translate("geopunt4QgisAdresDialog","onbekende fout"),
-                level=Qgis.Critical, duration=3)
+                level=Qgis.MessageLevel.Critical, duration=3)
         
     def _addToMap(self, txt):
         if not layernameValid(self): return

@@ -27,7 +27,7 @@ class dhm:
         if dhmlayer.isValid():
             colorRamp = QgsStyle().defaultStyle().colorRamp('Turbo')
             fnc = QgsColorRampShader(0,200)
-            fnc.setColorRampType(QgsColorRampShader.Interpolated)
+            fnc.setColorRampType(QgsColorRampShader.Type.Interpolated)
             fnc.setSourceColorRamp(colorRamp)
             fnc.classifyColorRamp(15)
 
@@ -55,7 +55,7 @@ class dhm:
         _xy= self.t.transform(xy)
         _bbox= self.t.transformBoundingBox( bbox )
 
-        ident = self.dhmProvider.identify(_xy, QgsRaster.IdentifyFormatValue, boundingBox=_bbox, width=w, height=h)
+        ident = self.dhmProvider.identify(_xy, QgsRaster.IdentifyFormat.IdentifyFormatValue, boundingBox=_bbox, width=w, height=h)
 
         if ident.isValid():
            z= ident.results()[1]

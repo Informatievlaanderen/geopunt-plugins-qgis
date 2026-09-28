@@ -61,6 +61,6 @@ def fetch_non_blocking(url:str, callback:Callable, onerror:Callable, params:dict
     for k,v in headers.items():
         request.setRawHeader( k.encode(), v.encode())
 
-    request.setHeader( QNetworkRequest.ContentTypeHeader , contentType)
+    request.setHeader( QNetworkRequest.KnownHeaders.ContentTypeHeader , contentType)
     fetcher.fetchContent(request)
     return fetcher

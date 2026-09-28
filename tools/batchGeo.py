@@ -76,7 +76,7 @@ class batcGeoHelper(object):
       if save:
         fpath, flType = save    
         error, msg = QgsVectorFileWriter.writeAsVectorFormat(self.adreslayer, fileName=fpath, fileEncoding="utf-8", driverName=flType)
-        if error == QgsVectorFileWriter.NoError:
+        if error == QgsVectorFileWriter.WriterError.NoError:
           QgsProject.instance().removeMapLayer(self.adreslayerid)
           self.adreslayer = QgsVectorLayer( fpath, layername, "ogr")
           self.adresProvider = self.adreslayer.dataProvider()

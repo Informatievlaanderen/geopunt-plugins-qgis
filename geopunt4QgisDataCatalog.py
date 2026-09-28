@@ -196,7 +196,7 @@ class geopunt4QgisDataCatalog(QDialog):
         if len(lyrs) == 0:
             self.iface.messageBar().pushMessage("WMS",
                 QCoreApplication.translate("geopunt4QgisDataCatalog", 
-                     f"Kan geen lagen vinden in: {self.wms}" ), level=Qgis.Warning, duration=10)
+                     f"Kan geen lagen vinden in: {self.wms}" ), level=Qgis.MessageLevel.Warning, duration=10)
             return
         elif len(lyrs) == 1:
             layerTitle = lyrs[0][1]
@@ -221,7 +221,7 @@ class geopunt4QgisDataCatalog(QDialog):
         else:
             self.iface.messageBar().pushMessage("Error",
                  QCoreApplication.translate("geopunt4QgisDataCatalog", "Kan WMS niet laden"),
-                 level=Qgis.Critical, duration=10)
+                  level=Qgis.MessageLevel.Critical, duration=10)
 
     def addWMTS(self):
         if self.wmts is None: 
@@ -231,7 +231,7 @@ class geopunt4QgisDataCatalog(QDialog):
         if len(lyrs) == 0:
             self.iface.messageBar().pushMessage("WMTS",
                 QCoreApplication.translate("geopunt4QgisDataCatalog", 
-                     f"Kan geen lagen vinden in: {self.wmts}" ), level=Qgis.Warning, duration=10)
+                     f"Kan geen lagen vinden in: {self.wmts}" ), level=Qgis.MessageLevel.Warning, duration=10)
             return
         elif len(lyrs) == 1:
            
@@ -268,7 +268,7 @@ class geopunt4QgisDataCatalog(QDialog):
         if len(lyrs) == 0:
             self.iface.messageBar().pushMessage("WFS",
                  QCoreApplication.translate("geopunt4QgisDataCatalog",
-                 "Kan geen lagen vinden in: %s" % self.wfs), level=Qgis.Warning, duration=10)
+                  "Kan geen lagen vinden in: %s" % self.wfs), level=Qgis.MessageLevel.Warning, duration=10)
             return
         elif len(lyrs) == 1:
             layerName = lyrs[0][0]
@@ -294,7 +294,7 @@ class geopunt4QgisDataCatalog(QDialog):
         if len(lyrs) == 0:
             self.iface.messageBar().pushMessage("WCS",
                  QCoreApplication.translate("geopunt4QgisDataCatalog",
-                 "Kan geen lagen vinden in: %s" % self.wcs), level=Qgis.Warning, duration=10)
+                  "Kan geen lagen vinden in: %s" % self.wcs), level=Qgis.MessageLevel.Warning, duration=10)
             return
         elif len(lyrs) == 1:
             layerName  = lyrs[0][0]
@@ -325,7 +325,7 @@ class geopunt4QgisDataCatalog(QDialog):
             if len(lyrs) == 0:
                 self.iface.messageBar().pushMessage("OGC-API",
                     QCoreApplication.translate("geopunt4QgisDataCatalog",
-                    "Kan geen lagen vinden in: %s" % self.ogcfeats), level=Qgis.Warning, duration=10)
+                    "Kan geen lagen vinden in: %s" % self.ogcfeats), level=Qgis.MessageLevel.Warning, duration=10)
                 return
             elif len(lyrs) == 1:
                 layerName  = lyrs[0][0]

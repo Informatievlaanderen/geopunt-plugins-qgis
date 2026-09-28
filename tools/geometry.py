@@ -188,7 +188,7 @@ class geometryHelper:
                     fileEncoding="utf-8",
                     driverName=flType,
                 )
-                if error == QgsVectorFileWriter.NoError:
+                if error == QgsVectorFileWriter.WriterError.NoError:
                     self.adreslayer = QgsVectorLayer(fpath, layername, "ogr")
                     self.adresProvider = self.adreslayer.dataProvider()
                 else:
@@ -212,7 +212,7 @@ class geometryHelper:
         palyr.setFormat(text_format)
         palyr.enabled = True
         palyr.fieldName = "adres"
-        palyr.placement = QgsPalLayerSettings.Free
+        palyr.placement = QgsPalLayerSettings.Placement.Free
 
         self.adreslayer.setLabelsEnabled(True)
         self.adreslayer.setLabeling(QgsVectorLayerSimpleLabeling(palyr))
@@ -258,7 +258,7 @@ class geometryHelper:
 
     def addPointGraphic(
         self, xy: PointLike, color: str = "#FFFF00", size: int = 12, pen: int = 1,
-        markerType: int = QgsVertexMarker.ICON_BOX, ) -> QgsVertexMarker:
+        markerType: int = QgsVertexMarker.IconType.ICON_BOX, ) -> QgsVertexMarker:
 
         pt = QgsPointXY(*xy) if isinstance(xy, (list, tuple)) else QgsPointXY(xy)
         marker = QgsVertexMarker(self.canvas)

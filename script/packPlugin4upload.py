@@ -15,7 +15,12 @@ def get_file_list(src_path):
     for folder in INCLUDE_DIRS:
         folder_path = src_path / folder
         if folder_path.exists():
-            file_list.extend([f for f in folder_path.rglob('*') if f.is_file()])
+            file_list.extend([
+                f for f in folder_path.rglob('*')
+                if f.is_file()
+                and "__pycache__" not in f.parts
+                and f.suffix not in {".pyc", ".pyo"}
+            ])
         
     # Search for specific file types in the root
     for ext in INCLUDE_EXTENSIONS:

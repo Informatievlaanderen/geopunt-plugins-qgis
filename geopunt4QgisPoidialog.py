@@ -183,35 +183,35 @@ class geopunt4QgisPoidialog(QDialog):
             "Aantal getoond: %s gevonden: %s" % ( self.ui.resultLijst.rowCount() , self.poi.resultCount ) ))
           elif self.poi.resultCount == 0:
             self.bar.pushMessage( QCoreApplication.translate("geopunt4QgisPoidialog", 
-            "Geen resultaten gevonden voor deze zoekopdracht"), "", level=Qgis.Info, duration=10)
+                        "Geen resultaten gevonden voor deze zoekopdracht"), "", level=Qgis.MessageLevel.Info, duration=10)
           elif self.poi.resultCount < 0:
             self.bar.pushMessage(QCoreApplication.translate("geopunt4QgisPoidialog", 
             "Het aantal gevonden kon niet worden bepaald, te complexe zoekopdracht"), 
-            "", level=Qgis.Info, duration=10)
+            "", level=Qgis.MessageLevel.Info, duration=10)
             self.ui.msgLbl.setText(QCoreApplication.translate("geopunt4QgisPoidialog", 
             "Aantal getoond: %s, aantal gevonden niet bepaald" % self.ui.resultLijst.rowCount() ) )
 
         elif type( suggesties ) is str:
           self.bar.pushMessage(
             QCoreApplication.translate("geopunt4QgisPoidialog","Waarschuwing"), 
-            suggesties, level=Qgis.Warning)
+                        suggesties, level=Qgis.MessageLevel.Warning)
         else:
           self.bar.pushMessage("Error",
             QCoreApplication.translate("geopunt4QgisPoidialog","onbekende fout"),
-            level=Qgis.Critical)
+                        level=Qgis.MessageLevel.Critical)
     
     def onZoomSelClicked(self):
         if not len( self.ui.resultLijst.selectedIndexes() ):
             self.bar.pushMessage("",
                QCoreApplication.translate("geopunt4QgisPoidialog", 
-               "Er zijn geen records geselecteerd"), level=Qgis.Warning )
+                    "Er zijn geen records geselecteerd"), level=Qgis.MessageLevel.Warning )
             return
         
         selPois = self._getSelectedPois()
         if len(selPois) <= 0 :
           self.bar.pushMessage( QCoreApplication.translate("geopunt4QgisPoidialog", "Merk op"), 
                 QCoreApplication.translate("geopunt4QgisPoidialog", "Er niets om naar te zoomen"),
-                level=Qgis.Info, duration=3)
+                level=Qgis.MessageLevel.Info, duration=3)
         elif len(selPois) >= 2:
             pts = [n['location']['points'][0]['Point']['coordinates'] for n in selPois ] 
             bounds = self.gh.getBoundsOfPointArray(pts)
@@ -236,13 +236,13 @@ class geopunt4QgisPoidialog(QDialog):
             m.setColor(QColor(0,0,0))
             m.setFillColor(QColor(255,255,0))
             m.setIconSize(12)
-            m.setIconType(QgsVertexMarker.ICON_BOX) 
+            m.setIconType(QgsVertexMarker.IconType.ICON_BOX) 
             m.setPenWidth(1)
 
     def onAddSelClicked(self):
         if not len( self.ui.resultLijst.selectedIndexes() ):
             self.bar.pushMessage("",
-               QCoreApplication.translate("geopunt4QgisPoidialog", "Er zijn geen records geselecteerd"), level=Qgis.Warning )
+               QCoreApplication.translate("geopunt4QgisPoidialog", "Er zijn geen records geselecteerd"), level=Qgis.MessageLevel.Warning )
             return
         
         if not self.layernameValid(): return        
@@ -313,7 +313,7 @@ class geopunt4QgisPoidialog(QDialog):
 
         if type( pts ) == str:
             self.bar.pushMessage( QCoreApplication.translate("geopunt4QgisPoidialog","Waarschuwing"),
-                                  pts, level=Qgis.Warning, duration=5)
+                                  pts, level=Qgis.MessageLevel.Warning, duration=5)
         elif type( pts ) == list or type( pts )  == dict:            
             self.ph.save_minPois_points(pts, layername=self.layerName, startFolder= os.path.join(self.startDir, self.layerName), saveToFile=self.saveToFile, sender=self )
             self.close()

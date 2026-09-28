@@ -12,7 +12,7 @@ class lineTool(QgsMapTool):
         self.callback   = callback
         
         self.rubberBand = QgsRubberBand(self.canvas, geometryType
-                                        =QgsWkbTypes.LineGeometry)
+                                        =QgsWkbTypes.GeometryType.LineGeometry)
         self.points  = []
         self.rubberBand.setColor( QColor('red') )
         self.rubberBand.setWidth(1)

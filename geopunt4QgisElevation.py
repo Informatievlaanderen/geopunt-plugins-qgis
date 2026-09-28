@@ -244,7 +244,7 @@ class geopunt4QgisElevationDialog(QDialog):
         if len(self.profile) == 0: return
         if self.ax == None: return
         
-        clr = QColorDialog.getColor( Qt.white, self, QCoreApplication.translate(
+        clr = QColorDialog.getColor( Qt.GlobalColor.white, self, QCoreApplication.translate(
                   "geopunt4QgisElevationDialog", "Kies de vulkleur") )
         if clr.isValid():
           xdata = np.array( [n[0] for n in self.profile ] ) * self.xscaleUnit[0]
@@ -271,7 +271,7 @@ class geopunt4QgisElevationDialog(QDialog):
         if len(xdata) <= 2 or len(self.profile) <= 2:
            self.bar.pushMessage("Error", 
             QCoreApplication.translate("geopunt4QgisElevationDialog", "Er werd geen of onvoldoende data gevonden"),
-            level=Qgis.Warning, duration=5)
+                level=Qgis.MessageLevel.Warning, duration=5)
            self.profile = []
            return 
         
@@ -329,7 +329,7 @@ class geopunt4QgisElevationDialog(QDialog):
         self.pt.setColor(QColor(0,0,0))
         self.pt.setFillColor(QColor(0,255,250))
         self.pt.setIconSize(12)
-        self.pt.setIconType(QgsVertexMarker.ICON_BOX ) 
+        self.pt.setIconType(QgsVertexMarker.IconType.ICON_BOX ) 
         self.pt.setPenWidth(1)
         return self.pt
 

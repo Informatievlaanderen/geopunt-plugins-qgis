@@ -291,14 +291,14 @@ class geopunt4Qgis(object):
         elif len(adres) == 0:
             self.iface.messageBar().pushMessage(QCoreApplication.translate("geopunt4Qgis","Waarschuwing"),
             QCoreApplication.translate("geopunt4Qgis", "Geen resultaten gevonden"), 
-                    level=Qgis.Warning, duration=3)
+                    level=Qgis.MessageLevel.Warning, duration=3)
       
         elif type( adres ) is str:
             self.iface.messageBar().pushMessage(QCoreApplication.translate("geopunt4Qgis", "Waarschuwing"),
-                adres, level=Qgis.Warning)
+                adres, level=Qgis.MessageLevel.Warning)
         else:
             self.iface.messageBar().pushMessage("Error", 
-            QCoreApplication.translate("geopunt4Qgis","onbekende fout"), level=Qgis.Critical)
+            QCoreApplication.translate("geopunt4Qgis","onbekende fout"), level=Qgis.MessageLevel.Critical)
 
         QTimer.singleShot(3000, self._clearGraphicLayer)
       

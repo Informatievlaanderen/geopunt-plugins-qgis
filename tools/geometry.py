@@ -228,11 +228,9 @@ class geometryHelper:
         self.canvas.refresh()
 
     def _pushError(self, message: str) -> None:
-        try:
-            self.iface.messageBar().pushMessage(
-                "geopunt4Qgis", message, level=Qgis.Critical, duration=5)
-        except Exception:
-            pass
+        self.iface.messageBar().pushMessage(
+                "geopunt4Qgis", message, level=Qgis.MessageLevel.Critical, duration=5)
+
 
     def _getAdresLayer(self, saveToFile: bool, attributes: List[QgsField],
                        layername: str, sender=None,
@@ -295,7 +293,7 @@ class geometryHelper:
         opts.driverName = driver
         error, msg, _, _ = QgsVectorFileWriter.writeAsVectorFormatV3(
             layer, fpath, QgsCoordinateTransformContext(), opts)
-        if error != QgsVectorFileWriter.NoError:
+        if error != QgsVectorFileWriter.WriterError.NoError:
             self._pushError("Kan de adreslaag niet opslaan: {0}".format(msg))
             return False
         return True

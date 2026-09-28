@@ -30,7 +30,7 @@ class dhm:
         if dhmlayer.isValid():
             colorRamp = QgsStyle().defaultStyle().colorRamp('Turbo')
             fnc = QgsColorRampShader(0, 200)
-            fnc.setColorRampType(QgsColorRampShader.Interpolated)
+            fnc.setColorRampType(QgsColorRampShader.Type.Interpolated)
             fnc.setSourceColorRamp(colorRamp)
             fnc.classifyColorRamp(15)
 

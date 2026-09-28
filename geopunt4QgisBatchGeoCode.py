@@ -314,8 +314,8 @@ class geopunt4QgisBatcGeoCodeDialog(QDialog):
                 "Probeer het bestand in te laden als een <b>ANSI latin1-bestand</b> of een <b>UTF-8-bestand</b>.<br/><br/>"
                 "Wilt u proberen over te schakelen naar <b>%s</b>?") % (current_codec, suggested_name))
 
-            yes_btn = QMessageBox.StandardButton.Yes if hasattr(QMessageBox, 'StandardButton') else QMessageBox.Yes
-            no_btn = QMessageBox.StandardButton.No if hasattr(QMessageBox, 'StandardButton') else QMessageBox.No
+            yes_btn = QMessageBox.StandardButton.Yes
+            no_btn = QMessageBox.StandardButton.No
             reply = QMessageBox.question(self, 
                 QCoreApplication.translate("batcGeoCodedialog", "Coderingsfout"),
                 msg,

@@ -58,7 +58,7 @@ class elevationHelper(object):
               opts.driverName = flType
               error, _, __, __ = QgsVectorFileWriter.writeAsVectorFormatV3(
                   self.sampleslayer, fpath, QgsCoordinateTransformContext(), opts)
-              if error == QgsVectorFileWriter.NoError:
+              if error == QgsVectorFileWriter.WriterError.NoError:
                   self.sampleslayer = QgsVectorLayer( fpath , layername, "ogr")
                   self.samplesProvider = self.sampleslayer.dataProvider()
               else: 
@@ -115,7 +115,7 @@ class elevationHelper(object):
               opts.driverName = flType
               error, _, __, __ = QgsVectorFileWriter.writeAsVectorFormatV3(
                   self.profilelayer, fpath, QgsCoordinateTransformContext(), opts)
-              if error == QgsVectorFileWriter.NoError:
+              if error == QgsVectorFileWriter.WriterError.NoError:
                   self.profilelayer = QgsVectorLayer( fpath , layername, "ogr")
                   self.profileProvider = self.profilelayer.dataProvider()
               else: 

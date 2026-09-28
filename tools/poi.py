@@ -117,7 +117,7 @@ class poiHelper(object):
               opts.driverName = flType
               error, msg, __, __ = QgsVectorFileWriter.writeAsVectorFormatV3(
                   self.minpoilayer, fpath, QgsCoordinateTransformContext(), opts)
-              if error == QgsVectorFileWriter.NoError:
+              if error == QgsVectorFileWriter.WriterError.NoError:
                   self.minpoilayer = QgsVectorLayer( fpath , layername, "ogr")
                   self.minpoiProvider = self.minpoilayer.dataProvider()
               else: 
@@ -251,7 +251,7 @@ class poiHelper(object):
               opts.driverName = flType
               error, msg, __, __ = QgsVectorFileWriter.writeAsVectorFormatV3(
                   self.poilayer, fpath, QgsCoordinateTransformContext(), opts)
-              if error == QgsVectorFileWriter.NoError:
+              if error == QgsVectorFileWriter.WriterError.NoError:
                   self.poilayer = QgsVectorLayer( fpath , layername, "ogr")
                   self.poiProvider = self.poilayer.dataProvider()
               else: 
